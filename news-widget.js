@@ -50,9 +50,15 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(data => {
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(data, 'text/html');
-                const title = doc.querySelector('h1.bold.h2.nobmargin') ? doc.querySelector('h1.bold.h2.nobmargin').textContent : 'No Title';
-                const image = doc.querySelector('img.center-block') ? `https://www.tradepr.work${doc.querySelector('img.center-block').src}` : '';
-                const content = doc.querySelector('p#isPasted') ? doc.querySelector('p#isPasted').innerHTML : 'No Content Available';
+                const title = doc.querySelector('.col-md-12.tmargin h1.bold.h2.nobmargin') 
+                    ? doc.querySelector('.col-md-12.tmargin h1.bold.h2.nobmargin').textContent 
+                    : 'No Title';
+                const image = doc.querySelector('.img_section img') 
+                    ? `https://www.tradepr.work${doc.querySelector('.img_section img').src}` 
+                    : '';
+                const content = doc.querySelector('.the-post-description p#isPasted') 
+                    ? doc.querySelector('.the-post-description p#isPasted').innerHTML 
+                    : 'No Content Available';
 
                 const modalBody = document.getElementById('modal-body');
                 modalBody.innerHTML = `
