@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const baseUrl = 'https://www.tradepr.work/articles/';
 
+    // Fetch list of news articles
     fetch(baseUrl)
         .then(response => response.text())
         .then(data => {
@@ -8,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const doc = parser.parseFromString(data, 'text/html');
             const articles = doc.querySelectorAll('.row-fluid.search_result');
             const widget = document.getElementById('news-widget');
+
             if (articles.length === 0) {
                 widget.innerHTML = '<p>No news items found.</p>';
             } else {
@@ -19,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const description = descriptionElement ? descriptionElement.textContent.trim() : 'No description available';
                     const imgElement = article.querySelector('.img_section img');
                     const imgSrc = imgElement ? `https://www.tradepr.work${imgElement.src}` : ''; 
+
                     widget.innerHTML += `
                         <div class="news-item">
                             ${imgSrc ? `<img src="${imgSrc}" alt="${title}">` : ''}
@@ -31,17 +34,18 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => console.error('Error loading news:', error));
 
+    // Handle click events to open the modal
     document.addEventListener('click', function(event) {
         if (event.target.matches('.news-link')) {
             event.preventDefault();
             const newsUrl = event.target.getAttribute('data-url');
-            console.log('Fetching news content from URL:', newsUrl);
             loadNewsContent(newsUrl);
         } else if (event.target.matches('.close')) {
             document.getElementById('newsModal').style.display = 'none';
         }
     });
 
+    // Load and display the content in the modal
     function loadNewsContent(url) {
         fetch(url)
             .then(response => {
@@ -54,7 +58,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(data, 'text/html');
                 
-                // Select the title and content based on the structure you provided
                 const title = doc.querySelector('.col-md-12.tmargin h1.bold.h2.nobmargin') 
                     ? doc.querySelector('.col-md-12.tmargin h1.bold.h2.nobmargin').textContent 
                     : 'No Title';
