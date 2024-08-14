@@ -1,7 +1,7 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const baseUrl = 'https://www.tradepr.work/articles/';
 
-    // Fetch list of news articles
+    // Fetch and display news articles
     fetch(baseUrl)
         .then(response => response.text())
         .then(data => {
@@ -20,12 +20,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     const descriptionElement = article.querySelector('.xs-nomargin');
                     const description = descriptionElement ? descriptionElement.textContent.trim() : 'No description available';
                     const imgElement = article.querySelector('.img_section img');
-                    const imgSrc = imgElement ? `https://www.tradepr.work${imgElement.src}` : ''; 
+                    const imgSrc = imgElement ? `https://www.tradepr.work${imgElement.src}` : '';
 
                     widget.innerHTML += `
                         <div class="news-item">
                             ${imgSrc ? `<img src="${imgSrc}" alt="${title}">` : ''}
-                            <a href="#" class="news-link" data-url="${link}">${title}</a>
+                            <a href="#" class="news-link" data-url="${encodeURIComponent(link)}">${title}</a>
                             <p>${description}</p>
                         </div>
                     `;
@@ -34,43 +34,46 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => console.error('Error loading news:', error));
 
-    // Handle click events to open the modal
+    // Handle clicks on news links
     document.addEventListener('click', function(event) {
         if (event.target.matches('.news-link')) {
             event.preventDefault();
-            const newsUrl = event.target.getAttribute('data-url');
+            const newsUrl = decodeURIComponent(event.target.getAttribute('data-url'));
             loadNewsContent(newsUrl);
-        } else if (event.target.matches('.close')) {
-            document.getElementById('newsModal').style.display = 'none';
         }
     });
 
-    // Load and display the content in the modal
     function loadNewsContent(url) {
+        console.log('Fetching news content from URL:', url);
         fetch(url)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.text();
-            })
+            .then(response => response.text())
             .then(data => {
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(data, 'text/html');
-                
-                const titleElement = doc.querySelector('.col-md-12.tmargin h1.bold.h2.nobmargin');
-                const contentElement = doc.querySelector('.the-post-description p#isPasted');
-                
-                const title = titleElement ? titleElement.textContent.trim() : 'No Title';
-                const content = contentElement ? contentElement.innerHTML.trim() : 'No Content Available';
-                
+                const title = doc.querySelector('h1.bold.h2.nobmargin') ? doc.querySelector('h1.bold.h2.nobmargin').textContent : 'No Title';
+                const image = doc.querySelector('img.center-block') ? `https://www.tradepr.work${doc.querySelector('img.center-block').src}` : '';
+                const content = doc.querySelector('p#isPasted') ? doc.querySelector('p#isPasted').innerHTML : 'No Content Available';
+
                 const modalBody = document.getElementById('modal-body');
                 modalBody.innerHTML = `
                     <h1>${title}</h1>
+                    ${image ? `<img src="${image}" alt="${title}" style="max-width: 100%;">` : ''}
                     <div>${content}</div>
                 `;
                 document.getElementById('newsModal').style.display = 'block';
             })
             .catch(error => console.error('Error loading news content:', error));
+    }
+
+    // Close the modal
+    document.querySelector('.close').addEventListener('click', function() {
+        document.getElementById('newsModal').style.display = 'none';
+    });
+
+    // Close the modal if the user clicks outside of it
+    window.onclick = function(event) {
+        if (event.target === document.getElementById('newsModal')) {
+            document.getElementById('newsModal').style.display = 'none';
+        }
     }
 });
