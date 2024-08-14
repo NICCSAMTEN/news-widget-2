@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 articles.forEach(article => {
                     const titleElement = article.querySelector('.h3.bold.bmargin.center-block');
                     const title = titleElement ? titleElement.textContent.trim() : 'No title available';
-                    const link = titleElement ? titleElement.href : '#';
+                    const link = titleElement ? titleElement.closest('a').href : '#'; // Use closest('a') to get the link
                     const descriptionElement = article.querySelector('.xs-nomargin');
                     const description = descriptionElement ? descriptionElement.textContent.trim() : 'No description available';
                     const imgElement = article.querySelector('.img_section img');
@@ -50,15 +50,11 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(data => {
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(data, 'text/html');
-                const title = doc.querySelector('.col-md-12.tmargin h1.bold.h2.nobmargin') 
-                    ? doc.querySelector('.col-md-12.tmargin h1.bold.h2.nobmargin').textContent 
-                    : 'No Title';
-                const image = doc.querySelector('.img_section img') 
-                    ? `https://www.tradepr.work${doc.querySelector('.img_section img').src}` 
-                    : '';
-                const content = doc.querySelector('.the-post-description p#isPasted') 
-                    ? doc.querySelector('.the-post-description p#isPasted').innerHTML 
-                    : 'No Content Available';
+                
+                // Update these selectors based on actual HTML structure
+                const title = doc.querySelector('h1.bold.h2.nobmargin') ? doc.querySelector('h1.bold.h2.nobmargin').textContent : 'No Title';
+                const image = doc.querySelector('.img_section img') ? `https://www.tradepr.work${doc.querySelector('.img_section img').src}` : '';
+                const content = doc.querySelector('.the-post-description p#isPasted') ? doc.querySelector('.the-post-description p#isPasted').innerHTML : 'No Content Available';
 
                 const modalBody = document.getElementById('modal-body');
                 modalBody.innerHTML = `
