@@ -3,70 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>News Widget</title>
-    <style>
-        .news-widget {
-            border: 1px solid #ddd;
-            padding: 10px;
-            width: auto;
-            font-family: Arial, sans-serif;
-            overflow-y: auto;
-        }
-        .news-item {
-            margin-bottom: 10px;
-        }
-        .news-item a {
-            text-decoration: none;
-            color: #007BFF;
-        }
-        .news-item a:hover {
-            text-decoration: underline;
-        }
-        .news-item img {
-            max-width: 100%;
-            height: auto;
-        }
-    </style>
+    <title>News Widget Index</title>
 </head>
 <body>
-    <div class="news-widget" id="news-widget">
-        <!-- News content will be inserted here by JavaScript -->
-    </div>
-    <script>
-        fetch('https://www.tradepr.work/articles/')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok ' + response.statusText);
-                }
-                return response.text();
-            })
-            .then(data => {
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(data, 'text/html');
-                const articles = doc.querySelectorAll('.row-fluid.search_result');
-                const widget = document.getElementById('news-widget');
-                if (articles.length === 0) {
-                    widget.innerHTML = '<p>No news items found.</p>';
-                } else {
-                    articles.forEach(article => {
-                        const titleElement = article.querySelector('.h3.bold.bmargin.center-block');
-                        const title = titleElement ? titleElement.textContent.trim() : 'No title available';
-                        const link = titleElement ? titleElement.href : '#';
-                        const descriptionElement = article.querySelector('.xs-nomargin');
-                        const description = descriptionElement ? descriptionElement.textContent.trim() : 'No description available';
-                        const imgElement = article.querySelector('.img_section img');
-                        const imgSrc = imgElement ? `https://www.tradepr.work${imgElement.src}` : '';
-                        widget.innerHTML += `
-                            <div class="news-item">
-                                ${imgSrc ? `<img src="${imgSrc}" alt="${title}" style="width: 240px; height: 120px;">` : ''}
-                                <a href="news-content.html?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}&img=${encodeURIComponent(imgSrc)}">${title}</a>
-                                <p>${description}</p>
-                            </div>
-                        `;
-                    });
-                }
-            })
-            .catch(error => console.error('Error loading news:', error));
-    </script>
+    <h1>News Widget</h1>
+    <p><a href="news-widget.html">Go to News Widget</a></p>
 </body>
 </html>
