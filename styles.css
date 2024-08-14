@@ -1,55 +1,22 @@
-/* News Widget Styles */
-#news-widget-container {
-    margin: 20px;
-    font-family: Arial, sans-serif;
-}
-
-.news-widget {
-    border: 1px solid #ddd;
-    padding: 10px;
-    width: auto;
-    overflow-y: auto;
-}
-
-.news-item {
-    margin-bottom: 10px;
-}
-
-.news-item a {
-    text-decoration: none;
-    color: #007BFF;
-}
-
-.news-item a:hover {
-    text-decoration: underline;
-}
-
-.news-item img {
-    max-width: 240px;
-    height: 120px;
-    object-fit: cover;
-}
-
-/* Modal styles */
+/* Modal Styles */
 .modal {
-    display: none;
+    display: none; /* Hidden by default */
     position: fixed;
-    z-index: 1;
+    z-index: 1; /* Sit on top */
     left: 0;
     top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4);
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
 .modal-content {
     background-color: #fefefe;
-    margin: 10% auto;
+    margin: 15% auto; /* 15% from the top and centered */
     padding: 20px;
     border: 1px solid #888;
-    width: 80%;
-    max-width: 600px;
+    width: 80%; /* Could be more or less, depending on screen size */
 }
 
 .close {
