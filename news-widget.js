@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
-    fetch('https://www.tradepr.work/articles/')  // Replace with your actual news endpoint
+    const baseUrl = 'https://www.tradepr.work/articles/'; // Ensure this is the correct base URL
+
+    fetch(baseUrl)
         .then(response => response.text())
         .then(data => {
             const parser = new DOMParser();
@@ -34,8 +36,6 @@ document.addEventListener('DOMContentLoaded', function() {
             event.preventDefault();
             const newsUrl = event.target.getAttribute('data-url');
             loadNewsContent(newsUrl);
-        } else if (event.target.matches('.close')) {
-            document.getElementById('newsModal').style.display = 'none';
         }
     });
 
@@ -57,5 +57,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById('newsModal').style.display = 'block';
             })
             .catch(error => console.error('Error loading news content:', error));
+    }
+
+    // Close the modal
+    document.querySelector('.close').addEventListener('click', function() {
+        document.getElementById('newsModal').style.display = 'none';
+    });
+
+    // Close the modal if user clicks outside of it
+    window.onclick = function(event) {
+        if (event.target === document.getElementById('newsModal')) {
+            document.getElementById('newsModal').style.display = 'none';
+        }
     }
 });
