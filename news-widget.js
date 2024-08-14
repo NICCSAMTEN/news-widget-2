@@ -1,13 +1,16 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const baseUrl = 'https://www.tradepr.work/articles/'; // Ensure this is the correct base URL
+    // Replace with your actual news endpoint
+    const baseUrl = 'https://www.tradepr.work/articles/';
+    const widget = document.getElementById('news-widget');
 
+    // Fetch the list of news articles
     fetch(baseUrl)
         .then(response => response.text())
         .then(data => {
             const parser = new DOMParser();
             const doc = parser.parseFromString(data, 'text/html');
             const articles = doc.querySelectorAll('.row-fluid.search_result');
-            const widget = document.getElementById('news-widget');
+
             if (articles.length === 0) {
                 widget.innerHTML = '<p>No news items found.</p>';
             } else {
@@ -19,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const description = descriptionElement ? descriptionElement.textContent.trim() : 'No description available';
                     const imgElement = article.querySelector('.img_section img');
                     const imgSrc = imgElement ? `https://www.tradepr.work${imgElement.src}` : ''; 
+
                     widget.innerHTML += `
                         <div class="news-item">
                             ${imgSrc ? `<img src="${imgSrc}" alt="${title}">` : ''}
@@ -66,12 +70,10 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => console.error('Error loading news content:', error));
     }
 
-    // Close the modal
     document.querySelector('.close').addEventListener('click', function() {
         document.getElementById('newsModal').style.display = 'none';
     });
 
-    // Close the modal if user clicks outside of it
     window.onclick = function(event) {
         if (event.target === document.getElementById('newsModal')) {
             document.getElementById('newsModal').style.display = 'none';
