@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (event.target.matches('.news-link')) {
             event.preventDefault();
             const newsUrl = event.target.getAttribute('data-url');
-            console.log('Fetching news content from URL:', newsUrl); // Debugging line
+            console.log('Fetching news content from URL:', newsUrl);
             loadNewsContent(newsUrl);
         } else if (event.target.matches('.close')) {
             document.getElementById('newsModal').style.display = 'none';
@@ -53,7 +53,6 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(data, 'text/html');
-                console.log('Loaded document:', doc); // Debugging line
                 
                 // Select the title and content based on the structure you provided
                 const title = doc.querySelector('.col-md-12.tmargin h1.bold.h2.nobmargin') 
@@ -63,9 +62,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     ? doc.querySelector('.the-post-description p#isPasted').innerHTML 
                     : 'No Content Available';
                 
-                console.log('Title:', title); // Debugging line
-                console.log('Content:', content); // Debugging line
-
                 const modalBody = document.getElementById('modal-body');
                 modalBody.innerHTML = `
                     <h1>${title}</h1>
