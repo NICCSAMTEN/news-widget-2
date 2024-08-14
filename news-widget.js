@@ -1,11 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     fetch('https://www.tradepr.work/articles/')  // Replace with your actual news endpoint
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok ' + response.statusText);
-            }
-            return response.text();
-        })
+        .then(response => response.text())
         .then(data => {
             const parser = new DOMParser();
             const doc = parser.parseFromString(data, 'text/html');
@@ -25,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     widget.innerHTML += `
                         <div class="news-item">
                             ${imgSrc ? `<img src="${imgSrc}" alt="${title}">` : ''}
-                            <a href="news-content.html?url=${encodeURIComponent(link)}" class="news-link">${title}</a>
+                            <a href="#" class="news-link" data-url="${link}">${title}</a>
                             <p>${description}</p>
                         </div>
                     `;
@@ -33,4 +28,34 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         })
         .catch(error => console.error('Error loading news:', error));
+
+    document.addEventListener('click', function(event) {
+        if (event.target.matches('.news-link')) {
+            event.preventDefault();
+            const newsUrl = event.target.getAttribute('data-url');
+            loadNewsContent(newsUrl);
+        } else if (event.target.matches('.close')) {
+            document.getElementById('newsModal').style.display = 'none';
+        }
+    });
+
+    function loadNewsContent(url) {
+        fetch(url)
+            .then(response => response.text())
+            .then(data => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(data, 'text/html');
+                const title = doc.querySelector('h1.bold.h2.nobmargin').textContent;
+                const image = doc.querySelector('img.center-block').src;
+                const content = doc.querySelector('p#isPasted').innerHTML;
+                const modalBody = document.getElementById('modal-body');
+                modalBody.innerHTML = `
+                    <h1>${title}</h1>
+                    <img src="${image}" alt="${title}">
+                    <div>${content}</div>
+                `;
+                document.getElementById('newsModal').style.display = 'block';
+            })
+            .catch(error => console.error('Error loading news content:', error));
+    }
 });
