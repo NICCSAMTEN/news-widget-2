@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
-    fetch('https://www.tradepr.work/articles/')  // Replace with your actual news endpoint
+    const baseUrl = 'https://www.tradepr.work/articles/';
+
+    fetch(baseUrl)
         .then(response => response.text())
         .then(data => {
             const parser = new DOMParser();
@@ -45,13 +47,15 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(data, 'text/html');
-                const title = doc.querySelector('div.col-md-12.tmargin h1.bold.h2.nobmargin') ? doc.querySelector('div.col-md-12.tmargin h1.bold.h2.nobmargin').textContent : 'No Title';
-                const image = doc.querySelector('div.alert-secondary.btn-block.text-center img.center-block') ? `https://www.tradepr.work${doc.querySelector('div.alert-secondary.btn-block.text-center img.center-block').src}` : '';
-                const content = doc.querySelector('div.the-post-description p#isPasted') ? doc.querySelector('div.the-post-description p#isPasted').innerHTML : 'No Content Available';
+                const title = doc.querySelector('.col-md-12.tmargin h1.bold.h2.nobmargin') 
+                    ? doc.querySelector('.col-md-12.tmargin h1.bold.h2.nobmargin').textContent 
+                    : 'No Title';
+                const content = doc.querySelector('.the-post-description p#isPasted') 
+                    ? doc.querySelector('.the-post-description p#isPasted').innerHTML 
+                    : 'No Content Available';
                 const modalBody = document.getElementById('modal-body');
                 modalBody.innerHTML = `
                     <h1>${title}</h1>
-                    ${image ? `<img src="${image}" alt="${title}" style="max-width: 100%;">` : ''}
                     <div>${content}</div>
                 `;
                 document.getElementById('newsModal').style.display = 'block';
