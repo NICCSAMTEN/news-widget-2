@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 articles.forEach(article => {
                     const titleElement = article.querySelector('.h3.bold.bmargin.center-block');
                     const title = titleElement ? titleElement.textContent.trim() : 'No title available';
-                    const link = titleElement ? titleElement.closest('a').href : '#'; // Use closest('a') to get the link
+                    const link = titleElement ? titleElement.closest('a').href : '#';
                     const descriptionElement = article.querySelector('.xs-nomargin');
                     const description = descriptionElement ? descriptionElement.textContent.trim() : 'No description available';
                     const imgElement = article.querySelector('.img_section img');
@@ -34,7 +34,6 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .catch(error => console.error('Error loading news:', error));
 
-    // Handle clicks on news links
     document.addEventListener('click', function(event) {
         if (event.target.matches('.news-link')) {
             event.preventDefault();
@@ -50,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(data => {
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(data, 'text/html');
-                
+
                 // Update these selectors based on actual HTML structure
                 const title = doc.querySelector('h1.bold.h2.nobmargin') ? doc.querySelector('h1.bold.h2.nobmargin').textContent : 'No Title';
                 const image = doc.querySelector('.img_section img') ? `https://www.tradepr.work${doc.querySelector('.img_section img').src}` : '';
@@ -67,12 +66,10 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => console.error('Error loading news content:', error));
     }
 
-    // Close the modal
     document.querySelector('.close').addEventListener('click', function() {
         document.getElementById('newsModal').style.display = 'none';
     });
 
-    // Close the modal if the user clicks outside of it
     window.onclick = function(event) {
         if (event.target === document.getElementById('newsModal')) {
             document.getElementById('newsModal').style.display = 'none';
