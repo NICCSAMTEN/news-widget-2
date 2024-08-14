@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (event.target.matches('.news-link')) {
             event.preventDefault();
             const newsUrl = event.target.getAttribute('data-url');
+            console.log('Fetching news content from URL:', newsUrl); // Debugging line
             loadNewsContent(newsUrl);
         } else if (event.target.matches('.close')) {
             document.getElementById('newsModal').style.display = 'none';
@@ -43,10 +44,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function loadNewsContent(url) {
         fetch(url)
-            .then(response => response.text())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
             .then(data => {
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(data, 'text/html');
+                console.log('Loaded document:', doc); // Debugging line
                 const title = doc.querySelector('.col-md-12.tmargin h1.bold.h2.nobmargin') 
                     ? doc.querySelector('.col-md-12.tmargin h1.bold.h2.nobmargin').textContent 
                     : 'No Title';
