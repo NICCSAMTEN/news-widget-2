@@ -45,13 +45,13 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(data, 'text/html');
-                const title = doc.querySelector('h1.bold.h2.nobmargin').textContent;
-                const image = doc.querySelector('img.center-block').src;
-                const content = doc.querySelector('p#isPasted').innerHTML;
+                const title = doc.querySelector('h1.bold.h2.nobmargin') ? doc.querySelector('h1.bold.h2.nobmargin').textContent : 'No Title';
+                const image = doc.querySelector('img.center-block') ? `https://www.tradepr.work${doc.querySelector('img.center-block').src}` : '';
+                const content = doc.querySelector('p#isPasted') ? doc.querySelector('p#isPasted').innerHTML : 'No Content Available';
                 const modalBody = document.getElementById('modal-body');
                 modalBody.innerHTML = `
                     <h1>${title}</h1>
-                    <img src="${image}" alt="${title}">
+                    ${image ? `<img src="${image}" alt="${title}" style="max-width: 100%;">` : ''}
                     <div>${content}</div>
                 `;
                 document.getElementById('newsModal').style.display = 'block';
