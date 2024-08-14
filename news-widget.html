@@ -123,6 +123,7 @@
         });
 
         function loadNewsContent(url) {
+            console.log('Fetching news content from URL:', url); // Debug URL
             fetch(url)
                 .then(response => {
                     if (!response.ok) {
