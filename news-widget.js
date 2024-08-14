@@ -40,9 +40,16 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function loadNewsContent(url) {
+        console.log('Fetching news content from URL:', url); // Debug URL
         fetch(url)
-            .then(response => response.text())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.text();
+            })
             .then(data => {
+                console.log('Fetched data:', data); // Log fetched data for debugging
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(data, 'text/html');
                 const title = doc.querySelector('h1.bold.h2.nobmargin') ? doc.querySelector('h1.bold.h2.nobmargin').textContent : 'No Title';
