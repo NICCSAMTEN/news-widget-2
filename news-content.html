@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Content</title>
+    <style>
+        .news-content {
+            width: 80%;
+            margin: 0 auto;
+            font-family: Arial, sans-serif;
+        }
+        .news-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .news-description {
+            margin-bottom: 20px;
+        }
+        .news-image {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="news-content" id="news-content">
+        <!-- News content will be dynamically inserted here -->
+    </div>
+    <script>
+        // Function to get URL parameters
+        function getParameterByName(name) {
+            const url = window.location.href;
+            name = name.replace(/[\[\]]/g, '\\$&');
+            const regex = new RegExp(`[?&]${name}(=([^&#]*)|&|#|$)`),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
+
+        // Get the title, description, and image from the URL parameters
+        const title = getParameterByName('title');
+        const description = getParameterByName('description');
+        const imgSrc = getParameterByName('img');
+
+        // Populate the news content
+        const newsContentDiv = document.getElementById('news-content');
+        newsContentDiv.innerHTML = `
+            <h1 class="news-title">${title}</h1>
+            ${imgSrc ? `<img src="${imgSrc}" alt="${title}" class="news-image">` : ''}
+            <p class="news-description">${description}</p>
+        `;
+    </script>
+</body>
+</html>
