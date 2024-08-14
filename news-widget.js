@@ -58,12 +58,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(data, 'text/html');
                 
-                const title = doc.querySelector('.col-md-12.tmargin h1.bold.h2.nobmargin') 
-                    ? doc.querySelector('.col-md-12.tmargin h1.bold.h2.nobmargin').textContent 
-                    : 'No Title';
-                const content = doc.querySelector('.the-post-description p#isPasted') 
-                    ? doc.querySelector('.the-post-description p#isPasted').innerHTML 
-                    : 'No Content Available';
+                const titleElement = doc.querySelector('.col-md-12.tmargin h1.bold.h2.nobmargin');
+                const contentElement = doc.querySelector('.the-post-description p#isPasted');
+                
+                const title = titleElement ? titleElement.textContent.trim() : 'No Title';
+                const content = contentElement ? contentElement.innerHTML.trim() : 'No Content Available';
                 
                 const modalBody = document.getElementById('modal-body');
                 modalBody.innerHTML = `
