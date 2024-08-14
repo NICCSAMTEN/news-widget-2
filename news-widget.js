@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     widget.innerHTML += `
                         <div class="news-item">
                             ${imgSrc ? `<img src="${imgSrc}" alt="${title}">` : ''}
-                            <a href="#" class="news-link" data-url="${link}">${title}</a>
+                            <a href="news-content.html?url=${encodeURIComponent(link)}" class="news-link">${title}</a>
                             <p>${description}</p>
                         </div>
                     `;
@@ -33,34 +33,4 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         })
         .catch(error => console.error('Error loading news:', error));
-
-    document.addEventListener('click', function(event) {
-        if (event.target.matches('.news-link')) {
-            event.preventDefault();
-            const newsUrl = event.target.getAttribute('data-url');
-            loadNewsContent(newsUrl);
-        } else if (event.target.matches('.close')) {
-            document.getElementById('newsModal').style.display = 'none';
-        }
-    });
-
-    function loadNewsContent(url) {
-        fetch(url)
-            .then(response => response.text())
-            .then(data => {
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(data, 'text/html');
-                const title = doc.querySelector('.h1').textContent;
-                const content = doc.querySelector('.the-post-description').innerHTML;
-                const image = doc.querySelector('.center-block').src;
-                const modalBody = document.getElementById('modal-body');
-                modalBody.innerHTML = `
-                    <h1>${title}</h1>
-                    <img src="${image}" alt="${title}" style="max-width:100%;">
-                    <div>${content}</div>
-                `;
-                document.getElementById('newsModal').style.display = 'block';
-            })
-            .catch(error => console.error('Error loading news content:', error));
-    }
 });
