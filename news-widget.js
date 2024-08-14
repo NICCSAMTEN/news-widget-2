@@ -1,14 +1,11 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const baseUrl = 'https://www.tradepr.work/articles/';
-
-    fetch(baseUrl)
+    fetch('https://www.tradepr.work/articles/')  // Replace with your actual news endpoint
         .then(response => response.text())
         .then(data => {
             const parser = new DOMParser();
             const doc = parser.parseFromString(data, 'text/html');
             const articles = doc.querySelectorAll('.row-fluid.search_result');
             const widget = document.getElementById('news-widget');
-
             if (articles.length === 0) {
                 widget.innerHTML = '<p>No news items found.</p>';
             } else {
@@ -23,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     widget.innerHTML += `
                         <div class="news-item">
                             ${imgSrc ? `<img src="${imgSrc}" alt="${title}">` : ''}
-                            <a href="#" class="news-link" data-url="${encodeURIComponent(link)}">${title}</a>
+                            <a href="#" class="news-link" data-url="${link}">${title}</a>
                             <p>${description}</p>
                         </div>
                     `;
@@ -35,27 +32,22 @@ document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('click', function(event) {
         if (event.target.matches('.news-link')) {
             event.preventDefault();
-            const newsUrl = decodeURIComponent(event.target.getAttribute('data-url'));
+            const newsUrl = event.target.getAttribute('data-url');
             loadNewsContent(newsUrl);
+        } else if (event.target.matches('.close')) {
+            document.getElementById('newsModal').style.display = 'none';
         }
     });
 
     function loadNewsContent(url) {
-        console.log('Fetching news content from URL:', url); // Debug URL
         fetch(url)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok ' + response.statusText);
-                }
-                return response.text();
-            })
+            .then(response => response.text())
             .then(data => {
-                console.log('Fetched data:', data); // Log fetched data for debugging
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(data, 'text/html');
-                const title = doc.querySelector('h1.bold.h2.nobmargin') ? doc.querySelector('h1.bold.h2.nobmargin').textContent : 'No Title';
-                const image = doc.querySelector('img.center-block') ? `https://www.tradepr.work${doc.querySelector('img.center-block').src}` : '';
-                const content = doc.querySelector('p#isPasted') ? doc.querySelector('p#isPasted').innerHTML : 'No Content Available';
+                const title = doc.querySelector('div.col-md-12.tmargin h1.bold.h2.nobmargin') ? doc.querySelector('div.col-md-12.tmargin h1.bold.h2.nobmargin').textContent : 'No Title';
+                const image = doc.querySelector('div.alert-secondary.btn-block.text-center img.center-block') ? `https://www.tradepr.work${doc.querySelector('div.alert-secondary.btn-block.text-center img.center-block').src}` : '';
+                const content = doc.querySelector('div.the-post-description p#isPasted') ? doc.querySelector('div.the-post-description p#isPasted').innerHTML : 'No Content Available';
                 const modalBody = document.getElementById('modal-body');
                 modalBody.innerHTML = `
                     <h1>${title}</h1>
@@ -65,17 +57,5 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById('newsModal').style.display = 'block';
             })
             .catch(error => console.error('Error loading news content:', error));
-    }
-
-    // Close the modal
-    document.querySelector('.close').addEventListener('click', function() {
-        document.getElementById('newsModal').style.display = 'none';
-    });
-
-    // Close the modal if user clicks outside of it
-    window.onclick = function(event) {
-        if (event.target === document.getElementById('newsModal')) {
-            document.getElementById('newsModal').style.display = 'none';
-        }
     }
 });
