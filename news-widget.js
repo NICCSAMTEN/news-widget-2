@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const descriptionElement = article.querySelector('.xs-nomargin');
                     const description = descriptionElement ? descriptionElement.textContent.trim() : 'No description available';
                     const imgElement = article.querySelector('.img_section img');
-                    const imgSrc = imgElement ? imgElement.src.startsWith('http') ? imgElement.src : `https://www.tradepr.work${imgElement.src}` : '';
+                    const imgSrc = imgElement ? (imgElement.src.startsWith('http') ? imgElement.src : `https://www.tradepr.work${imgElement.src}`) : '';
 
                     console.log('Constructed Image URL:', imgSrc); // Debugging line
 
@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const doc = parser.parseFromString(data, 'text/html');
 
                 const title = doc.querySelector('h1.bold.h2.nobmargin') ? doc.querySelector('h1.bold.h2.nobmargin').textContent.trim() : 'No Title';
-                const image = doc.querySelector('.img_section img') ? doc.querySelector('.img_section img').src.startsWith('http') ? doc.querySelector('.img_section img').src : `https://www.tradepr.work${doc.querySelector('.img_section img').src}` : '';
+                const image = doc.querySelector('.img_section img') ? (doc.querySelector('.img_section img').src.startsWith('http') ? doc.querySelector('.img_section img').src : `https://www.tradepr.work${doc.querySelector('.img_section img').src}`) : '';
 
                 const contentContainer = doc.querySelector('.the-post-description');
                 let content = 'No Content Available';
