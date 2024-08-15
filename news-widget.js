@@ -53,10 +53,24 @@ document.addEventListener('DOMContentLoaded', function () {
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(data, 'text/html');
 
-                // Extract the full content
-                const title = doc.querySelector('h1.bold.h2.nobmargin') ? doc.querySelector('h1.bold.h2.nobmargin').textContent : 'No Title';
+                // Extract the title
+                const title = doc.querySelector('h1.bold.h2.nobmargin') ? doc.querySelector('h1.bold.h2.nobmargin').textContent.trim() : 'No Title';
+
+                // Extract the image
                 const image = doc.querySelector('.img_section img') ? doc.querySelector('.img_section img').src : '';
-                const content = doc.querySelector('.the-post-description') ? doc.querySelector('.the-post-description').innerHTML : 'No Content Available';
+
+                // Extract the full content from .the-post-description
+                const contentContainer = doc.querySelector('.the-post-description');
+                let content = 'No Content Available';
+                if (contentContainer) {
+                    // Check for any nested paragraphs or additional tags
+                    content = contentContainer.innerHTML.trim();
+                }
+
+                // Debug output
+                console.log('Title:', title);
+                console.log('Image:', image);
+                console.log('Content:', content);
 
                 const modalBody = document.getElementById('modal-body');
                 modalBody.innerHTML = `
