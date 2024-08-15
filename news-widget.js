@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const descriptionElement = article.querySelector('.xs-nomargin');
                     const description = descriptionElement ? descriptionElement.textContent.trim() : 'No description available';
                     const imgElement = article.querySelector('.img_section img');
-                    const imgSrc = imgElement ? `https://www.tradepr.work${imgElement.src}` : '';
+                    const imgSrc = imgElement ? imgElement.src : '';
 
                     widget.innerHTML += `
                         <div class="news-item">
@@ -51,9 +51,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 const doc = parser.parseFromString(data, 'text/html');
 
                 // Update these selectors based on actual HTML structure
-                const title = doc.querySelector('h1.bold.h2.nobmargin') ? doc.querySelector('h1.bold.h2.nobmargin').textContent : 'No Title';
-                const image = doc.querySelector('.img_section img') ? `https://www.tradepr.work${doc.querySelector('.img_section img').src}` : '';
-                const content = doc.querySelector('.the-post-description p#isPasted') ? doc.querySelector('.the-post-description p#isPasted').innerHTML : 'No Content Available';
+                const title = doc.querySelector('.title-class') ? doc.querySelector('.title-class').textContent : 'No Title';
+                const image = doc.querySelector('.image-class img') ? doc.querySelector('.image-class img').src : '';
+                const content = doc.querySelector('.content-class') ? doc.querySelector('.content-class').innerHTML : 'No Content Available';
 
                 const modalBody = document.getElementById('modal-body');
                 modalBody.innerHTML = `
