@@ -20,17 +20,29 @@ document.addEventListener('DOMContentLoaded', function () {
                     const descriptionElement = article.querySelector('.xs-nomargin');
                     const description = descriptionElement ? descriptionElement.textContent.trim() : 'No description available';
                     const imgElement = article.querySelector('.img_section img');
-                    const imgSrc = imgElement ? imgElement.src.startsWith('http') ? imgElement.src : `https://www.tradepr.work${imgElement.src}` : '';
-
-                    // Ensure the image URL is correctly formed
-                    const correctedImgSrc = imgSrc.replace('https://emilliohezekiah.github.io', 'https://www.tradepr.work');
+                    
+                    let imgSrc = '';
+                    if (imgElement) {
+                        imgSrc = imgElement.src;
+                        
+                        // Log the original image source
+                        console.log('Original Image URL:', imgSrc);
+                        
+                        // Ensure the image URL is correctly formed
+                        if (!imgSrc.startsWith('http')) {
+                            imgSrc = `https://www.tradepr.work${imgSrc}`;
+                        }
+                        
+                        // Log the corrected image source
+                        console.log('Corrected Image URL:', imgSrc);
+                    }
 
                     // Replace the domain in the link to ensure it's correct
                     const correctedLink = link.replace('https://emilliohezekiah.github.io', 'https://www.tradepr.work');
 
                     widget.innerHTML += `
                         <div class="news-item">
-                            ${correctedImgSrc ? `<img src="${correctedImgSrc}" alt="${title}" class="news-image">` : ''}
+                            ${imgSrc ? `<img src="${imgSrc}" alt="${title}" class="news-image">` : ''}
                             <div class="news-content">
                                 <a href="#" class="news-link" data-url="${encodeURIComponent(correctedLink)}">${title}</a>
                                 <p>${description}</p>
