@@ -48,7 +48,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     function loadNewsContent(url) {
-        console.log('Fetching news content from URL:', url);
         fetch(url)
             .then(response => response.text())
             .then(data => {
@@ -67,11 +66,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (contentContainer) {
                     content = contentContainer.innerHTML.trim();
                 }
-
-                // Debug output
-                console.log('Title:', title);
-                console.log('Image:', image);
-                console.log('Content:', content);
 
                 const modalBody = document.getElementById('modal-body');
                 modalBody.innerHTML = `
