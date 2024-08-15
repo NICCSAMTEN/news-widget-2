@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     const baseUrl = 'https://www.tradepr.work/articles/';
 
-    // Fetch and display news articles
     fetch(baseUrl)
         .then(response => response.text())
         .then(data => {
@@ -22,7 +21,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     const imgElement = article.querySelector('.img_section img');
                     const imgSrc = imgElement ? imgElement.src.startsWith('http') ? imgElement.src : `https://www.tradepr.work${imgElement.src}` : '';
 
-                    // Replace the domain in the link to ensure it's correct
+                    console.log('Image source:', imgSrc); // Add this line
+
                     const correctedLink = link.replace('https://emilliohezekiah.github.io', 'https://www.tradepr.work');
 
                     widget.innerHTML += `
@@ -54,13 +54,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(data, 'text/html');
 
-                // Extract the title
                 const title = doc.querySelector('h1.bold.h2.nobmargin') ? doc.querySelector('h1.bold.h2.nobmargin').textContent.trim() : 'No Title';
-
-                // Extract the image
                 const image = doc.querySelector('.img_section img') ? doc.querySelector('.img_section img').src.startsWith('http') ? doc.querySelector('.img_section img').src : `https://www.tradepr.work${doc.querySelector('.img_section img').src}` : '';
 
-                // Extract the full content from .the-post-description
                 const contentContainer = doc.querySelector('.the-post-description');
                 let content = 'No Content Available';
                 if (contentContainer) {
