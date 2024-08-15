@@ -20,18 +20,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     const descriptionElement = article.querySelector('.xs-nomargin');
                     const description = descriptionElement ? descriptionElement.textContent.trim() : 'No description available';
                     const imgElement = article.querySelector('.alert-secondary img');
-                    const imgSrc = imgElement ? `https://www.tradepr.work${imgElement.src}` : '';
-
-                    // Replace the domain in the link to ensure it's correct
-                    const correctedLink = link.replace('https://emilliohezekiah.github.io', 'https://www.tradepr.work');
+                    const imgSrc = imgElement ? `https://www.tradepr.work${imgElement.getAttribute('src')}` : '';
 
                     widget.innerHTML += `
                         <div class="news-item">
-                            ${imgSrc ? `<img src="${imgSrc}" alt="${title}">` : ''}
-                            <div>
-                                <a href="#" class="news-link" data-url="${encodeURIComponent(correctedLink)}">${title}</a>
-                                <p>${description}</p>
-                            </div>
+                            ${imgSrc ? `<img src="${imgSrc}" alt="${title}" class="news-thumbnail">` : ''}
+                            <a href="#" class="news-link" data-url="${encodeURIComponent(link)}">${title}</a>
+                            <p>${description}</p>
                         </div>
                     `;
                 });
@@ -55,15 +50,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(data, 'text/html');
 
-                // Update these selectors based on actual HTML structure
-                const title = doc.querySelector('h1.bold.h2.nobmargin') ? doc.querySelector('h1.bold.h2.nobmargin').textContent : 'No Title';
-                const image = doc.querySelector('.alert-secondary img') ? `https://www.tradepr.work${doc.querySelector('.alert-secondary img').src}` : '';
+                const title = doc.querySelector('h1.bold.h2.nobmargin') ? doc.querySelector('h1.bold.h2.nobmargin').textContent.trim() : 'No Title';
+                const image = doc.querySelector('.alert-secondary img') ? `https://www.tradepr.work${doc.querySelector('.alert-secondary img').getAttribute('src')}` : '';
                 const content = doc.querySelector('.the-post-description') ? doc.querySelector('.the-post-description').innerHTML : 'No Content Available';
 
                 const modalBody = document.getElementById('modal-body');
                 modalBody.innerHTML = `
                     <h1>${title}</h1>
-                    ${image ? `<img src="${image}" alt="${title}">` : ''}
+                    ${image ? `<img src="${image}" alt="${title}" style="max-width: 100%;">` : ''}
                     <div>${content}</div>
                 `;
                 document.getElementById('newsModal').style.display = 'block';
