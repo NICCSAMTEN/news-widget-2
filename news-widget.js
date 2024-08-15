@@ -53,10 +53,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(data, 'text/html');
 
-                // Update these selectors based on actual HTML structure
-                const title = doc.querySelector('.title-class') ? doc.querySelector('.title-class').textContent : 'No Title';
-                const image = doc.querySelector('.image-class img') ? doc.querySelector('.image-class img').src : '';
-                const content = doc.querySelector('.content-class') ? doc.querySelector('.content-class').innerHTML : 'No Content Available';
+                // Selectors for title, image, and content based on your HTML structure
+                const title = doc.querySelector('h1.bold.h2.nobmargin') ? doc.querySelector('h1.bold.h2.nobmargin').textContent : 'No Title';
+                const image = doc.querySelector('.img_section img') ? doc.querySelector('.img_section img').src : '';
+                const content = doc.querySelector('p#isPasted') ? doc.querySelector('p#isPasted').innerHTML : 'No Content Available';
 
                 const modalBody = document.getElementById('modal-body');
                 modalBody.innerHTML = `
@@ -69,10 +69,12 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => console.error('Error loading news content:', error));
     }
 
+    // Close the modal
     document.querySelector('.close').addEventListener('click', function() {
         document.getElementById('newsModal').style.display = 'none';
     });
 
+    // Close the modal when clicking outside of it
     window.onclick = function(event) {
         if (event.target === document.getElementById('newsModal')) {
             document.getElementById('newsModal').style.display = 'none';
