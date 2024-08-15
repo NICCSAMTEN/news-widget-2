@@ -20,12 +20,15 @@ document.addEventListener('DOMContentLoaded', function () {
                     const descriptionElement = article.querySelector('.xs-nomargin');
                     const description = descriptionElement ? descriptionElement.textContent.trim() : 'No description available';
                     const imgElement = article.querySelector('.img_section img');
-                    const imgSrc = imgElement ? `${imgElement.src}` : '';
+                    const imgSrc = imgElement ? imgElement.src : '';
+
+                    // Replace the domain in the link to ensure it's correct
+                    const correctedLink = link.replace('https://emilliohezekiah.github.io', 'https://www.tradepr.work');
 
                     widget.innerHTML += `
                         <div class="news-item">
                             ${imgSrc ? `<img src="${imgSrc}" alt="${title}">` : ''}
-                            <a href="#" class="news-link" data-url="${encodeURIComponent(link)}">${title}</a>
+                            <a href="#" class="news-link" data-url="${encodeURIComponent(correctedLink)}">${title}</a>
                             <p>${description}</p>
                         </div>
                     `;
@@ -50,10 +53,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(data, 'text/html');
 
-                // Adjust selectors based on the actual HTML structure of the news pages
-                const title = doc.querySelector('h1.bold.h2.nobmargin') ? doc.querySelector('h1.bold.h2.nobmargin').textContent : 'No Title';
-                const image = doc.querySelector('.img_section img') ? `${doc.querySelector('.img_section img').src}` : '';
-                const content = doc.querySelector('.the-post-description p#isPasted') ? doc.querySelector('.the-post-description p#isPasted').innerHTML : 'No Content Available';
+                // Update these selectors based on actual HTML structure
+                const title = doc.querySelector('.title-class') ? doc.querySelector('.title-class').textContent : 'No Title';
+                const image = doc.querySelector('.image-class img') ? doc.querySelector('.image-class img').src : '';
+                const content = doc.querySelector('.content-class') ? doc.querySelector('.content-class').innerHTML : 'No Content Available';
 
                 const modalBody = document.getElementById('modal-body');
                 modalBody.innerHTML = `
