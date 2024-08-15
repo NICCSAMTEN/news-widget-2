@@ -3,7 +3,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Fetch and display news articles
     fetch(baseUrl)
-        .then(response => response.text())
+        .then(response => {
+            console.log('Base URL response status:', response.status);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
         .then(data => {
             const parser = new DOMParser();
             const doc = parser.parseFromString(data, 'text/html');
@@ -22,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const imgElement = article.querySelector('.img_section img');
                     const imgSrc = imgElement ? imgElement.src : '';
 
-                    // Replace the domain in the link to ensure it's correct
+                    // Ensure the link is correct
                     const correctedLink = link.replace('https://emilliohezekiah.github.io', 'https://www.tradepr.work');
 
                     widget.innerHTML += `
@@ -50,7 +56,10 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log('Fetching news content from URL:', url);
         fetch(url)
             .then(response => {
-                console.log('Response status:', response.status);
+                console.log('Article response status:', response.status);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
                 return response.text();
             })
             .then(data => {
