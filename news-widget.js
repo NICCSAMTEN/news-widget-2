@@ -29,8 +29,10 @@ document.addEventListener('DOMContentLoaded', function () {
                         console.log('Original Image URL:', imgSrc);
                         
                         // Ensure the image URL is correctly formed
-                        if (!imgSrc.startsWith('http')) {
+                        if (imgSrc.startsWith('/')) {
                             imgSrc = `https://www.tradepr.work${imgSrc}`;
+                        } else if (!imgSrc.startsWith('http')) {
+                            imgSrc = `https://www.tradepr.work/uploads/news-pictures-thumbnails/${imgSrc}`;
                         }
                         
                         // Log the corrected image source
