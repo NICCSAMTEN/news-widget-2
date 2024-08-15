@@ -67,6 +67,8 @@
     border: 1px solid #888;
     width: 80%;
     max-width: 600px;
+    line-height: 1.5;
+
 }
 
 .close {
