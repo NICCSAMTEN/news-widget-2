@@ -24,6 +24,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     // Construct the full image URL
                     const imgSrc = imgElement ? `https://www.tradepr.work${imgElement.getAttribute('src')}` : '';
 
+                    // Debug output
+                    console.log('Image src:', imgSrc);
+                    console.log('Link:', link);
+
                     // Replace the domain in the link to ensure it's correct
                     const correctedLink = link.replace('https://emilliohezekiah.github.io', 'https://www.tradepr.work');
 
@@ -59,7 +63,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 const title = doc.querySelector('h1.bold.h2.nobmargin') ? doc.querySelector('h1.bold.h2.nobmargin').textContent.trim() : 'No Title';
 
                 // Extract the image
-                const image = doc.querySelector('.img_section img') ? `https://www.tradepr.work${doc.querySelector('.img_section img').getAttribute('src')}` : '';
+                const imageElement = doc.querySelector('.img_section img');
+                const image = imageElement ? `https://www.tradepr.work${imageElement.getAttribute('src')}` : '';
 
                 // Extract the full content from .the-post-description
                 const contentContainer = doc.querySelector('.the-post-description');
@@ -67,6 +72,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (contentContainer) {
                     content = contentContainer.innerHTML.trim();
                 }
+
+                // Debug output
+                console.log('Title:', title);
+                console.log('Image:', image);
+                console.log('Content:', content);
 
                 const modalBody = document.getElementById('modal-body');
                 modalBody.innerHTML = `
