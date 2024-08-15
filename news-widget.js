@@ -4,9 +4,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // Fetch and display news articles
     fetch(baseUrl)
         .then(response => {
-            console.log('Base URL response status:', response.status);
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                throw new Error(`Failed to fetch news list. Status: ${response.status}`);
             }
             return response.text();
         })
@@ -56,9 +55,8 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log('Fetching news content from URL:', url);
         fetch(url)
             .then(response => {
-                console.log('Article response status:', response.status);
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    throw new Error(`Failed to fetch news content. Status: ${response.status}`);
                 }
                 return response.text();
             })
