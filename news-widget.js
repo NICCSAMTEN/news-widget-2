@@ -19,8 +19,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     const link = titleElement ? titleElement.closest('a').href : '#';
                     const descriptionElement = article.querySelector('.xs-nomargin');
                     const description = descriptionElement ? descriptionElement.textContent.trim() : 'No description available';
-                    const imgElement = article.querySelector('.img_section img');
-                    const imgSrc = imgElement ? imgElement.src : '';
+                    const imgElement = article.querySelector('.alert-secondary img');
+                    const imgSrc = imgElement ? `https://www.tradepr.work${imgElement.src}` : '';
 
                     // Replace the domain in the link to ensure it's correct
                     const correctedLink = link.replace('https://emilliohezekiah.github.io', 'https://www.tradepr.work');
@@ -28,8 +28,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     widget.innerHTML += `
                         <div class="news-item">
                             ${imgSrc ? `<img src="${imgSrc}" alt="${title}">` : ''}
-                            <a href="#" class="news-link" data-url="${encodeURIComponent(correctedLink)}">${title}</a>
-                            <p>${description}</p>
+                            <div>
+                                <a href="#" class="news-link" data-url="${encodeURIComponent(correctedLink)}">${title}</a>
+                                <p>${description}</p>
+                            </div>
                         </div>
                     `;
                 });
@@ -53,29 +55,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(data, 'text/html');
 
-                // Extract the title
-                const title = doc.querySelector('h1.bold.h2.nobmargin') ? doc.querySelector('h1.bold.h2.nobmargin').textContent.trim() : 'No Title';
-
-                // Extract the image
-                const image = doc.querySelector('.img_section img') ? doc.querySelector('.img_section img').src : '';
-
-                // Extract the full content from .the-post-description
-                const contentContainer = doc.querySelector('.the-post-description');
-                let content = 'No Content Available';
-                if (contentContainer) {
-                    // Check for any nested paragraphs or additional tags
-                    content = contentContainer.innerHTML.trim();
-                }
-
-                // Debug output
-                console.log('Title:', title);
-                console.log('Image:', image);
-                console.log('Content:', content);
+                // Update these selectors based on actual HTML structure
+                const title = doc.querySelector('h1.bold.h2.nobmargin') ? doc.querySelector('h1.bold.h2.nobmargin').textContent : 'No Title';
+                const image = doc.querySelector('.alert-secondary img') ? `https://www.tradepr.work${doc.querySelector('.alert-secondary img').src}` : '';
+                const content = doc.querySelector('.the-post-description') ? doc.querySelector('.the-post-description').innerHTML : 'No Content Available';
 
                 const modalBody = document.getElementById('modal-body');
                 modalBody.innerHTML = `
                     <h1>${title}</h1>
-                    ${image ? `<img src="${image}" alt="${title}" style="max-width: 100%;">` : ''}
+                    ${image ? `<img src="${image}" alt="${title}">` : ''}
                     <div>${content}</div>
                 `;
                 document.getElementById('newsModal').style.display = 'block';
