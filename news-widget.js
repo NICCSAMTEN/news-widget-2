@@ -20,14 +20,14 @@ document.addEventListener('DOMContentLoaded', function () {
                     const descriptionElement = article.querySelector('.xs-nomargin');
                     const description = descriptionElement ? descriptionElement.textContent.trim() : 'No description available';
                     const imgElement = article.querySelector('.img_section img');
-                    const imgSrc = imgElement ? imgElement.src : '';
+                    const imgSrc = imgElement ? `https://www.tradepr.work${imgElement.src}` : '';
 
                     // Replace the domain in the link to ensure it's correct
                     const correctedLink = link.replace('https://emilliohezekiah.github.io', 'https://www.tradepr.work');
 
                     widget.innerHTML += `
                         <div class="news-item">
-                            ${imgSrc ? `<img src="${imgSrc}" alt="${title}">` : ''}
+                            ${imgSrc ? `<img src="${imgSrc}" alt="${title}" class="news-image">` : ''}
                             <a href="#" class="news-link" data-url="${encodeURIComponent(correctedLink)}">${title}</a>
                             <p>${description}</p>
                         </div>
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const modalBody = document.getElementById('modal-body');
                 modalBody.innerHTML = `
                     <h1>${title}</h1>
-                    ${image ? `<img src="${image}" alt="${title}" style="max-width: 100%;">` : ''}
+                    ${image ? `<img src="${image}" alt="${title}" class="modal-image">` : ''}
                     <div>${content}</div>
                 `;
                 document.getElementById('newsModal').style.display = 'block';
