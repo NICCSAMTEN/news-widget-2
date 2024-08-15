@@ -20,7 +20,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     const descriptionElement = article.querySelector('.xs-nomargin');
                     const description = descriptionElement ? descriptionElement.textContent.trim() : 'No description available';
                     const imgElement = article.querySelector('.img_section img');
-                    const imgSrc = imgElement ? imgElement.src.startsWith('http') ? imgElement.src : `https://www.tradepr.work${imgElement.src}` : '';
+                    
+                    // Ensure the image source is correctly constructed
+                    const imgSrc = imgElement && imgElement.getAttribute('src') ? 
+                        imgElement.src.startsWith('http') ? 
+                        imgElement.src : 
+                        `https://www.tradepr.work${imgElement.getAttribute('src')}` : '';
 
                     // Replace the domain in the link to ensure it's correct
                     const correctedLink = link.replace('https://emilliohezekiah.github.io', 'https://www.tradepr.work');
@@ -54,10 +59,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 const doc = parser.parseFromString(data, 'text/html');
 
                 // Extract the title
-                const title = doc.querySelector('h1.bold.h2.nobmargin') ? doc.querySelector('h1.bold.h2.nobmargin').textContent.trim() : 'No Title';
+                const title = doc.querySelector('h1.bold.h2.nobmargin') ? 
+                    doc.querySelector('h1.bold.h2.nobmargin').textContent.trim() : 'No Title';
 
                 // Extract the image
-                const image = doc.querySelector('.img_section img') ? doc.querySelector('.img_section img').src.startsWith('http') ? doc.querySelector('.img_section img').src : `https://www.tradepr.work${doc.querySelector('.img_section img').src}` : '';
+                const image = doc.querySelector('.img_section img') ? 
+                    doc.querySelector('.img_section img').src.startsWith('http') ? 
+                    doc.querySelector('.img_section img').src : 
+                    `https://www.tradepr.work${doc.querySelector('.img_section img').getAttribute('src')}` : '';
 
                 // Extract the full content from .the-post-description
                 const contentContainer = doc.querySelector('.the-post-description');
