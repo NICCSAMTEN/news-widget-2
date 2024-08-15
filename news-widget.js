@@ -3,12 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Fetch and display news articles
     fetch(baseUrl)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Failed to fetch news list. Status: ${response.status}`);
-            }
-            return response.text();
-        })
+        .then(response => response.text())
         .then(data => {
             const parser = new DOMParser();
             const doc = parser.parseFromString(data, 'text/html');
@@ -27,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const imgElement = article.querySelector('.img_section img');
                     const imgSrc = imgElement ? imgElement.src : '';
 
-                    // Ensure the link is correct
+                    // Replace the domain in the link to ensure it's correct
                     const correctedLink = link.replace('https://emilliohezekiah.github.io', 'https://www.tradepr.work');
 
                     widget.innerHTML += `
@@ -46,7 +41,6 @@ document.addEventListener('DOMContentLoaded', function () {
         if (event.target.matches('.news-link')) {
             event.preventDefault();
             const newsUrl = decodeURIComponent(event.target.getAttribute('data-url'));
-            console.log('Clicked news URL:', newsUrl);
             loadNewsContent(newsUrl);
         }
     });
@@ -54,27 +48,15 @@ document.addEventListener('DOMContentLoaded', function () {
     function loadNewsContent(url) {
         console.log('Fetching news content from URL:', url);
         fetch(url)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch news content. Status: ${response.status}`);
-                }
-                return response.text();
-            })
+            .then(response => response.text())
             .then(data => {
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(data, 'text/html');
 
-                // Log the HTML to verify structure
-                console.log('Fetched HTML:', doc.documentElement.outerHTML);
-
-                // Update these selectors based on actual HTML structure
-                const title = doc.querySelector('h1.bold.h2.nobmargin') ? doc.querySelector('h1.bold.h2.nobmargin').textContent.trim() : 'No Title';
+                // Extract the full content
+                const title = doc.querySelector('h1.bold.h2.nobmargin') ? doc.querySelector('h1.bold.h2.nobmargin').textContent : 'No Title';
                 const image = doc.querySelector('.img_section img') ? doc.querySelector('.img_section img').src : '';
-                const content = doc.querySelector('p#isPasted') ? doc.querySelector('p#isPasted').innerHTML : 'No Content Available';
-
-                console.log('Title:', title);
-                console.log('Image:', image);
-                console.log('Content:', content);
+                const content = doc.querySelector('.the-post-description') ? doc.querySelector('.the-post-description').innerHTML : 'No Content Available';
 
                 const modalBody = document.getElementById('modal-body');
                 modalBody.innerHTML = `
