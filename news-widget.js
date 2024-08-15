@@ -25,20 +25,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (imgElement) {
                         imgSrc = imgElement.src;
 
-                        // Log the original image source
-                        console.log('Original Image URL:', imgSrc);
-
                         // Ensure the image URL is correctly formed
                         if (imgSrc.startsWith('/')) {
                             imgSrc = `https://www.tradepr.work${imgSrc}`;
-                        } else if (imgSrc.startsWith('https://emilliohezekiah.github.io')) {
-                            imgSrc = imgSrc.replace('https://emilliohezekiah.github.io', 'https://www.tradepr.work');
                         } else if (!imgSrc.startsWith('http')) {
                             imgSrc = `https://www.tradepr.work/uploads/news-pictures-thumbnails/${imgSrc}`;
                         }
-
-                        // Log the corrected image source
-                        console.log('Corrected Image URL:', imgSrc);
                     }
 
                     // Replace the domain in the link to ensure it's correct
@@ -78,7 +70,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 const title = doc.querySelector('h1.bold.h2.nobmargin') ? doc.querySelector('h1.bold.h2.nobmargin').textContent.trim() : 'No Title';
 
                 // Extract the image
-                const image = doc.querySelector('.img_section img') ? doc.querySelector('.img_section img').src.startsWith('http') ? doc.querySelector('.img_section img').src : `https://www.tradepr.work${doc.querySelector('.img_section img').src}` : '';
+                const imageElement = doc.querySelector('.img_section img');
+                let image = '';
+                if (imageElement) {
+                    image = imageElement.src.startsWith('http') ? imageElement.src : `https://www.tradepr.work${imageElement.src}`;
+                }
 
                 // Extract the full content from .the-post-description
                 const contentContainer = doc.querySelector('.the-post-description');
