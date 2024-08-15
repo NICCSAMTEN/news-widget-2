@@ -19,14 +19,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     const link = titleElement ? titleElement.closest('a').href : '#';
                     const descriptionElement = article.querySelector('.xs-nomargin');
                     const description = descriptionElement ? descriptionElement.textContent.trim() : 'No description available';
-                    const imgElement = article.querySelector('.search_result_image');
-                    
-                    // Construct the full image URL
-                    const imgSrc = imgElement ? `https://www.tradepr.work${imgElement.getAttribute('src')}` : '';
-
-                    // Debug output
-                    console.log('Image src:', imgSrc);
-                    console.log('Link:', link);
+                    const imgElement = article.querySelector('.img_section img');
+                    const imgSrc = imgElement ? imgElement.src.startsWith('http') ? imgElement.src : `https://www.tradepr.work${imgElement.src}` : '';
 
                     // Replace the domain in the link to ensure it's correct
                     const correctedLink = link.replace('https://emilliohezekiah.github.io', 'https://www.tradepr.work');
@@ -34,8 +28,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     widget.innerHTML += `
                         <div class="news-item">
                             ${imgSrc ? `<img src="${imgSrc}" alt="${title}" class="news-image">` : ''}
-                            <a href="#" class="news-link" data-url="${encodeURIComponent(correctedLink)}">${title}</a>
-                            <p>${description}</p>
+                            <div class="news-content">
+                                <a href="#" class="news-link" data-url="${encodeURIComponent(correctedLink)}">${title}</a>
+                                <p>${description}</p>
+                            </div>
                         </div>
                     `;
                 });
@@ -63,8 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const title = doc.querySelector('h1.bold.h2.nobmargin') ? doc.querySelector('h1.bold.h2.nobmargin').textContent.trim() : 'No Title';
 
                 // Extract the image
-                const imageElement = doc.querySelector('.img_section img');
-                const image = imageElement ? `https://www.tradepr.work${imageElement.getAttribute('src')}` : '';
+                const image = doc.querySelector('.img_section img') ? doc.querySelector('.img_section img').src.startsWith('http') ? doc.querySelector('.img_section img').src : `https://www.tradepr.work${doc.querySelector('.img_section img').src}` : '';
 
                 // Extract the full content from .the-post-description
                 const contentContainer = doc.querySelector('.the-post-description');
