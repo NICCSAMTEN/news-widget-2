@@ -20,14 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const descriptionElement = article.querySelector('.xs-nomargin');
                     const description = descriptionElement ? descriptionElement.textContent.trim() : 'No description available';
                     const imgElement = article.querySelector('.alert-secondary img');
-                    
-                    // Debugging: Log image src attribute
-                    console.log('Image src:', imgElement ? imgElement.getAttribute('src') : 'No image element');
-
                     const imgSrc = imgElement ? `https://www.tradepr.work${imgElement.getAttribute('src')}` : '';
-                    
-                    // Debugging: Log constructed image URL
-                    console.log('Constructed image URL:', imgSrc);
 
                     widget.innerHTML += `
                         <div class="news-item">
@@ -60,10 +53,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 const title = doc.querySelector('h1.bold.h2.nobmargin') ? doc.querySelector('h1.bold.h2.nobmargin').textContent.trim() : 'No Title';
                 const image = doc.querySelector('.alert-secondary img') ? `https://www.tradepr.work${doc.querySelector('.alert-secondary img').getAttribute('src')}` : '';
                 const content = doc.querySelector('.the-post-description') ? doc.querySelector('.the-post-description').innerHTML : 'No Content Available';
-
-                // Debugging: Log constructed image URL and content
-                console.log('Fetched article image URL:', image);
-                console.log('Fetched article content:', content);
 
                 const modalBody = document.getElementById('modal-body');
                 modalBody.innerHTML = `
