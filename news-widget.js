@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const descriptionElement = article.querySelector('.xs-nomargin');
                     const description = descriptionElement ? descriptionElement.textContent.trim() : 'No description available';
                     const imgElement = article.querySelector('.img_section img');
-                    
+
                     let imgSrc = '';
                     if (imgElement) {
                         imgSrc = imgElement.src;
@@ -31,8 +31,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         // Ensure the image URL is correctly formed
                         if (imgSrc.startsWith('/')) {
                             imgSrc = `https://www.tradepr.work${imgSrc}`;
-                        } else if (!imgSrc.startsWith('http')) {
-                            imgSrc = `https://www.tradepr.work/uploads/news-pictures-thumbnails/${imgSrc}`;
+                        } else if (imgSrc.startsWith('https://emilliohezekiah.github.io')) {
+                            imgSrc = imgSrc.replace('https://emilliohezekiah.github.io', 'https://www.tradepr.work');
                         }
                         
                         // Log the corrected image source
