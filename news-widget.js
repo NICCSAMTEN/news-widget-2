@@ -20,8 +20,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     const descriptionElement = article.querySelector('.xs-nomargin');
                     const description = descriptionElement ? descriptionElement.textContent.trim() : 'No description available';
                     const imgElement = article.querySelector('.img_section img');
-                    
-                    // Ensure the image source is correctly constructed
+
+                    // Ensure the image source is correctly constructed using tradepr base URL
                     const imgSrc = imgElement && imgElement.getAttribute('src') ? 
                         imgElement.src.startsWith('http') ? 
                         imgElement.src : 
