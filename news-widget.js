@@ -24,10 +24,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     let imgSrc = '';
                     if (imgElement) {
                         imgSrc = imgElement.src;
-                        
+
                         // Log the original image source
                         console.log('Original Image URL:', imgSrc);
-                        
+
                         // Ensure the image URL is correctly formed
                         if (imgSrc.startsWith('/')) {
                             imgSrc = `https://www.tradepr.work${imgSrc}`;
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         } else if (!imgSrc.startsWith('http')) {
                             imgSrc = `https://www.tradepr.work/uploads/news-pictures-thumbnails/${imgSrc}`;
                         }
-                        
+
                         // Log the corrected image source
                         console.log('Corrected Image URL:', imgSrc);
                     }
