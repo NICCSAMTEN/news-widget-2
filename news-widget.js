@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     const baseUrl = 'https://www.tradepr.work/articles/';
 
+    // Fetch and display news articles
     fetch(baseUrl)
         .then(response => response.text())
         .then(data => {
@@ -19,15 +20,17 @@ document.addEventListener('DOMContentLoaded', function () {
                     const descriptionElement = article.querySelector('.xs-nomargin');
                     const description = descriptionElement ? descriptionElement.textContent.trim() : 'No description available';
                     const imgElement = article.querySelector('.img_section img');
-                    const imgSrc = imgElement ? (imgElement.src.startsWith('http') ? imgElement.src : `https://www.tradepr.work${imgElement.src}`) : '';
+                    const imgSrc = imgElement ? imgElement.src.startsWith('http') ? imgElement.src : `https://www.tradepr.work${imgElement.src}` : '';
 
-                    console.log('Constructed Image URL:', imgSrc); // Debugging line
+                    // Ensure the image URL is correctly formed
+                    const correctedImgSrc = imgSrc.replace('https://emilliohezekiah.github.io', 'https://www.tradepr.work');
 
+                    // Replace the domain in the link to ensure it's correct
                     const correctedLink = link.replace('https://emilliohezekiah.github.io', 'https://www.tradepr.work');
 
                     widget.innerHTML += `
                         <div class="news-item">
-                            ${imgSrc ? `<img src="${imgSrc}" alt="${title}" class="news-image">` : ''}
+                            ${correctedImgSrc ? `<img src="${correctedImgSrc}" alt="${title}" class="news-image">` : ''}
                             <div class="news-content">
                                 <a href="#" class="news-link" data-url="${encodeURIComponent(correctedLink)}">${title}</a>
                                 <p>${description}</p>
@@ -48,20 +51,30 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     function loadNewsContent(url) {
+        console.log('Fetching news content from URL:', url);
         fetch(url)
             .then(response => response.text())
             .then(data => {
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(data, 'text/html');
 
+                // Extract the title
                 const title = doc.querySelector('h1.bold.h2.nobmargin') ? doc.querySelector('h1.bold.h2.nobmargin').textContent.trim() : 'No Title';
-                const image = doc.querySelector('.img_section img') ? (doc.querySelector('.img_section img').src.startsWith('http') ? doc.querySelector('.img_section img').src : `https://www.tradepr.work${doc.querySelector('.img_section img').src}`) : '';
 
+                // Extract the image
+                const image = doc.querySelector('.img_section img') ? doc.querySelector('.img_section img').src.startsWith('http') ? doc.querySelector('.img_section img').src : `https://www.tradepr.work${doc.querySelector('.img_section img').src}` : '';
+
+                // Extract the full content from .the-post-description
                 const contentContainer = doc.querySelector('.the-post-description');
                 let content = 'No Content Available';
                 if (contentContainer) {
                     content = contentContainer.innerHTML.trim();
                 }
+
+                // Debug output
+                console.log('Title:', title);
+                console.log('Image:', image);
+                console.log('Content:', content);
 
                 const modalBody = document.getElementById('modal-body');
                 modalBody.innerHTML = `
