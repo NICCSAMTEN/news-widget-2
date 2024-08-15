@@ -35,6 +35,7 @@
     color: #007BFF;
     font-weight: bold;
     display: block; /* Ensure title appears on a new line */
+    margin-bottom: 5px; /* Add space below the title */
 }
 
 .news-item a:hover {
@@ -42,7 +43,8 @@
 }
 
 .news-item p {
-    margin: 5px 0 0; /* Add some space above and below the description */
+    margin: 0; /* Remove extra margin */
+    color: #333; /* Adjust color for better readability */
 }
 
 /* Modal styles */
