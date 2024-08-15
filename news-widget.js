@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const imgElement = article.querySelector('.img_section img');
                     const imgSrc = imgElement ? imgElement.src.startsWith('http') ? imgElement.src : `https://www.tradepr.work${imgElement.src}` : '';
 
-                    console.log('Image source:', imgSrc); // Add this line
+                    console.log('Constructed Image URL:', imgSrc); // Debugging line
 
                     const correctedLink = link.replace('https://emilliohezekiah.github.io', 'https://www.tradepr.work');
 
