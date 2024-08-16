@@ -96,12 +96,20 @@ document.addEventListener('DOMContentLoaded', function () {
                     thumbnail = correctImageUrl(thumbnail); // Apply correction here
                 }
 
+                // Extract additional image
+                const additionalImageElement = doc.querySelector('img.center-block');
+                let additionalImage = '';
+                if (additionalImageElement) {
+                    additionalImage = additionalImageElement.src;
+                    additionalImage = correctImageUrl(additionalImage); // Apply correction here
+                }
+
                 const modalBody = document.getElementById('modal-body');
                 modalBody.innerHTML = `
                     <h1>${title}</h1>
+                    ${additionalImage ? `<img src="${additionalImage}" alt="${title}" class="modal-thumbnail">` : ''}
                     ${image ? `<img src="${image}" alt="${title}" class="modal-image">` : ''}
                     <div>${content}</div>
-                    ${thumbnail ? `<img src="${thumbnail}" alt="${title}" class="modal-thumbnail">` : ''}
                 `;
                 document.getElementById('newsModal').style.display = 'block';
                 console.log('Modal content:', modalBody.innerHTML); // Debug log for content
