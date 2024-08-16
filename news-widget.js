@@ -7,10 +7,10 @@ document.addEventListener('DOMContentLoaded', function () {
             return `https://www.tradepr.work${src}`;
         } else if (!src.startsWith('http')) {
             return `https://www.tradepr.work/uploads/news-pictures-thumbnails/${src}`;
-        } else if (src.includes('emilliohezekiah.github.io')) {
-            return src.replace('https://emilliohezekiah.github.io', 'https://www.tradepr.work');
+        } else {
+            // Forcefully replace any wrong domain with the correct one
+            return src.replace(/https:\/\/emilliohezekiah.github.io/, 'https://www.tradepr.work');
         }
-        return src;
     }
 
     // Fetch and display news articles
@@ -35,11 +35,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     let imgSrc = '';
                     if (imgElement) {
-                        imgSrc = correctImageUrl(imgElement.getAttribute('src'));
+                        imgSrc = imgElement.src;
+                        imgSrc = correctImageUrl(imgSrc); // Apply correction here
                     }
 
-                    // Replace the domain in the link to ensure it's correct
-                    const correctedLink = link.replace('https://emilliohezekiah.github.io', 'https://www.tradepr.work');
+                    // Forcefully replace any wrong domain in the link
+                    const correctedLink = link.replace(/https:\/\/emilliohezekiah.github.io/, 'https://www.tradepr.work');
 
                     widget.innerHTML += `
                         <div class="news-item">
@@ -78,7 +79,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 const imageElement = doc.querySelector('.img_section img');
                 let image = '';
                 if (imageElement) {
-                    image = correctImageUrl(imageElement.src);
+                    image = imageElement.src;
+                    image = correctImageUrl(image); // Apply correction here
                 }
 
                 // Extract the full content from .the-post-description
@@ -87,11 +89,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (contentContainer) {
                     content = contentContainer.innerHTML.trim();
                 }
-
-                // Debug output
-                console.log('Title:', title);
-                console.log('Image:', image);
-                console.log('Content:', content);
 
                 const modalBody = document.getElementById('modal-body');
                 modalBody.innerHTML = `
