@@ -104,6 +104,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     ${thumbnail ? `<img src="${thumbnail}" alt="${title}" class="modal-thumbnail">` : ''}
                 `;
                 document.getElementById('newsModal').style.display = 'block';
+                console.log('Modal content:', modalBody.innerHTML); // Debug log for content
             })
             .catch(error => console.error('Error loading news content:', error));
     }
