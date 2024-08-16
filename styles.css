@@ -72,7 +72,7 @@
 /* Modal image styling */
 .modal-image {
     width: 750px; /* Set width to 750 pixels */
-    height: 500px; /* Set height to 500 pixels */
+    height: auto; /* Maintain aspect ratio */
     object-fit: cover; /* Ensure the image covers the specified dimensions */
     margin: 20px 0; /* Space around the image */
 }
@@ -92,7 +92,7 @@
 /* Target paragraphs within the modal */
 .modal-content p {
     line-height: 1.75; /* Ensure paragraphs in modal have 1.5 line spacing */
-    font-family: arial;
+    font-family: Arial;
     text-align: justify;
     font-size: 14pt;
 }
