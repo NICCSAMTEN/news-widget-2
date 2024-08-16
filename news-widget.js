@@ -17,6 +17,11 @@ document.addEventListener('DOMContentLoaded', function () {
         return src.includes('/pictures/profile/');
     }
 
+    // Function to clean up the description by removing "View More"
+    function cleanDescription(description) {
+        return description.replace("View More", "").trim();
+    }
+
     // Fetch and display news articles
     fetch(baseUrl)
         .then(response => response.text())
@@ -34,7 +39,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     const title = titleElement ? titleElement.textContent.trim() : 'No title available';
                     const link = titleElement ? titleElement.closest('a').href : '#';
                     const descriptionElement = article.querySelector('.xs-nomargin');
-                    const description = descriptionElement ? descriptionElement.textContent.trim() : 'No description available';
+                    let description = descriptionElement ? descriptionElement.textContent.trim() : 'No description available';
+                    description = cleanDescription(description); // Clean the description by removing "View More"
                     const imgElement = article.querySelector('.img_section img');
 
                     let imgSrc = '';
