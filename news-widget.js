@@ -96,6 +96,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     additionalImage = correctImageUrl(additionalImage); // Apply correction here
                 }
 
+                // Update modal content
                 const modalBody = document.getElementById('modal-body');
                 modalBody.innerHTML = `
                     <h1>${title}</h1>
@@ -103,6 +104,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     ${image ? `<img src="${image}" alt="${title}" class="modal-image">` : ''}
                     <div>${content}</div>
                 `;
+
+                // Display modal
                 document.getElementById('newsModal').style.display = 'block';
                 console.log('Modal content:', modalBody.innerHTML); // Debug log for content
             })
