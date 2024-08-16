@@ -25,13 +25,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (imgElement) {
                         imgSrc = imgElement.src;
 
-                        // Ensure the image URL is correctly formed
+                        // Correct the image URL to always use the tradepr.work domain
                         if (imgSrc.startsWith('/')) {
                             imgSrc = `https://www.tradepr.work${imgSrc}`;
-                        } else if (imgSrc.startsWith('https://emilliohezekiah.github.io')) {
-                            imgSrc = imgSrc.replace('https://emilliohezekiah.github.io', 'https://www.tradepr.work');
                         } else if (!imgSrc.startsWith('http')) {
                             imgSrc = `https://www.tradepr.work/uploads/news-pictures-thumbnails/${imgSrc}`;
+                        } else if (imgSrc.startsWith('https://emilliohezekiah.github.io')) {
+                            imgSrc = imgSrc.replace('https://emilliohezekiah.github.io', 'https://www.tradepr.work');
                         }
                     }
 
