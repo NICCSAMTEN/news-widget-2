@@ -44,9 +44,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     widget.innerHTML += `
                         <div class="news-item">
-                            ${imgSrc ? `<img src="${imgSrc}" alt="${title}" class="news-image" data-thumbnail="${imgSrc}">` : ''}
+                            ${imgSrc ? `<img src="${imgSrc}" alt="${title}" class="news-image">` : ''}
                             <div class="news-content">
-                                <a href="#" class="news-link" data-url="${encodeURIComponent(correctedLink)}" data-thumbnail="${imgSrc}">${title}</a>
+                                <a href="#" class="news-link" data-url="${encodeURIComponent(correctedLink)}">${title}</a>
                                 <p>${description}</p>
                             </div>
                         </div>
@@ -60,12 +60,11 @@ document.addEventListener('DOMContentLoaded', function () {
         if (event.target.matches('.news-link')) {
             event.preventDefault();
             const newsUrl = decodeURIComponent(event.target.getAttribute('data-url'));
-            const thumbnailUrl = event.target.getAttribute('data-thumbnail');
-            loadNewsContent(newsUrl, thumbnailUrl);
+            loadNewsContent(newsUrl);
         }
     });
 
-    function loadNewsContent(url, thumbnailUrl) {
+    function loadNewsContent(url) {
         console.log('Fetching news content from URL:', url);
         fetch(url)
             .then(response => response.text())
@@ -78,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // Extract the image
                 const imageElement = doc.querySelector('.img_section img');
-                let image = thumbnailUrl || '';
+                let image = '';
                 if (imageElement) {
                     image = imageElement.src;
                     image = correctImageUrl(image); // Apply correction here
@@ -91,12 +90,20 @@ document.addEventListener('DOMContentLoaded', function () {
                     content = contentContainer.innerHTML.trim();
                 }
 
+                // Extract the thumbnail
+                const thumbnailElement = doc.querySelector('.img_section img');
+                let thumbnail = '';
+                if (thumbnailElement) {
+                    thumbnail = thumbnailElement.src;
+                    thumbnail = correctImageUrl(thumbnail); // Apply correction here
+                }
+
                 const modalBody = document.getElementById('modal-body');
                 modalBody.innerHTML = `
                     <h1>${title}</h1>
                     ${image ? `<img src="${image}" alt="${title}" class="modal-image">` : ''}
                     <div>${content}</div>
-                    ${thumbnailUrl ? `<img src="${thumbnailUrl}" alt="${title}" class="modal-thumbnail">` : ''}
+                    ${thumbnail ? `<img src="${thumbnail}" alt="${title}" class="modal-thumbnail">` : ''}
                 `;
                 document.getElementById('newsModal').style.display = 'block';
             })
