@@ -42,6 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         imgSrc = imgElement.src;
                         imgSrc = correctImageUrl(imgSrc); // Apply correction here
                         if (shouldExcludeImage(imgSrc)) {
+                            console.log('Excluded image:', imgSrc); // Debugging log
                             imgSrc = ''; // Exclude image if it belongs to the profile directory
                         }
                     }
@@ -88,6 +89,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     image = imageElement.src;
                     image = correctImageUrl(image); // Apply correction here
                     if (shouldExcludeImage(image)) {
+                        console.log('Excluded image:', image); // Debugging log
                         image = ''; // Exclude image if it belongs to the profile directory
                     }
                 }
@@ -106,6 +108,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     additionalImage = additionalImageElement.src;
                     additionalImage = correctImageUrl(additionalImage); // Apply correction here
                     if (shouldExcludeImage(additionalImage)) {
+                        console.log('Excluded additional image:', additionalImage); // Debugging log
                         additionalImage = ''; // Exclude image if it belongs to the profile directory
                     }
                 }
@@ -121,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // Display modal
                 document.getElementById('newsModal').style.display = 'block';
-                console.log('Modal content:', modalBody.innerHTML); // Debug log for content
+                console.log('Modal content:', modalBody.innerHTML); // Debugging log for content
             })
             .catch(error => console.error('Error loading news content:', error));
     }
