@@ -1,6 +1,18 @@
 document.addEventListener('DOMContentLoaded', function () {
     const baseUrl = 'https://www.tradepr.work/articles/';
 
+    // Function to correct image URLs
+    function correctImageUrl(src) {
+        if (src.startsWith('/')) {
+            return `https://www.tradepr.work${src}`;
+        } else if (!src.startsWith('http')) {
+            return `https://www.tradepr.work/uploads/news-pictures-thumbnails/${src}`;
+        } else if (src.includes('emilliohezekiah.github.io')) {
+            return src.replace('https://emilliohezekiah.github.io', 'https://www.tradepr.work');
+        }
+        return src;
+    }
+
     // Fetch and display news articles
     fetch(baseUrl)
         .then(response => response.text())
@@ -23,16 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     let imgSrc = '';
                     if (imgElement) {
-                        imgSrc = imgElement.getAttribute('src');
-
-                        // Ensure the image URL is always using the correct domain
-                        if (imgSrc.startsWith('/')) {
-                            imgSrc = `https://www.tradepr.work${imgSrc}`;
-                        } else if (!imgSrc.startsWith('http')) {
-                            imgSrc = `https://www.tradepr.work/uploads/news-pictures-thumbnails/${imgSrc}`;
-                        } else if (imgSrc.includes('emilliohezekiah.github.io')) {
-                            imgSrc = imgSrc.replace('https://emilliohezekiah.github.io', 'https://www.tradepr.work');
-                        }
+                        imgSrc = correctImageUrl(imgElement.getAttribute('src'));
                     }
 
                     // Replace the domain in the link to ensure it's correct
@@ -75,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const imageElement = doc.querySelector('.img_section img');
                 let image = '';
                 if (imageElement) {
-                    image = imageElement.src.startsWith('http') ? imageElement.src : `https://www.tradepr.work${imageElement.src}`;
+                    image = correctImageUrl(imageElement.src);
                 }
 
                 // Extract the full content from .the-post-description
