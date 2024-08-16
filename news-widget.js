@@ -96,6 +96,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <h1>${title}</h1>
                     ${image ? `<img src="${image}" alt="${title}" class="modal-image">` : ''}
                     <div>${content}</div>
+                    ${thumbnailUrl ? `<img src="${thumbnailUrl}" alt="${title}" class="modal-thumbnail">` : ''}
                 `;
                 document.getElementById('newsModal').style.display = 'block';
             })
