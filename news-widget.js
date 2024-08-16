@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', function () {
         } else if (!src.startsWith('http')) {
             return `https://www.tradepr.work/uploads/news-pictures-thumbnails/${src}`;
         } else {
-            // Forcefully replace any wrong domain with the correct one
             return src.replace(/https:\/\/emilliohezekiah.github.io/, 'https://www.tradepr.work');
         }
     }
@@ -39,7 +38,6 @@ document.addEventListener('DOMContentLoaded', function () {
                         imgSrc = correctImageUrl(imgSrc); // Apply correction here
                     }
 
-                    // Forcefully replace any wrong domain in the link
                     const correctedLink = link.replace(/https:\/\/emilliohezekiah.github.io/, 'https://www.tradepr.work');
 
                     widget.innerHTML += `
