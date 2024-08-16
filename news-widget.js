@@ -12,6 +12,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    // Function to check if image URL should be excluded
+    function shouldExcludeImage(src) {
+        return src.includes('/pictures/profile/');
+    }
+
     // Fetch and display news articles
     fetch(baseUrl)
         .then(response => response.text())
@@ -36,6 +41,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (imgElement) {
                         imgSrc = imgElement.src;
                         imgSrc = correctImageUrl(imgSrc); // Apply correction here
+                        if (shouldExcludeImage(imgSrc)) {
+                            imgSrc = ''; // Exclude image if it belongs to the profile directory
+                        }
                     }
 
                     const correctedLink = link.replace(/https:\/\/emilliohezekiah.github.io/, 'https://www.tradepr.work');
@@ -79,6 +87,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (imageElement) {
                     image = imageElement.src;
                     image = correctImageUrl(image); // Apply correction here
+                    if (shouldExcludeImage(image)) {
+                        image = ''; // Exclude image if it belongs to the profile directory
+                    }
                 }
 
                 // Extract the full content from .the-post-description
@@ -94,6 +105,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (additionalImageElement) {
                     additionalImage = additionalImageElement.src;
                     additionalImage = correctImageUrl(additionalImage); // Apply correction here
+                    if (shouldExcludeImage(additionalImage)) {
+                        additionalImage = ''; // Exclude image if it belongs to the profile directory
+                    }
                 }
 
                 // Update modal content
