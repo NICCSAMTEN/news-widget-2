@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Extract the title
                 const title = doc.querySelector('h1.bold.h2.nobmargin') ? doc.querySelector('h1.bold.h2.nobmargin').textContent.trim() : 'No Title';
 
-                // Extract the image
+                // Extract the main image
                 const imageElement = doc.querySelector('.img_section img');
                 let image = '';
                 if (imageElement) {
@@ -88,15 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     content = contentContainer.innerHTML.trim();
                 }
 
-                // Extract the thumbnail
-                const thumbnailElement = doc.querySelector('.img_section img');
-                let thumbnail = '';
-                if (thumbnailElement) {
-                    thumbnail = thumbnailElement.src;
-                    thumbnail = correctImageUrl(thumbnail); // Apply correction here
-                }
-
-                // Extract additional image
+                // Extract the additional thumbnail image
                 const additionalImageElement = doc.querySelector('img.center-block');
                 let additionalImage = '';
                 if (additionalImageElement) {
