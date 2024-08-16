@@ -19,7 +19,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Function to clean up the description by removing "View More"
     function cleanDescription(description) {
-        return description.replace("View More", "").trim();
+        // Remove "View More" and any possible leading or trailing whitespace
+        return description.replace(/View More/gi, '').trim();
     }
 
     // Fetch and display news articles
