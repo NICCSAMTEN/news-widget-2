@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Function to clean up the description by removing "View More"
     function cleanDescription(description) {
-        // Remove "View More" and any possible leading or trailing whitespace
         return description.replace(/View More/gi, '').trim();
     }
 
@@ -41,19 +40,23 @@ document.addEventListener('DOMContentLoaded', function () {
                     const link = titleElement ? titleElement.closest('a').href : '#';
                     const descriptionElement = article.querySelector('.xs-nomargin');
                     let description = descriptionElement ? descriptionElement.textContent.trim() : 'No description available';
-                    description = cleanDescription(description); // Clean the description by removing "View More"
+                    description = cleanDescription(description);
                     const imgElement = article.querySelector('.img_section img');
 
                     let imgSrc = '';
                     if (imgElement) {
                         imgSrc = imgElement.src;
-                        imgSrc = correctImageUrl(imgSrc); // Apply correction here
+                        imgSrc = correctImageUrl(imgSrc);
                         if (shouldExcludeImage(imgSrc)) {
-                            imgSrc = ''; // Exclude image if it belongs to the profile directory
+                            imgSrc = '';
                         }
                     }
 
                     const correctedLink = link.replace(/https:\/\/emilliohezekiah.github.io/, 'https://www.tradepr.work');
+
+                    // Extract posted date and author information
+                    const postedMetaDataElement = article.querySelector('.posted_meta_data');
+                    const postedMetaData = postedMetaDataElement ? postedMetaDataElement.innerHTML.trim() : '';
 
                     widget.innerHTML += `
                         <div class="news-item">
@@ -61,6 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             <div class="news-content">
                                 <a href="#" class="news-link" data-url="${encodeURIComponent(correctedLink)}">${title}</a>
                                 <p>${description}</p>
+                                <div class="posted-meta-data">${postedMetaData}</div>
                             </div>
                         </div>
                     `;
@@ -85,39 +89,33 @@ document.addEventListener('DOMContentLoaded', function () {
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(data, 'text/html');
 
-                // Extract the title
                 const title = doc.querySelector('h1.bold.h2.nobmargin') ? doc.querySelector('h1.bold.h2.nobmargin').textContent.trim() : 'No Title';
-
-                // Extract the main image
                 const imageElement = doc.querySelector('.img_section img');
                 let image = '';
                 if (imageElement) {
                     image = imageElement.src;
-                    image = correctImageUrl(image); // Apply correction here
+                    image = correctImageUrl(image);
                     if (shouldExcludeImage(image)) {
-                        image = ''; // Exclude image if it belongs to the profile directory
+                        image = '';
                     }
                 }
 
-                // Extract the full content from .the-post-description
                 const contentContainer = doc.querySelector('.the-post-description');
                 let content = 'No Content Available';
                 if (contentContainer) {
                     content = contentContainer.innerHTML.trim();
                 }
 
-                // Extract the additional thumbnail image
                 const additionalImageElement = doc.querySelector('img.center-block');
                 let additionalImage = '';
                 if (additionalImageElement) {
                     additionalImage = additionalImageElement.src;
-                    additionalImage = correctImageUrl(additionalImage); // Apply correction here
+                    additionalImage = correctImageUrl(additionalImage);
                     if (shouldExcludeImage(additionalImage)) {
-                        additionalImage = ''; // Exclude image if it belongs to the profile directory
+                        additionalImage = '';
                     }
                 }
 
-                // Update modal content
                 const modalBody = document.getElementById('modal-body');
                 modalBody.innerHTML = `
                     <h1>${title}</h1>
@@ -126,9 +124,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     <div>${content}</div>
                 `;
 
-                // Display modal
                 document.getElementById('newsModal').style.display = 'block';
-                console.log('Modal content:', modalBody.innerHTML); // Debugging log for content
+                console.log('Modal content:', modalBody.innerHTML);
             })
             .catch(error => console.error('Error loading news content:', error));
     }
