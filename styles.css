@@ -90,7 +90,10 @@
 
 /* Target paragraphs within the modal */
 .modal-content p {
-    line-height: 1.5; /* Ensure paragraphs in modal have 1.5 line spacing */
+    line-height: 1.75; /* Ensure paragraphs in modal have 1.5 line spacing */
+    font-family: arial;
+    text-align: justify;
+    font-size: 14pt;
 }
 
 .close {
