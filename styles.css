@@ -77,6 +77,14 @@
     margin: 20px 0; /* Space around the image */
 }
 
+/* Modal thumbnail styling */
+.modal-thumbnail {
+    width: 100px; /* Adjust width as needed */
+    height: auto; /* Maintain aspect ratio */
+    object-fit: cover; /* Ensure the image covers the specified dimensions */
+    margin-top: 20px; /* Space above the thumbnail */
+}
+
 /* Target paragraphs within the modal */
 .modal-content p {
     line-height: 1.5; /* Ensure paragraphs in modal have 1.5 line spacing */
