@@ -44,9 +44,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     widget.innerHTML += `
                         <div class="news-item">
-                            ${imgSrc ? `<img src="${imgSrc}" alt="${title}" class="news-image">` : ''}
+                            ${imgSrc ? `<img src="${imgSrc}" alt="${title}" class="news-image" data-thumbnail="${imgSrc}">` : ''}
                             <div class="news-content">
-                                <a href="#" class="news-link" data-url="${encodeURIComponent(correctedLink)}">${title}</a>
+                                <a href="#" class="news-link" data-url="${encodeURIComponent(correctedLink)}" data-thumbnail="${imgSrc}">${title}</a>
                                 <p>${description}</p>
                             </div>
                         </div>
@@ -60,11 +60,12 @@ document.addEventListener('DOMContentLoaded', function () {
         if (event.target.matches('.news-link')) {
             event.preventDefault();
             const newsUrl = decodeURIComponent(event.target.getAttribute('data-url'));
-            loadNewsContent(newsUrl);
+            const thumbnailUrl = event.target.getAttribute('data-thumbnail');
+            loadNewsContent(newsUrl, thumbnailUrl);
         }
     });
 
-    function loadNewsContent(url) {
+    function loadNewsContent(url, thumbnailUrl) {
         console.log('Fetching news content from URL:', url);
         fetch(url)
             .then(response => response.text())
@@ -77,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // Extract the image
                 const imageElement = doc.querySelector('.img_section img');
-                let image = '';
+                let image = thumbnailUrl || '';
                 if (imageElement) {
                     image = imageElement.src;
                     image = correctImageUrl(image); // Apply correction here
