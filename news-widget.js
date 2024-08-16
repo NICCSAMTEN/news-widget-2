@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     image = imageElement.src;
                     image = correctImageUrl(image); // Apply correction here
                     if (shouldExcludeImage(image)) {
-                        console.log('Excluded image:', image); // Debugging log
+                        console.log('Excluded main image:', image); // Debugging log
                         image = ''; // Exclude image if it belongs to the profile directory
                     }
                 }
