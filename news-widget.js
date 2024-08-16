@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         imgSrc = imgElement.src;
                         imgSrc = correctImageUrl(imgSrc); // Apply correction here
                         if (shouldExcludeImage(imgSrc)) {
-                            console.log('Excluded image:', imgSrc); // Debugging log
+                            console.log('Excluded image from article:', imgSrc); // Debugging log
                             imgSrc = ''; // Exclude image if it belongs to the profile directory
                         }
                     }
@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     image = imageElement.src;
                     image = correctImageUrl(image); // Apply correction here
                     if (shouldExcludeImage(image)) {
-                        console.log('Excluded main image:', image); // Debugging log
+                        console.log('Excluded main image from content:', image); // Debugging log
                         image = ''; // Exclude image if it belongs to the profile directory
                     }
                 }
@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     additionalImage = additionalImageElement.src;
                     additionalImage = correctImageUrl(additionalImage); // Apply correction here
                     if (shouldExcludeImage(additionalImage)) {
-                        console.log('Excluded additional image:', additionalImage); // Debugging log
+                        console.log('Excluded additional image from content:', additionalImage); // Debugging log
                         additionalImage = ''; // Exclude image if it belongs to the profile directory
                     }
                 }
