@@ -130,6 +130,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 const postedMetaDataElement = doc.querySelector('.posted_meta_data');
                 const { postedDate, postedAuthor } = extractPostedMetaData(postedMetaDataElement);
 
+                // Extract the additional metadata element
+                const additionalMetaData = doc.querySelector('.col-xs-8.col-sm-8.btn-sm.nohpad.nobpad');
+                const additionalMetaDataHtml = additionalMetaData ? additionalMetaData.outerHTML : '';
+
                 const additionalImageElement = doc.querySelector('img.center-block');
                 let additionalImage = '';
                 if (additionalImageElement) {
@@ -143,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const modalBody = document.getElementById('modal-body');
                 modalBody.innerHTML = `
                     <h1>${title}</h1>
-                    
+                    ${additionalMetaDataHtml}
                     ${additionalImage ? `<img src="${additionalImage}" alt="${title}" class="modal-thumbnail">` : ''}
                     ${image ? `<img src="${image}" alt="${title}" class="modal-image">` : ''}
                     <div>${content}</div>
