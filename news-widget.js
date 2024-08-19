@@ -4,9 +4,9 @@ document.addEventListener('DOMContentLoaded', function () {
     // Function to correct image URLs
     function correctImageUrl(src) {
         if (src.startsWith('/')) {
-            return `https://www.tradepr.work${src}`;
+            return https://www.tradepr.work${src};
         } else if (!src.startsWith('http')) {
-            return `https://www.tradepr.work/uploads/news-pictures-thumbnails/${src}`;
+            return https://www.tradepr.work/uploads/news-pictures-thumbnails/${src};
         } else {
             return src.replace(/https:\/\/emilliohezekiah.github.io/, 'https://www.tradepr.work');
         }
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return description.replace(/View More/gi, '').trim();
     }
 
-    // Function to remove the anchor tag from the posted metadata
+    // Function to remove the anchor tag from the posted meta data
     function removeAnchorTags(htmlContent) {
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = htmlContent;
@@ -72,9 +72,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     let postedMetaData = postedMetaDataElement ? postedMetaDataElement.innerHTML.trim() : '';
                     postedMetaData = removeAnchorTags(postedMetaData);
 
-                    widget.innerHTML += `
+                    widget.innerHTML += 
                         <div class="news-item">
-                            ${imgSrc ? `<img src="${imgSrc}" alt="${title}" class="news-image">` : ''}
+                            ${imgSrc ? <img src="${imgSrc}" alt="${title}" class="news-image"> : ''}
                             <div class="news-content">
                                 <a href="#" class="news-link" data-url="${encodeURIComponent(correctedLink)}">${title}</a>
                                 <p>${description}</p>
@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 <div class="posted-meta-data">${postedMetaData}</div>
                             </div>
                         </div>
-                    `;
+                    ;
                 });
             }
         })
@@ -121,14 +121,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     content = contentContainer.innerHTML.trim();
                 }
 
-                // Extract the posted metadata
-                const postedMetaDataElement = doc.querySelector('.col-xs-8.col-sm-8.btn-sm.nohpad.nobpad');
-                let postedMetaData = '';
-                if (postedMetaDataElement) {
-                    postedMetaData = postedMetaDataElement.outerHTML;
-                } else {
-                    console.warn('Posted metadata element not found.');
-                }
+                // Extract posted metadata
+                const postedMetaDataElement = doc.querySelector('.posted_meta_data');
+                const postedMetaData = postedMetaDataElement ? postedMetaDataElement.textContent.trim() : '';
 
                 const additionalImageElement = doc.querySelector('img.center-block');
                 let additionalImage = '';
@@ -141,13 +136,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
 
                 const modalBody = document.getElementById('modal-body');
-                modalBody.innerHTML = `
+                modalBody.innerHTML = 
                     <h1>${title}</h1>
-                    ${postedMetaData ? `${postedMetaData}` : ''}
-                    ${additionalImage ? `<img src="${additionalImage}" alt="${title}" class="modal-thumbnail">` : ''}
-                    ${image ? `<img src="${image}" alt="${title}" class="modal-image">` : ''}
+                    <div class="posted-meta-data">${postedMetaData}</div>
+                    ${additionalImage ? <img src="${additionalImage}" alt="${title}" class="modal-thumbnail"> : ''}
+                    ${image ? <img src="${image}" alt="${title}" class="modal-image"> : ''}
                     <div>${content}</div>
-                `;
+                ;
 
                 document.getElementById('newsModal').style.display = 'block';
                 console.log('Modal content:', modalBody.innerHTML);
