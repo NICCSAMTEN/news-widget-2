@@ -47,6 +47,13 @@
     color: #333; /* Adjust color for better readability */
 }
 
+/* Add space between the description and the posted metadata */
+.posted-meta-data {
+    margin-top: 10px; /* Adds spacing between the description and posted metadata */
+    color: #666; /* Optional: Set a different color for the metadata */
+    font-size: 0.9em; /* Optional: Adjust font size if needed */
+}
+
 /* Modal styles */
 .modal {
     display: none;
