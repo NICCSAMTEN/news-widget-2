@@ -35,6 +35,17 @@ document.addEventListener('DOMContentLoaded', function () {
         return tempDiv.innerHTML;
     }
 
+    // Function to format posted metadata
+    function formatPostedMetaData(date, author) {
+        return `
+            <div class="col-xs-8 col-sm-8 btn-sm nohpad nobpad">
+                <span class="posted-by-snippet-posted">Posted</span>
+                <span class="posted-by-snippet-date">${date}</span>
+                <span class="inline-block posted-by-snippet-author">by ${author}</span>
+            </div>
+        `;
+    }
+
     // Fetch and display news articles
     fetch(baseUrl)
         .then(response => response.text())
@@ -67,10 +78,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     const correctedLink = link.replace(/https:\/\/emilliohezekiah.github.io/, 'https://www.tradepr.work');
 
-                    // Extract posted date and author information, removing anchor tags
+                    // Extract posted date and author information
                     const postedMetaDataElement = article.querySelector('.posted_meta_data');
                     let postedMetaData = postedMetaDataElement ? postedMetaDataElement.innerHTML.trim() : '';
-                    postedMetaData = removeAnchorTags(postedMetaData);
+                    const postedDate = postedMetaData.match(/Posted\s+(\d{2}\/\d{2}\/\d{4})/)?.[1] || 'No Date';
+                    const postedAuthor = postedMetaData.match(/by\s+([^<]+?)(?=<)/)?.[1].trim() || 'No Author';
 
                     widget.innerHTML += `
                         <div class="news-item">
@@ -79,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 <a href="#" class="news-link" data-url="${encodeURIComponent(correctedLink)}">${title}</a>
                                 <p>${description}</p>
                                 <br>
-                                <div class="posted-meta-data">${postedMetaData}</div>
+                                <div class="posted-meta-data">${formatPostedMetaData(postedDate, postedAuthor)}</div>
                             </div>
                         </div>
                     `;
@@ -124,6 +136,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Extract posted metadata
                 const postedMetaDataElement = doc.querySelector('.posted_meta_data');
                 let postedMetaData = postedMetaDataElement ? removeAnchorTags(postedMetaDataElement.innerHTML.trim()) : '';
+                const postedDate = postedMetaData.match(/Posted\s+(\d{2}\/\d{2}\/\d{4})/)?.[1] || 'No Date';
+                const postedAuthor = postedMetaData.match(/by\s+([^<]+?)(?=<)/)?.[1].trim() || 'No Author';
 
                 const additionalImageElement = doc.querySelector('img.center-block');
                 let additionalImage = '';
@@ -138,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const modalBody = document.getElementById('modal-body');
                 modalBody.innerHTML = `
                     <h1>${title}</h1>
-                    <div class="posted-meta-data">${postedMetaData}</div>
+                    <div class="posted-meta-data">${formatPostedMetaData(postedDate, postedAuthor)}</div>
                     ${additionalImage ? `<img src="${additionalImage}" alt="${title}" class="modal-thumbnail">` : ''}
                     ${image ? `<img src="${image}" alt="${title}" class="modal-image">` : ''}
                     <div>${content}</div>
