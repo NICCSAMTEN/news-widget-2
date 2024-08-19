@@ -33,6 +33,14 @@ document.addEventListener('DOMContentLoaded', function () {
         `;
     }
 
+    // Function to extract metadata
+    function extractPostedMetaData(element) {
+        const postedMetaData = element ? element.textContent.trim() : '';
+        const postedDate = postedMetaData.match(/Posted\s+(\d{2}\/\d{2}\/\d{4})/)?.[1] || 'No Date';
+        const postedAuthor = postedMetaData.match(/by\s+(.+)$/)?.[1].trim() || 'No Author';
+        return { postedDate, postedAuthor };
+    }
+
     // Fetch and display news articles
     fetch(baseUrl)
         .then(response => response.text())
@@ -67,11 +75,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     // Extract posted date and author information
                     const postedMetaDataElement = article.querySelector('.posted_meta_data');
-                    let postedMetaData = postedMetaDataElement ? postedMetaDataElement.textContent.trim() : '';
-                    
-                    // Adjust regex patterns if needed based on actual HTML
-                    const postedDate = postedMetaData.match(/Posted\s+(\d{2}\/\d{2}\/\d{4})/)?.[1] || 'No Date';
-                    const postedAuthor = postedMetaData.match(/by\s+(.+)$/)?.[1].trim() || 'No Author';
+                    const { postedDate, postedAuthor } = extractPostedMetaData(postedMetaDataElement);
 
                     widget.innerHTML += `
                         <div class="news-item">
@@ -124,9 +128,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // Extract posted metadata
                 const postedMetaDataElement = doc.querySelector('.posted_meta_data');
-                let postedMetaData = postedMetaDataElement ? postedMetaDataElement.textContent.trim() : '';
-                const postedDate = postedMetaData.match(/Posted\s+(\d{2}\/\d{2}\/\d{4})/)?.[1] || 'No Date';
-                const postedAuthor = postedMetaData.match(/by\s+(.+)$/)?.[1].trim() || 'No Author';
+                const { postedDate, postedAuthor } = extractPostedMetaData(postedMetaDataElement);
 
                 const additionalImageElement = doc.querySelector('img.center-block');
                 let additionalImage = '';
