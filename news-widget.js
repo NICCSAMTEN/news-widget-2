@@ -22,26 +22,13 @@ document.addEventListener('DOMContentLoaded', function () {
         return description.replace(/View More/gi, '').trim();
     }
 
-    // Function to remove the anchor tag from the posted meta data
-    function removeAnchorTags(htmlContent) {
-        const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = htmlContent;
-        const anchors = tempDiv.querySelectorAll('a');
-        anchors.forEach(anchor => {
-            const parent = anchor.parentNode;
-            const textNode = document.createTextNode(anchor.textContent.trim());
-            parent.replaceChild(textNode, anchor);
-        });
-        return tempDiv.innerHTML;
-    }
-
     // Function to format posted metadata
     function formatPostedMetaData(date, author) {
         return `
             <div class="col-xs-8 col-sm-8 btn-sm nohpad nobpad">
                 <span class="posted-by-snippet-posted">Posted</span>
                 <span class="posted-by-snippet-date">${date}</span>
-                <span class="inline-block posted-by-snippet-author">by ${author}</span>
+                <span class="posted-by-snippet-author">by ${author}</span>
             </div>
         `;
     }
@@ -80,11 +67,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     // Extract posted date and author information
                     const postedMetaDataElement = article.querySelector('.posted_meta_data');
-                    let postedMetaData = postedMetaDataElement ? postedMetaDataElement.innerHTML.trim() : '';
+                    let postedMetaData = postedMetaDataElement ? postedMetaDataElement.textContent.trim() : '';
                     
                     // Adjust regex patterns if needed based on actual HTML
                     const postedDate = postedMetaData.match(/Posted\s+(\d{2}\/\d{2}\/\d{4})/)?.[1] || 'No Date';
-                    const postedAuthor = postedMetaData.match(/by\s+([^<]+?)(?=<)/)?.[1].trim() || 'No Author';
+                    const postedAuthor = postedMetaData.match(/by\s+(.+)$/)?.[1].trim() || 'No Author';
 
                     widget.innerHTML += `
                         <div class="news-item">
@@ -137,9 +124,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // Extract posted metadata
                 const postedMetaDataElement = doc.querySelector('.posted_meta_data');
-                let postedMetaData = postedMetaDataElement ? removeAnchorTags(postedMetaDataElement.innerHTML.trim()) : '';
+                let postedMetaData = postedMetaDataElement ? postedMetaDataElement.textContent.trim() : '';
                 const postedDate = postedMetaData.match(/Posted\s+(\d{2}\/\d{2}\/\d{4})/)?.[1] || 'No Date';
-                const postedAuthor = postedMetaData.match(/by\s+([^<]+?)(?=<)/)?.[1].trim() || 'No Author';
+                const postedAuthor = postedMetaData.match(/by\s+(.+)$/)?.[1].trim() || 'No Author';
 
                 const additionalImageElement = doc.querySelector('img.center-block');
                 let additionalImage = '';
