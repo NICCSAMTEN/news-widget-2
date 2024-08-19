@@ -64,6 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             <div class="news-content">
                                 <a href="#" class="news-link" data-url="${encodeURIComponent(correctedLink)}">${title}</a>
                                 <p>${description}</p>
+                                <br>
                                 <div class="posted-meta-data">${postedMetaData}</div>
                             </div>
                         </div>
