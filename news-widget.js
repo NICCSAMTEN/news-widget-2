@@ -36,14 +36,18 @@ document.addEventListener('DOMContentLoaded', function () {
     // Function to extract metadata and remove unnecessary parts
     function extractPostedMetaData(element) {
         const postedMetaData = element ? element.textContent.trim() : '';
-        const postedDate = postedMetaData.match(/Posted\s+(\d{2}\/\d{2}\/\d{4})/)?.[1] || 'No Date';
-        let postedAuthor = postedMetaData.match(/by\s+(.+)$/)?.[1].trim() || 'No Author';
+        let postedDate = 'No Date';
+        let postedAuthor = 'No Author';
 
-        // Remove "in [Category]" part
-        postedAuthor = postedAuthor.replace(/in\s+[\w\s]+$/, '');
+        const dateMatch = postedMetaData.match(/Posted\s+(\d{2}\/\d{2}\/\d{4})/);
+        if (dateMatch) {
+            postedDate = dateMatch[1];
+        }
 
-        // Remove link from author's name
-        postedAuthor = postedAuthor.replace(/<\/?a[^>]*>/g, '');
+        const authorMatch = postedMetaData.match(/by\s+(.+?)(\s+in\s+[\w\s]+)?$/);
+        if (authorMatch) {
+            postedAuthor = authorMatch[1].replace(/<\/?a[^>]*>/g, '').trim();
+        }
 
         return { postedDate, postedAuthor };
     }
