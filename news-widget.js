@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return description.replace(/View More/gi, '').trim();
     }
 
-    // Function to remove the anchor tag from the posted meta data
+    // Function to remove the anchor tag from the posted metadata
     function removeAnchorTags(htmlContent) {
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = htmlContent;
@@ -121,9 +121,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     content = contentContainer.innerHTML.trim();
                 }
 
-                // Extract posted metadata
-                const postedMetaDataElement = doc.querySelector('.posted_meta_data');
-                const postedMetaData = postedMetaDataElement ? postedMetaDataElement.textContent.trim() : '';
+                // Extract the posted metadata
+                const postedMetaDataElement = doc.querySelector('.col-xs-8.col-sm-8.btn-sm.nohpad.nobpad');
+                const postedMetaData = postedMetaDataElement ? postedMetaDataElement.outerHTML : '';
 
                 const additionalImageElement = doc.querySelector('img.center-block');
                 let additionalImage = '';
@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const modalBody = document.getElementById('modal-body');
                 modalBody.innerHTML = `
                     <h1>${title}</h1>
-                    <div class="posted-meta-data">${postedMetaData}</div>
+                    ${postedMetaData ? `${postedMetaData}` : ''}
                     ${additionalImage ? `<img src="${additionalImage}" alt="${title}" class="modal-thumbnail">` : ''}
                     ${image ? `<img src="${image}" alt="${title}" class="modal-image">` : ''}
                     <div>${content}</div>
