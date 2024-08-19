@@ -155,6 +155,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 modalBody.innerHTML = `
                     <h1>${title}</h1>
                     ${formatPostedMetaData(postedDate, postedAuthor)}
+                    <div class="posted-meta-data">${formatPostedMetaData(postedDate, postedAuthor)}</div>
                     ${additionalImage ? `<img src="${additionalImage}" alt="${title}" class="modal-thumbnail">` : ''}
                     ${image ? `<img src="${image}" alt="${title}" class="modal-image">` : ''}
                     <div>${content}</div>
