@@ -4,9 +4,9 @@ document.addEventListener('DOMContentLoaded', function () {
     // Function to correct image URLs
     function correctImageUrl(src) {
         if (src.startsWith('/')) {
-            return https://www.tradepr.work${src};
+            return `https://www.tradepr.work${src}`;
         } else if (!src.startsWith('http')) {
-            return https://www.tradepr.work/uploads/news-pictures-thumbnails/${src};
+            return `https://www.tradepr.work/uploads/news-pictures-thumbnails/${src}`;
         } else {
             return src.replace(/https:\/\/emilliohezekiah.github.io/, 'https://www.tradepr.work');
         }
@@ -22,16 +22,21 @@ document.addEventListener('DOMContentLoaded', function () {
         return description.replace(/View More/gi, '').trim();
     }
 
-    // Function to remove the anchor tag from the posted meta data
-    function removeAnchorTags(htmlContent) {
+    // Function to remove specific elements and links from posted metadata
+    function cleanPostedMetaData(htmlContent) {
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = htmlContent;
-        const anchors = tempDiv.querySelectorAll('a');
-        anchors.forEach(anchor => {
-            const parent = anchor.parentNode;
-            const textNode = document.createTextNode(anchor.textContent);
-            parent.replaceChild(textNode, anchor);
-        });
+        const postedBySnippet = tempDiv.querySelector('.posted-by-snippet-category');
+        if (postedBySnippet) {
+            postedBySnippet.remove(); // Remove the "in Category" part
+        }
+        const authorLink = tempDiv.querySelector('.posted-by-snippet-author a');
+        if (authorLink) {
+            const authorText = authorLink.textContent;
+            const parent = authorLink.parentNode;
+            const textNode = document.createTextNode(`by ${authorText}`);
+            parent.replaceChild(textNode, authorLink);
+        }
         return tempDiv.innerHTML;
     }
 
@@ -67,14 +72,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     const correctedLink = link.replace(/https:\/\/emilliohezekiah.github.io/, 'https://www.tradepr.work');
 
-                    // Extract posted date and author information, removing anchor tags
+                    // Extract posted date and author information, cleaning up metadata
                     const postedMetaDataElement = article.querySelector('.posted_meta_data');
                     let postedMetaData = postedMetaDataElement ? postedMetaDataElement.innerHTML.trim() : '';
-                    postedMetaData = removeAnchorTags(postedMetaData);
+                    postedMetaData = cleanPostedMetaData(postedMetaData);
 
-                    widget.innerHTML += 
+                    widget.innerHTML += `
                         <div class="news-item">
-                            ${imgSrc ? <img src="${imgSrc}" alt="${title}" class="news-image"> : ''}
+                            ${imgSrc ? `<img src="${imgSrc}" alt="${title}" class="news-image">` : ''}
                             <div class="news-content">
                                 <a href="#" class="news-link" data-url="${encodeURIComponent(correctedLink)}">${title}</a>
                                 <p>${description}</p>
@@ -82,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 <div class="posted-meta-data">${postedMetaData}</div>
                             </div>
                         </div>
-                    ;
+                    `;
                 });
             }
         })
@@ -123,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // Extract posted metadata
                 const postedMetaDataElement = doc.querySelector('.posted_meta_data');
-                const postedMetaData = postedMetaDataElement ? postedMetaDataElement.textContent.trim() : '';
+                const postedMetaData = postedMetaDataElement ? cleanPostedMetaData(postedMetaDataElement.innerHTML.trim()) : '';
 
                 const additionalImageElement = doc.querySelector('img.center-block');
                 let additionalImage = '';
@@ -136,13 +141,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
 
                 const modalBody = document.getElementById('modal-body');
-                modalBody.innerHTML = 
+                modalBody.innerHTML = `
                     <h1>${title}</h1>
                     <div class="posted-meta-data">${postedMetaData}</div>
-                    ${additionalImage ? <img src="${additionalImage}" alt="${title}" class="modal-thumbnail"> : ''}
-                    ${image ? <img src="${image}" alt="${title}" class="modal-image"> : ''}
+                    ${additionalImage ? `<img src="${additionalImage}" alt="${title}" class="modal-thumbnail">` : ''}
+                    ${image ? `<img src="${image}" alt="${title}" class="modal-image">` : ''}
                     <div>${content}</div>
-                ;
+                `;
 
                 document.getElementById('newsModal').style.display = 'block';
                 console.log('Modal content:', modalBody.innerHTML);
