@@ -22,21 +22,16 @@ document.addEventListener('DOMContentLoaded', function () {
         return description.replace(/View More/gi, '').trim();
     }
 
-    // Function to remove specific elements and links from posted metadata
-    function cleanPostedMetaData(htmlContent) {
+    // Function to remove the anchor tag from the posted meta data
+    function removeAnchorTags(htmlContent) {
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = htmlContent;
-        const postedBySnippet = tempDiv.querySelector('.posted-by-snippet-category');
-        if (postedBySnippet) {
-            postedBySnippet.remove(); // Remove the "in Category" part
-        }
-        const authorLink = tempDiv.querySelector('.posted-by-snippet-author a');
-        if (authorLink) {
-            const authorText = authorLink.textContent;
-            const parent = authorLink.parentNode;
-            const textNode = document.createTextNode(`by ${authorText}`);
-            parent.replaceChild(textNode, authorLink);
-        }
+        const anchors = tempDiv.querySelectorAll('a');
+        anchors.forEach(anchor => {
+            const parent = anchor.parentNode;
+            const textNode = document.createTextNode(anchor.textContent.trim());
+            parent.replaceChild(textNode, anchor);
+        });
         return tempDiv.innerHTML;
     }
 
@@ -72,10 +67,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     const correctedLink = link.replace(/https:\/\/emilliohezekiah.github.io/, 'https://www.tradepr.work');
 
-                    // Extract posted date and author information, cleaning up metadata
+                    // Extract posted date and author information, removing anchor tags
                     const postedMetaDataElement = article.querySelector('.posted_meta_data');
                     let postedMetaData = postedMetaDataElement ? postedMetaDataElement.innerHTML.trim() : '';
-                    postedMetaData = cleanPostedMetaData(postedMetaData);
+                    postedMetaData = removeAnchorTags(postedMetaData);
 
                     widget.innerHTML += `
                         <div class="news-item">
@@ -128,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // Extract posted metadata
                 const postedMetaDataElement = doc.querySelector('.posted_meta_data');
-                const postedMetaData = postedMetaDataElement ? cleanPostedMetaData(postedMetaDataElement.innerHTML.trim()) : '';
+                let postedMetaData = postedMetaDataElement ? removeAnchorTags(postedMetaDataElement.innerHTML.trim()) : '';
 
                 const additionalImageElement = doc.querySelector('img.center-block');
                 let additionalImage = '';
