@@ -1,60 +1,47 @@
 document.addEventListener('DOMContentLoaded', function () {
     const baseUrl = 'https://www.tradepr.work/articles/';
 
+    // Function to correct image URLs
     function correctImageUrl(src) {
         if (src.startsWith('/')) {
-            return `https://www.tradepr.work${src}`;
+            return https://www.tradepr.work${src};
         } else if (!src.startsWith('http')) {
-            return `https://www.tradepr.work/uploads/news-pictures-thumbnails/${src}`;
+            return https://www.tradepr.work/uploads/news-pictures-thumbnails/${src};
         } else {
             return src.replace(/https:\/\/emilliohezekiah.github.io/, 'https://www.tradepr.work');
         }
     }
 
+    // Function to check if image URL should be excluded
     function shouldExcludeImage(src) {
         return src.includes('/pictures/profile/');
     }
 
+    // Function to clean up the description by removing "View More"
     function cleanDescription(description) {
         return description.replace(/View More/gi, '').trim();
     }
 
-    function formatPostedMetaData(date, author, category, categoryLink) {
-        return `
+    // Function to format posted metadata
+    function formatPostedMetaData(date, author) {
+        return 
             <div class="col-xs-8 col-sm-8 btn-sm nohpad nobpad">
                 <span class="posted-by-snippet-posted">Posted</span>
                 <span class="posted-by-snippet-date">${date}</span>
-                <span class="inline-block posted-by-snippet-category">
-                    in 
-                    <a class="bold" title="Community Article - ${category}" href="${categoryLink}">
-                        ${category}
-                    </a>
-                </span>
-                <span class="inline-block posted-by-snippet-author">
-                    by
-                    <a class="bold" href="/pro/${author.link}" title="Posted By ${author.name}">
-                        ${author.name}
-                    </a>
-                </span>
+                <span class="posted-by-snippet-author">by ${author}</span>
             </div>
-        `;
+        ;
     }
 
+    // Function to extract metadata
     function extractPostedMetaData(element) {
-        const postedDate = element.querySelector('.posted-by-snippet-date')?.textContent.trim() || 'No Date';
-        const postedAuthorName = element.querySelector('.posted-by-snippet-author a.bold')?.textContent.trim() || 'No Author';
-        const postedAuthorLink = element.querySelector('.posted-by-snippet-author a.bold')?.getAttribute('href').split('/').pop() || '#';
-        const postedCategory = element.querySelector('.posted-by-snippet-category a.bold')?.textContent.trim() || 'Others';
-        const postedCategoryLink = element.querySelector('.posted-by-snippet-category a.bold')?.getAttribute('href') || '#';
-
-        return {
-            date: postedDate,
-            author: { name: postedAuthorName, link: postedAuthorLink },
-            category: postedCategory,
-            categoryLink: postedCategoryLink
-        };
+        const postedMetaData = element ? element.textContent.trim() : '';
+        const postedDate = postedMetaData.match(/Posted\s+(\d{2}\/\d{2}\/\d{4})/)?.[1] || 'No Date';
+        const postedAuthor = postedMetaData.match(/by\s+(.+)$/)?.[1].trim() || 'No Author';
+        return { postedDate, postedAuthor };
     }
 
+    // Fetch and display news articles
     fetch(baseUrl)
         .then(response => response.text())
         .then(data => {
@@ -86,26 +73,27 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     const correctedLink = link.replace(/https:\/\/emilliohezekiah.github.io/, 'https://www.tradepr.work');
 
+                    // Extract posted date and author information
                     const postedMetaDataElement = article.querySelector('.posted_meta_data');
-                    const { date, author, category, categoryLink } = extractPostedMetaData(postedMetaDataElement);
+                    const { postedDate, postedAuthor } = extractPostedMetaData(postedMetaDataElement);
 
-                    widget.innerHTML += `
+                    widget.innerHTML += 
                         <div class="news-item">
-                            ${imgSrc ? `<img src="${imgSrc}" alt="${title}" class="news-image">` : ''}
+                            ${imgSrc ? <img src="${imgSrc}" alt="${title}" class="news-image"> : ''}
                             <div class="news-content">
                                 <a href="#" class="news-link" data-url="${encodeURIComponent(correctedLink)}">${title}</a>
                                 <p>${description}</p>
                                 <br>
-                                <div class="posted-meta-data">${formatPostedMetaData(date, author, category, categoryLink)}</div>
+                                <div class="posted-meta-data">${formatPostedMetaData(postedDate, postedAuthor)}</div>
                             </div>
                         </div>
-                    `;
+                    ;
                 });
             }
         })
         .catch(error => console.error('Error loading news:', error));
 
-    document.addEventListener('click', function (event) {
+    document.addEventListener('click', function(event) {
         if (event.target.matches('.news-link')) {
             event.preventDefault();
             const newsUrl = decodeURIComponent(event.target.getAttribute('data-url'));
@@ -114,6 +102,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     function loadNewsContent(url) {
+        console.log('Fetching news content from URL:', url);
         fetch(url)
             .then(response => response.text())
             .then(data => {
@@ -137,8 +126,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     content = contentContainer.innerHTML.trim();
                 }
 
+                // Extract posted metadata
                 const postedMetaDataElement = doc.querySelector('.posted_meta_data');
-                const { date, author, category, categoryLink } = extractPostedMetaData(postedMetaDataElement);
+                const { postedDate, postedAuthor } = extractPostedMetaData(postedMetaDataElement);
 
                 const additionalImageElement = doc.querySelector('img.center-block');
                 let additionalImage = '';
@@ -151,24 +141,25 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
 
                 const modalBody = document.getElementById('modal-body');
-                modalBody.innerHTML = `
+                modalBody.innerHTML = 
                     <h1>${title}</h1>
-                    <div class="posted-meta-data">${formatPostedMetaData(date, author, category, categoryLink)}</div>
-                    ${additionalImage ? `<img src="${additionalImage}" alt="${title}" class="modal-thumbnail">` : ''}
-                    ${image ? `<img src="${image}" alt="${title}" class="modal-image">` : ''}
+                    <div class="posted-meta-data">${formatPostedMetaData(postedDate, postedAuthor)}</div>
+                    ${additionalImage ? <img src="${additionalImage}" alt="${title}" class="modal-thumbnail"> : ''}
+                    ${image ? <img src="${image}" alt="${title}" class="modal-image"> : ''}
                     <div>${content}</div>
-                `;
+                ;
 
                 document.getElementById('newsModal').style.display = 'block';
+                console.log('Modal content:', modalBody.innerHTML);
             })
             .catch(error => console.error('Error loading news content:', error));
     }
 
-    document.querySelector('.close').addEventListener('click', function () {
+    document.querySelector('.close').addEventListener('click', function() {
         document.getElementById('newsModal').style.display = 'none';
     });
 
-    window.onclick = function (event) {
+    window.onclick = function(event) {
         if (event.target === document.getElementById('newsModal')) {
             document.getElementById('newsModal').style.display = 'none';
         }
