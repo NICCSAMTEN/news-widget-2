@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return description.replace(/View More/gi, '').trim();
     }
 
-    // Function to format posted metadata
+    // Function to format posted metadata, removing category and stripping the link
     function formatPostedMetaData(date, author) {
         return `
             <div class="col-xs-8 col-sm-8 btn-sm nohpad nobpad">
@@ -33,11 +33,18 @@ document.addEventListener('DOMContentLoaded', function () {
         `;
     }
 
-    // Function to extract metadata
+    // Function to extract metadata and remove unnecessary parts
     function extractPostedMetaData(element) {
         const postedMetaData = element ? element.textContent.trim() : '';
         const postedDate = postedMetaData.match(/Posted\s+(\d{2}\/\d{2}\/\d{4})/)?.[1] || 'No Date';
-        const postedAuthor = postedMetaData.match(/by\s+(.+)$/)?.[1].trim() || 'No Author';
+        let postedAuthor = postedMetaData.match(/by\s+(.+)$/)?.[1].trim() || 'No Author';
+
+        // Remove "in [Category]" part
+        postedAuthor = postedAuthor.replace(/in\s+[\w\s]+$/, '');
+
+        // Remove link from author's name
+        postedAuthor = postedAuthor.replace(/<\/?a[^>]*>/g, '');
+
         return { postedDate, postedAuthor };
     }
 
@@ -130,10 +137,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 const postedMetaDataElement = doc.querySelector('.posted_meta_data');
                 const { postedDate, postedAuthor } = extractPostedMetaData(postedMetaDataElement);
 
-                // Extract the additional metadata element
-                const additionalMetaData = doc.querySelector('.col-xs-8.col-sm-8.btn-sm.nohpad.nobpad');
-                const additionalMetaDataHtml = additionalMetaData ? additionalMetaData.outerHTML : '';
-
                 const additionalImageElement = doc.querySelector('img.center-block');
                 let additionalImage = '';
                 if (additionalImageElement) {
@@ -147,7 +150,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const modalBody = document.getElementById('modal-body');
                 modalBody.innerHTML = `
                     <h1>${title}</h1>
-                    ${additionalMetaDataHtml}
+                    ${formatPostedMetaData(postedDate, postedAuthor)}
                     ${additionalImage ? `<img src="${additionalImage}" alt="${title}" class="modal-thumbnail">` : ''}
                     ${image ? `<img src="${image}" alt="${title}" class="modal-image">` : ''}
                     <div>${content}</div>
