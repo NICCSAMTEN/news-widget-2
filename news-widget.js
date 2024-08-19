@@ -81,6 +81,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     // Extract posted date and author information
                     const postedMetaDataElement = article.querySelector('.posted_meta_data');
                     let postedMetaData = postedMetaDataElement ? postedMetaDataElement.innerHTML.trim() : '';
+                    
+                    // Adjust regex patterns if needed based on actual HTML
                     const postedDate = postedMetaData.match(/Posted\s+(\d{2}\/\d{2}\/\d{4})/)?.[1] || 'No Date';
                     const postedAuthor = postedMetaData.match(/by\s+([^<]+?)(?=<)/)?.[1].trim() || 'No Author';
 
