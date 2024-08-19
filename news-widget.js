@@ -22,6 +22,19 @@ document.addEventListener('DOMContentLoaded', function () {
         return description.replace(/View More/gi, '').trim();
     }
 
+    // Function to remove the anchor tag from the posted meta data
+    function removeAnchorTags(htmlContent) {
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = htmlContent;
+        const anchors = tempDiv.querySelectorAll('a');
+        anchors.forEach(anchor => {
+            const parent = anchor.parentNode;
+            const textNode = document.createTextNode(anchor.textContent);
+            parent.replaceChild(textNode, anchor);
+        });
+        return tempDiv.innerHTML;
+    }
+
     // Fetch and display news articles
     fetch(baseUrl)
         .then(response => response.text())
@@ -54,9 +67,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     const correctedLink = link.replace(/https:\/\/emilliohezekiah.github.io/, 'https://www.tradepr.work');
 
-                    // Extract posted date and author information
+                    // Extract posted date and author information, removing anchor tags
                     const postedMetaDataElement = article.querySelector('.posted_meta_data');
-                    const postedMetaData = postedMetaDataElement ? postedMetaDataElement.innerHTML.trim() : '';
+                    let postedMetaData = postedMetaDataElement ? postedMetaDataElement.innerHTML.trim() : '';
+                    postedMetaData = removeAnchorTags(postedMetaData);
 
                     widget.innerHTML += `
                         <div class="news-item">
