@@ -123,7 +123,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // Extract the posted metadata
                 const postedMetaDataElement = doc.querySelector('.col-xs-8.col-sm-8.btn-sm.nohpad.nobpad');
-                const postedMetaData = postedMetaDataElement ? postedMetaDataElement.outerHTML : '';
+                let postedMetaData = '';
+                if (postedMetaDataElement) {
+                    postedMetaData = postedMetaDataElement.outerHTML;
+                } else {
+                    console.warn('Posted metadata element not found.');
+                }
 
                 const additionalImageElement = doc.querySelector('img.center-block');
                 let additionalImage = '';
