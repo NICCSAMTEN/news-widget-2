@@ -78,7 +78,7 @@
 
 /* Modal image styling */
 .modal-image {
-    width: 750px; /* Set width to 750 pixels */
+    width: 500px; /* Set width to 750 pixels */
     height: auto; /* Maintain aspect ratio */
     object-fit: cover; /* Ensure the image covers the specified dimensions */
     margin: 20px 0; /* Space around the image */
