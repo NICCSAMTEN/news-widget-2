@@ -94,6 +94,7 @@
     display: block; /* Ensure the thumbnail is displayed correctly */
     margin-left: auto;
     margin-right: auto;
+    width: 500px;
 }
 
 /* Target paragraphs within the modal */
