@@ -91,8 +91,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     const postedMetaDataElement = article.querySelector('.posted_meta_data');
                     const { postedDate, postedAuthor } = extractPostedMetaData(postedMetaDataElement);
 
+                    // Add custom image above the title
+                    const customImageUrl = "https://github.com/EmillioHezekiah/news-widget-2/blob/18d2e9e6bacf0775095d6e1f8c5a81d051cb4bac/trade2372.png?raw=true";
+                    
                     widget.innerHTML += `
                         <div class="news-item">
+                            <img src="${customImageUrl}" alt="Trade Logo" class="news-custom-image">
                             ${imgSrc ? `<img src="${imgSrc}" alt="${title}" class="news-image">` : ''}
                             <div class="news-content">
                                 <a href="#" class="news-link" data-url="${encodeURIComponent(correctedLink)}">${title}</a>
