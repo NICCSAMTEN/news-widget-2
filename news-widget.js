@@ -63,11 +63,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Add the image and title before news articles
             widget.innerHTML = `
-                <div style="display: flex; align-items: center;">
+                <div style="text-align: left;">
                     <img src="https://github.com/EmillioHezekiah/news-widget-2/blob/18d2e9e6bacf0775095d6e1f8c5a81d051cb4bac/trade2372.png?raw=true" 
                          alt="PR News Logo" 
-                         style="width: 128px; height: 128px; margin-right: 15px;">
-                         <br>
+                         style="width: 128px; height: 128px; display: block; margin-bottom: 10px;">
                     <h2>News from Trade PR</h2>
                 </div>
             `;
