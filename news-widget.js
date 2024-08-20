@@ -61,8 +61,11 @@ document.addEventListener('DOMContentLoaded', function () {
             const articles = doc.querySelectorAll('.row-fluid.search_result');
             const widget = document.getElementById('news-widget');
 
+            // Add title before news articles
+            widget.innerHTML = '<h2>News from Trade PR</h2>';
+
             if (articles.length === 0) {
-                widget.innerHTML = '<p>No news items found.</p>';
+                widget.innerHTML += '<p>No news items found.</p>';
             } else {
                 articles.forEach(article => {
                     const titleElement = article.querySelector('.h3.bold.bmargin.center-block');
