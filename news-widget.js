@@ -22,10 +22,10 @@ document.addEventListener('DOMContentLoaded', function () {
         return description.replace(/View More/gi, '').trim();
     }
 
-    // Function to format posted metadata, removing category and stripping the link
+    // Function to format posted metadata
     function formatPostedMetaData(date, author) {
         return `
-            <div class="col-xs-8 col-sm-8 btn-sm nohpad nobpad">
+            <div class="posted-meta-data">
                 <span class="posted-by-snippet-posted">Posted</span>
                 <span class="posted-by-snippet-date">${date}</span>
                 <span class="posted-by-snippet-author">by ${author}</span>
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <div style="text-align: left;">
                     <img src="https://github.com/EmillioHezekiah/news-widget-2/blob/18d2e9e6bacf0775095d6e1f8c5a81d051cb4bac/trade2372.png?raw=true" 
                          alt="PR News Logo" 
-                         style="width: 128px; height: 128px; display: block; margin-bottom: 10px;">
+                         class="news-custom-image">
                     <h2>News from Trade PR</h2>
                 </div>
             `;
@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 <a href="#" class="news-link" data-url="${encodeURIComponent(correctedLink)}">${title}</a>
                                 <p>${description}</p>
                                 <br>
-                                <div class="posted-meta-data">${formatPostedMetaData(postedDate, postedAuthor)}</div>
+                                ${formatPostedMetaData(postedDate, postedAuthor)}
                             </div>
                         </div>
                     `;
@@ -164,7 +164,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 const modalBody = document.getElementById('modal-body');
                 modalBody.innerHTML = `
                     <h1>${title}</h1>
-                    
                     ${additionalImage ? `<img src="${additionalImage}" alt="${title}" class="modal-thumbnail">` : ''}
                     ${image ? `<img src="${image}" alt="${title}" class="modal-image">` : ''}
                     <div>${content}</div>
@@ -172,7 +171,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // Ensure the correct class is applied for modal images
                 document.querySelectorAll('.modal-image').forEach(img => {
-                    img.style.width = '500px'; // Set width to 500px
+                    img.style.width = '100%'; // Adjust width to fit container
+                    img.style.maxWidth = '500px'; // Set maximum width for modal images
                     img.style.height = 'auto'; // Maintain aspect ratio
                 });
 
