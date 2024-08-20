@@ -170,6 +170,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     <div>${content}</div>
                 `;
 
+                // Ensure the correct class is applied for modal images
+                document.querySelectorAll('.modal-image').forEach(img => {
+                    img.style.width = '500px'; // Set width to 500px
+                    img.style.height = 'auto'; // Maintain aspect ratio
+                });
+
                 document.getElementById('newsModal').style.display = 'block';
                 console.log('Modal content:', modalBody.innerHTML);
             })
