@@ -22,7 +22,7 @@
 .news-item img {
     width: 240px;
     height: 120px;
-    object-fit: cover; /* Ensure the image covers the specified dimensions */
+    object-fit: cover;
     margin-right: 15px; /* Space between image and text */
 }
 
@@ -47,15 +47,44 @@
     color: #333; /* Adjust color for better readability */
 }
 
-/* Modal Styles */
+/* Add space between the description and the posted metadata */
+.posted-meta-data {
+    margin-top: 10px; /* Adds spacing between the description and posted metadata */
+    color: #666; /* Optional: Set a different color for the metadata */
+    font-size: 0.9em; /* Optional: Adjust font size if needed */
+}
+
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 800px; /* Increase max-width for larger modals */
+}
+
+/* Modal image styling */
 .modal-image {
-    width: 100%; /* Adjust width to fit container */
-    max-width: 500px; /* Maximum width of the modal image */
+    width: 500px; /* Set width to 500 pixels */
     height: auto; /* Maintain aspect ratio */
     object-fit: cover; /* Ensure the image covers the specified dimensions */
     margin: 20px 0; /* Space around the image */
 }
 
+/* Modal thumbnail styling */
 .modal-thumbnail {
     width: 100%; /* Adjust width to fit container */
     max-width: 878px; /* Maximum width of the thumbnail */
@@ -67,12 +96,18 @@
     margin-right: auto;
 }
 
+/* Target paragraphs within the modal */
+.modal-content p {
+    line-height: 1.75; /* Ensure paragraphs in modal have 1.75 line spacing */
+    font-family: Arial;
+    text-align: justify;
+    font-size: 14pt;
+}
+
 .close {
-    position: absolute;
-    top: 10px;
-    right: 25px;
     color: #aaa;
-    font-size: 35px;
+    float: right;
+    font-size: 28px;
     font-weight: bold;
 }
 
@@ -83,10 +118,9 @@
     cursor: pointer;
 }
 
-.modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
+.news-custom-image {
+    width: 128px;
+    height: 128px;
+    object-fit: cover;
+    margin-bottom: 15px; /* Add some space below the custom image */
 }
