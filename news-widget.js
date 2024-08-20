@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     const baseUrl = 'https://www.tradepr.work/articles/';
-
+    
     // Function to correct image URLs
     function correctImageUrl(src) {
         if (src.startsWith('/')) {
@@ -61,8 +61,13 @@ document.addEventListener('DOMContentLoaded', function () {
             const articles = doc.querySelectorAll('.row-fluid.search_result');
             const widget = document.getElementById('news-widget');
 
-            // Add title before news articles
-            widget.innerHTML = '<h2>News from Trade PR</h2>';
+            // Add the image and title before news articles
+            widget.innerHTML = `
+                <img src="https://github.com/EmillioHezekiah/news-widget-2/blob/18d2e9e6bacf0775095d6e1f8c5a81d051cb4bac/trade2372.png?raw=true" 
+                     alt="PR News Logo" 
+                     style="display: block; margin: 0 auto; width: 128px; height: 128px;">
+                <h2>News from Trade PR</h2>
+            `;
 
             if (articles.length === 0) {
                 widget.innerHTML += '<p>No news items found.</p>';
@@ -91,12 +96,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     const postedMetaDataElement = article.querySelector('.posted_meta_data');
                     const { postedDate, postedAuthor } = extractPostedMetaData(postedMetaDataElement);
 
-                    // Add custom image above the title
-                    const customImageUrl = "https://github.com/EmillioHezekiah/news-widget-2/blob/18d2e9e6bacf0775095d6e1f8c5a81d051cb4bac/trade2372.png?raw=true";
-                    
                     widget.innerHTML += `
                         <div class="news-item">
-                            <img src="${customImageUrl}" alt="Trade Logo" class="news-custom-image">
                             ${imgSrc ? `<img src="${imgSrc}" alt="${title}" class="news-image">` : ''}
                             <div class="news-content">
                                 <a href="#" class="news-link" data-url="${encodeURIComponent(correctedLink)}">${title}</a>
