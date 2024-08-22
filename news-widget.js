@@ -172,8 +172,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Show the modal
                 document.getElementById('newsModal').style.display = 'block';
 
-                // Scroll the modal content to the top
-                modalBody.scrollTop = 0;
+                // Scroll the modal content to the top using a more reliable method
+                setTimeout(() => {
+                    modalBody.scrollTop = 0;
+                    requestAnimationFrame(() => {
+                        modalBody.scrollTop = 0;
+                    });
+                }, 0);
 
                 console.log('Modal content:', modalBody.innerHTML);
             })
