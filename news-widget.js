@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     const baseUrl = 'https://www.tradepr.work/articles/';
-    
+
     // Function to correct image URLs
     function correctImageUrl(src) {
         if (src.startsWith('/')) {
@@ -184,7 +184,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Ensure modal scrolls to the top
                 const modalContent = document.querySelector('.modal-content');
                 if (modalContent) {
-                    modalContent.scrollTo({ top: 0, behavior: 'smooth' });
+                    modalContent.scrollTop = 0; // Reset scroll position to the top
                 }
 
                 // Disable background scroll and show modal
