@@ -63,31 +63,31 @@
     top: 0;
     width: 100%;
     height: 100%;
-    overflow: auto;
     background-color: rgba(0, 0, 0, 0.4);
 }
 
 .modal-content {
     background-color: #fefefe;
-    margin: 10% auto;
+    margin: 5% auto; /* Adjust margin for better centering */
     padding: 20px;
     border: 1px solid #888;
     width: 80%;
-    max-width: 800px; /* Increase max-width for larger modals */
-    max-height: 80vh; /* Set max-height to prevent overflow */
-    overflow-y: auto; /* Enable vertical scrolling inside the modal */
+    max-width: 900px;
+    max-height: 80%;
+    overflow-y: auto;
+    position: relative; /* Ensure proper positioning of close button */
 }
 
 /* Modal image styling */
 .modal-image {
-    width: 500px; /* Set width to 500 pixels */
-    height: auto; /* Maintain aspect ratio */
-    object-fit: cover; /* Ensure the image covers the specified dimensions */
-    margin: 20px 0; /* Space around the image */
+    display: block;
+    width: 100%;
+    height: auto;
 }
 
 /* Modal thumbnail styling */
 .modal-thumbnail {
+    display: block;
     width: 100%; /* Adjust width to fit container */
     max-width: 878px; /* Maximum width of the thumbnail */
     height: auto; /* Maintain aspect ratio */
@@ -112,13 +112,13 @@
     float: right;
     font-size: 28px;
     font-weight: bold;
+    cursor: pointer; /* Ensure cursor is a pointer */
 }
 
 .close:hover,
 .close:focus {
     color: black;
     text-decoration: none;
-    cursor: pointer;
 }
 
 /* Custom image at the top of the news widget */
@@ -132,4 +132,14 @@
 /* Disable scrolling on the body when modal is open */
 body.modal-open {
     overflow: hidden;
+}
+
+/* Modal content adjustments */
+.modal-content {
+    position: relative;
+    background-color: #fefefe;
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 8px; /* Rounded corners for the modal */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* Subtle shadow for better visibility */
 }
