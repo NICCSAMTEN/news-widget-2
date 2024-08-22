@@ -183,7 +183,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // Ensure modal scrolls to the top
                 const modalContent = document.querySelector('.modal-content');
-                modalContent.scrollTop = 0;
+                if (modalContent) {
+                    modalContent.scrollTop = 0; // Scroll to the top
+                }
 
                 // Disable background scroll and show modal
                 disableBackgroundScroll();
