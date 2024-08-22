@@ -74,6 +74,8 @@
     border: 1px solid #888;
     width: 80%;
     max-width: 800px; /* Increase max-width for larger modals */
+    max-height: 80vh; /* Set max-height to prevent overflow */
+    overflow-y: auto; /* Enable vertical scrolling inside the modal */
 }
 
 /* Modal image styling */
@@ -94,7 +96,6 @@
     display: block; /* Ensure the thumbnail is displayed correctly */
     margin-left: auto;
     margin-right: auto;
-    width: 500px;
 }
 
 /* Target paragraphs within the modal */
@@ -105,6 +106,7 @@
     font-size: 14pt;
 }
 
+/* Close button styles */
 .close {
     color: #aaa;
     float: right;
@@ -119,9 +121,15 @@
     cursor: pointer;
 }
 
+/* Custom image at the top of the news widget */
 .news-custom-image {
     width: 128px;
     height: 128px;
     object-fit: cover;
     margin-bottom: 15px; /* Add some space below the custom image */
+}
+
+/* Disable scrolling on the body when modal is open */
+body.modal-open {
+    overflow: hidden;
 }
