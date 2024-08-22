@@ -57,7 +57,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function scrollToTopOfModal() {
         const modalBody = document.getElementById('modal-body');
-        modalBody.scrollTop = 0; // Scroll to the top of the modal content
+        if (modalBody.scrollTop > 0) {
+            modalBody.scrollTop = 0;
+        }
+    }
+
+    function ensureModalStartsAtTop() {
+        const modalBody = document.getElementById('modal-body');
+        setTimeout(() => {
+            modalBody.scrollTop = 0;
+        }, 0);
     }
 
     fetch(baseUrl)
@@ -173,7 +182,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <div>${content}</div>
                 `;
 
-                scrollToTopOfModal(); // Ensure the modal content scrolls to the top
+                ensureModalStartsAtTop(); // Ensure the modal starts at the top
 
                 disableBackgroundScroll();
                 document.getElementById('newsModal').style.display = 'block';
