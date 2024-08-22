@@ -88,7 +88,7 @@
 /* Modal thumbnail styling */
 .modal-thumbnail {
     display: block;
-    width: 100%; /* Adjust width to fit container */
+    width: 500px; /* Adjust width to fit container */
     max-width: 878px; /* Maximum width of the thumbnail */
     height: auto; /* Maintain aspect ratio */
     object-fit: cover; /* Ensure the image covers the specified dimensions */
