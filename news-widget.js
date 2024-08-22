@@ -196,12 +196,22 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     document.querySelector('.close').addEventListener('click', function() {
+        // Ensure modal scrolls to the top when closed
+        const modalContent = document.querySelector('.modal-content');
+        if (modalContent) {
+            modalContent.scrollTop = 0; // Reset scroll position to the top
+        }
         enableBackgroundScroll();
         document.getElementById('newsModal').style.display = 'none';
     });
 
     window.onclick = function(event) {
         if (event.target === document.getElementById('newsModal')) {
+            // Ensure modal scrolls to the top when closed
+            const modalContent = document.querySelector('.modal-content');
+            if (modalContent) {
+                modalContent.scrollTop = 0; // Reset scroll position to the top
+            }
             enableBackgroundScroll();
             document.getElementById('newsModal').style.display = 'none';
         }
