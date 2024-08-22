@@ -140,34 +140,6 @@ document.addEventListener('DOMContentLoaded', function () {
                         image = '';
                     }
                 }
-                    function formatPostedMetaData(date, author) {
-        return `
-            <div class="col-xs-8 col-sm-8 btn-sm nohpad nobpad">
-                <span class="posted-by-snippet-posted">Posted</span>
-                <span class="posted-by-snippet-date">${date}</span>
-                <span class="posted-by-snippet-author">by ${author}</span>
-            </div>
-        `;
-    }
-
-    // Function to extract metadata and remove unnecessary parts
-    function extractPostedMetaData(element) {
-        const postedMetaData = element ? element.textContent.trim() : '';
-        let postedDate = 'No Date';
-        let postedAuthor = 'No Author';
-
-        const dateMatch = postedMetaData.match(/Posted\s+(\d{2}\/\d{2}\/\d{4})/);
-        if (dateMatch) {
-            postedDate = dateMatch[1];
-        }
-
-        const authorMatch = postedMetaData.match(/by\s+(.+?)(\s+in\s+[\w\s]+)?$/);
-        if (authorMatch) {
-            postedAuthor = authorMatch[1].replace(/<\/?a[^>]*>/g, '').trim();
-        }
-
-        return { postedDate, postedAuthor };
-    }
 
                 const contentContainer = doc.querySelector('.the-post-description');
                 let content = 'No Content Available';
@@ -192,14 +164,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 const modalBody = document.getElementById('modal-body');
                 modalBody.innerHTML = `
                     <h1>${title}</h1>
-                                                  
-
                     ${additionalImage ? `<img src="${additionalImage}" alt="${title}" class="modal-thumbnail">` : ''}
                     ${image ? `<img src="${image}" alt="${title}" class="modal-image">` : ''}
                     <div>${content}</div>
                 `;
 
+                // Show the modal
                 document.getElementById('newsModal').style.display = 'block';
+
+                // Scroll the modal content to the top
+                modalBody.scrollTop = 0;
+
                 console.log('Modal content:', modalBody.innerHTML);
             })
             .catch(error => console.error('Error loading news content:', error));
