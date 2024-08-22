@@ -52,6 +52,16 @@ document.addEventListener('DOMContentLoaded', function () {
         return { postedDate, postedAuthor };
     }
 
+    // Function to disable background scroll
+    function disableBackgroundScroll() {
+        document.body.style.overflow = 'hidden';
+    }
+
+    // Function to enable background scroll
+    function enableBackgroundScroll() {
+        document.body.style.overflow = '';
+    }
+
     // Fetch and display news articles
     fetch(baseUrl)
         .then(response => response.text())
@@ -169,28 +179,25 @@ document.addEventListener('DOMContentLoaded', function () {
                     <div>${content}</div>
                 `;
 
-                // Show the modal
+                // Scroll modal content to the top
+                modalBody.scrollTop = 0;
+
+                // Disable background scroll and show modal
+                disableBackgroundScroll();
                 document.getElementById('newsModal').style.display = 'block';
-
-                // Scroll the modal content to the top using a more reliable method
-                setTimeout(() => {
-                    modalBody.scrollTop = 0;
-                    requestAnimationFrame(() => {
-                        modalBody.scrollTop = 0;
-                    });
-                }, 0);
-
                 console.log('Modal content:', modalBody.innerHTML);
             })
             .catch(error => console.error('Error loading news content:', error));
     }
 
     document.querySelector('.close').addEventListener('click', function() {
+        enableBackgroundScroll();
         document.getElementById('newsModal').style.display = 'none';
     });
 
     window.onclick = function(event) {
         if (event.target === document.getElementById('newsModal')) {
+            enableBackgroundScroll();
             document.getElementById('newsModal').style.display = 'none';
         }
     }
