@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     const baseUrl = 'https://www.tradepr.work/articles/';
-
+    
+    // Function to correct image URLs
     function correctImageUrl(src) {
         if (src.startsWith('/')) {
             return `https://www.tradepr.work${src}`;
@@ -11,14 +12,17 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    // Function to check if image URL should be excluded
     function shouldExcludeImage(src) {
         return src.includes('/pictures/profile/');
     }
 
+    // Function to clean up the description by removing "View More"
     function cleanDescription(description) {
         return description.replace(/View More/gi, '').trim();
     }
 
+    // Function to format posted metadata, removing category and stripping the link
     function formatPostedMetaData(date, author) {
         return `
             <div class="col-xs-8 col-sm-8 btn-sm nohpad nobpad">
@@ -29,6 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
         `;
     }
 
+    // Function to extract metadata and remove unnecessary parts
     function extractPostedMetaData(element) {
         const postedMetaData = element ? element.textContent.trim() : '';
         let postedDate = 'No Date';
@@ -47,28 +52,17 @@ document.addEventListener('DOMContentLoaded', function () {
         return { postedDate, postedAuthor };
     }
 
+    // Function to disable background scroll
     function disableBackgroundScroll() {
         document.body.style.overflow = 'hidden';
     }
 
+    // Function to enable background scroll
     function enableBackgroundScroll() {
         document.body.style.overflow = '';
     }
 
-    function scrollToTopOfModal() {
-        const modalBody = document.getElementById('modal-body');
-        if (modalBody.scrollTop > 0) {
-            modalBody.scrollTop = 0;
-        }
-    }
-
-    function ensureModalStartsAtTop() {
-        const modalBody = document.getElementById('modal-body');
-        setTimeout(() => {
-            modalBody.scrollTop = 0;
-        }, 0);
-    }
-
+    // Fetch and display news articles
     fetch(baseUrl)
         .then(response => response.text())
         .then(data => {
@@ -77,6 +71,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const articles = doc.querySelectorAll('.row-fluid.search_result');
             const widget = document.getElementById('news-widget');
 
+            // Add the image and title before news articles
             widget.innerHTML = `
                 <div style="text-align: left;">
                     <img src="https://github.com/EmillioHezekiah/news-widget-2/blob/18d2e9e6bacf0775095d6e1f8c5a81d051cb4bac/trade2372.png?raw=true" 
@@ -109,6 +104,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     const correctedLink = link.replace(/https:\/\/emilliohezekiah.github.io/, 'https://www.tradepr.work');
 
+                    // Extract posted date and author information
                     const postedMetaDataElement = article.querySelector('.posted_meta_data');
                     const { postedDate, postedAuthor } = extractPostedMetaData(postedMetaDataElement);
 
@@ -161,6 +157,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     content = contentContainer.innerHTML.trim();
                 }
 
+                // Extract posted metadata
                 const postedMetaDataElement = doc.querySelector('.posted_meta_data');
                 const { postedDate, postedAuthor } = extractPostedMetaData(postedMetaDataElement);
 
@@ -182,8 +179,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     <div>${content}</div>
                 `;
 
-                ensureModalStartsAtTop(); // Ensure the modal starts at the top
+                // Ensure modal scrolls to the top
+                const modalContent = document.querySelector('.modal-content');
+                modalContent.scrollTop = 0;
 
+                // Disable background scroll and show modal
                 disableBackgroundScroll();
                 document.getElementById('newsModal').style.display = 'block';
                 console.log('Modal content:', modalBody.innerHTML);
@@ -201,5 +201,5 @@ document.addEventListener('DOMContentLoaded', function () {
             enableBackgroundScroll();
             document.getElementById('newsModal').style.display = 'none';
         }
-    };
+    }
 });
