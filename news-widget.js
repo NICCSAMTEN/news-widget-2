@@ -183,9 +183,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // Ensure modal scrolls to the top
                 const modalContent = document.querySelector('.modal-content');
-                if (modalContent) {
-                    modalContent.scrollTop = 0; // Scroll to the top
-                }
+                modalContent.scrollTop = 0;
 
                 // Disable background scroll and show modal
                 disableBackgroundScroll();
@@ -198,12 +196,20 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelector('.close').addEventListener('click', function() {
         enableBackgroundScroll();
         document.getElementById('newsModal').style.display = 'none';
+
+        // Reset scroll position when closing the modal
+        const modalContent = document.querySelector('.modal-content');
+        modalContent.scrollTop = 0;
     });
 
     window.onclick = function(event) {
         if (event.target === document.getElementById('newsModal')) {
             enableBackgroundScroll();
             document.getElementById('newsModal').style.display = 'none';
+
+            // Reset scroll position when closing the modal
+            const modalContent = document.querySelector('.modal-content');
+            modalContent.scrollTop = 0;
         }
     }
 });
