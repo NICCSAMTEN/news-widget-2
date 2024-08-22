@@ -183,7 +183,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // Ensure modal scrolls to the top
                 const modalContent = document.querySelector('.modal-content');
-                modalContent.scrollTop = 0;
+                if (modalContent) {
+                    modalContent.scrollTop = 0; // Reset scroll position to the top
+                }
 
                 // Disable background scroll and show modal
                 disableBackgroundScroll();
@@ -199,7 +201,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Reset scroll position when closing the modal
         const modalContent = document.querySelector('.modal-content');
-        modalContent.scrollTop = 0;
+        if (modalContent) {
+            modalContent.scrollTop = 0;
+        }
     });
 
     window.onclick = function(event) {
@@ -209,7 +213,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Reset scroll position when closing the modal
             const modalContent = document.querySelector('.modal-content');
-            modalContent.scrollTop = 0;
+            if (modalContent) {
+                modalContent.scrollTop = 0;
+            }
         }
     }
 });
