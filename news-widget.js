@@ -55,11 +55,13 @@ document.addEventListener('DOMContentLoaded', function () {
     // Function to disable background scroll
     function disableBackgroundScroll() {
         document.body.style.overflow = 'hidden';
+        document.body.classList.add('modal-open');
     }
 
     // Function to enable background scroll
     function enableBackgroundScroll() {
         document.body.style.overflow = '';
+        document.body.classList.remove('modal-open');
     }
 
     // Fetch and display news articles
