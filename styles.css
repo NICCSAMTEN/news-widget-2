@@ -134,6 +134,12 @@
     margin-left: auto;
     margin-right: auto;
 }
+.fr-inner {
+    display: inline-block; /* Ensure the span is treated as a block-level element for centering */
+    text-align: center; /* Center text inside the span */
+    width: 100%; /* Make the span take the full width of its container */
+}
+
 
 /* Close button styles */
 .close {
