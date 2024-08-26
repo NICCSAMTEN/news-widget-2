@@ -120,6 +120,21 @@
     font-size: 14pt;
 }
 
+.modal-content img {
+    display: block;
+    width: 100%;
+    height: auto;
+        display: block;
+    width: 500px; /* Adjust width to fit container */
+    max-width: 878px; /* Maximum width of the thumbnail */
+    height: auto; /* Maintain aspect ratio */
+    object-fit: cover; /* Ensure the image covers the specified dimensions */
+    margin-top: 20px; /* Space above the thumbnail */
+    display: block; /* Ensure the thumbnail is displayed correctly */
+    margin-left: auto;
+    margin-right: auto;
+}
+
 /* Close button styles */
 .close {
     color: #aaa;
