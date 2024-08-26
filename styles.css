@@ -106,6 +106,20 @@
     font-size: 14pt;
 }
 
+.modal-content ul {
+    line-height: 1.75; /* Ensure paragraphs in modal have 1.75 line spacing */
+    font-family: Arial;
+    text-align: justify;
+    font-size: 14pt;
+}
+
+.modal-content li {
+    line-height: 1.75; /* Ensure paragraphs in modal have 1.75 line spacing */
+    font-family: Arial;
+    text-align: justify;
+    font-size: 14pt;
+}
+
 /* Close button styles */
 .close {
     color: #aaa;
