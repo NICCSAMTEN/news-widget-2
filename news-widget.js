@@ -57,10 +57,10 @@ document.addEventListener('DOMContentLoaded', function () {
         document.body.classList.remove('modal-open');
     }
 
-    function disableContentEditable() {
-        const editableElements = document.querySelectorAll('.fr-inner[contenteditable="true"]');
+    function removeContentEditable() {
+        const editableElements = document.querySelectorAll('.fr-inner');
         editableElements.forEach(element => {
-            element.setAttribute('contenteditable', 'false');
+            element.removeAttribute('contenteditable');
         });
     }
 
@@ -69,8 +69,8 @@ document.addEventListener('DOMContentLoaded', function () {
             mutations.forEach(mutation => {
                 if (mutation.type === 'attributes' && mutation.attributeName === 'contenteditable') {
                     const target = mutation.target;
-                    if (target.classList.contains('fr-inner') && target.getAttribute('contenteditable') === 'true') {
-                        target.setAttribute('contenteditable', 'false');
+                    if (target.classList.contains('fr-inner')) {
+                        target.removeAttribute('contenteditable');
                     }
                 }
             });
@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             }
 
-            disableContentEditable();
+            removeContentEditable();
             observeContentEditable();
         })
         .catch(error => console.error('Error loading news:', error));
