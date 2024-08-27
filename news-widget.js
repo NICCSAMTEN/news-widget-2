@@ -64,6 +64,14 @@ document.addEventListener('DOMContentLoaded', function () {
         document.body.classList.remove('modal-open');
     }
 
+    // Disable contenteditable for all elements with the class fr-inner
+    function disableContentEditable() {
+        const editableElements = document.querySelectorAll('.fr-inner[contenteditable="true"]');
+        editableElements.forEach(element => {
+            element.removeAttribute('contenteditable');
+        });
+    }
+
     // Fetch and display news articles
     fetch(baseUrl)
         .then(response => response.text())
@@ -122,6 +130,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     `;
                 });
             }
+
+            // Disable contenteditable on loaded content
+            disableContentEditable();
         })
         .catch(error => console.error('Error loading news:', error));
 
