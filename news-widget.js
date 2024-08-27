@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function disableContentEditable() {
         const editableElements = document.querySelectorAll('.fr-inner[contenteditable="true"]');
         editableElements.forEach(element => {
-            element.removeAttribute('contenteditable');
+            element.setAttribute('contenteditable', 'false');
         });
     }
 
@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (mutation.type === 'attributes' && mutation.attributeName === 'contenteditable') {
                     const target = mutation.target;
                     if (target.classList.contains('fr-inner') && target.getAttribute('contenteditable') === 'true') {
-                        target.removeAttribute('contenteditable');
+                        target.setAttribute('contenteditable', 'false');
                     }
                 }
             });
@@ -235,6 +235,4 @@ document.addEventListener('DOMContentLoaded', function () {
         enableBackgroundScroll();
         document.getElementById('newsModal').style.display = 'none';
     });
-
-    observeContentEditable(); // Start observing for contenteditable changes
 });
