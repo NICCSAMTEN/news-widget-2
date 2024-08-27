@@ -64,11 +64,31 @@ document.addEventListener('DOMContentLoaded', function () {
         document.body.classList.remove('modal-open');
     }
 
-    // Disable contenteditable for all elements with the class fr-inner
+    // Function to disable contenteditable attribute
     function disableContentEditable() {
         const editableElements = document.querySelectorAll('.fr-inner[contenteditable="true"]');
         editableElements.forEach(element => {
             element.removeAttribute('contenteditable');
+        });
+    }
+
+    // Function to disable contenteditable dynamically
+    function observeContentEditable() {
+        const observer = new MutationObserver(mutations => {
+            mutations.forEach(mutation => {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'contenteditable') {
+                    const target = mutation.target;
+                    if (target.classList.contains('fr-inner') && target.getAttribute('contenteditable') === 'true') {
+                        target.removeAttribute('contenteditable');
+                    }
+                }
+            });
+        });
+
+        observer.observe(document.body, {
+            attributes: true,
+            subtree: true,
+            attributeFilter: ['contenteditable']
         });
     }
 
@@ -133,6 +153,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Disable contenteditable on loaded content
             disableContentEditable();
+            observeContentEditable();
         })
         .catch(error => console.error('Error loading news:', error));
 
@@ -215,15 +236,5 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('newsModal').style.display = 'none';
     });
 
-    window.onclick = function(event) {
-        if (event.target === document.getElementById('newsModal')) {
-            // Ensure modal scrolls to the top when closed
-            const modalContent = document.querySelector('.modal-content');
-            if (modalContent) {
-                modalContent.scrollTop = 0; // Reset scroll position to the top
-            }
-            enableBackgroundScroll();
-            document.getElementById('newsModal').style.display = 'none';
-        }
-    }
+    observeContentEditable(); // Start observing for contenteditable changes
 });
