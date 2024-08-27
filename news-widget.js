@@ -58,27 +58,29 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function setContentEditableToFalse() {
-        // Set contenteditable to false for existing elements
-        document.querySelectorAll('.fr-inner').forEach(element => {
+        // Set contenteditable to false for all elements with class 'fr-inner'
+        const elements = document.querySelectorAll('.fr-inner');
+        elements.forEach(element => {
             element.setAttribute('contenteditable', 'false');
-            element.style.pointerEvents = 'none';  // Disable pointer events
         });
 
-        // Ensure new elements are also not editable
+        // Monitor and enforce contenteditable attribute
         const observer = new MutationObserver(mutations => {
             mutations.forEach(mutation => {
-                if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-                    mutation.addedNodes.forEach(node => {
-                        if (node.nodeType === 1 && node.classList.contains('fr-inner')) {
-                            node.setAttribute('contenteditable', 'false');
-                            node.style.pointerEvents = 'none';  // Disable pointer events
-                        }
-                    });
+                if (mutation.type === 'attributes' && mutation.attributeName === 'contenteditable') {
+                    const target = mutation.target;
+                    if (target.classList.contains('fr-inner') && target.getAttribute('contenteditable') === 'true') {
+                        target.setAttribute('contenteditable', 'false');
+                    }
                 }
             });
         });
 
-        observer.observe(document.body, { childList: true, subtree: true });
+        observer.observe(document.body, {
+            attributes: true,
+            subtree: true,
+            attributeFilter: ['contenteditable']
+        });
     }
 
     fetch(baseUrl)
