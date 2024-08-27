@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function removeContentEditable() {
         const editableElements = document.querySelectorAll('.fr-inner');
         editableElements.forEach(element => {
-            element.removeAttribute('contenteditable');
+            element.contentEditable = 'false';
         });
     }
 
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (mutation.type === 'attributes' && mutation.attributeName === 'contenteditable') {
                     const target = mutation.target;
                     if (target.classList.contains('fr-inner')) {
-                        target.removeAttribute('contenteditable');
+                        target.contentEditable = 'false';
                     }
                 }
             });
