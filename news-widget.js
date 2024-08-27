@@ -57,30 +57,26 @@ document.addEventListener('DOMContentLoaded', function () {
         document.body.classList.remove('modal-open');
     }
 
-    function removeContentEditable() {
-        const editableElements = document.querySelectorAll('.fr-inner');
-        editableElements.forEach(element => {
-            element.contentEditable = 'false';
+    function setContentEditableToFalse() {
+        // Set contenteditable to false for existing elements
+        document.querySelectorAll('.fr-inner').forEach(element => {
+            element.setAttribute('contenteditable', 'false');
         });
-    }
 
-    function observeContentEditable() {
+        // Ensure new elements are also not editable
         const observer = new MutationObserver(mutations => {
             mutations.forEach(mutation => {
-                if (mutation.type === 'attributes' && mutation.attributeName === 'contenteditable') {
-                    const target = mutation.target;
-                    if (target.classList.contains('fr-inner')) {
-                        target.contentEditable = 'false';
-                    }
+                if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                    mutation.addedNodes.forEach(node => {
+                        if (node.nodeType === 1 && node.classList.contains('fr-inner')) {
+                            node.setAttribute('contenteditable', 'false');
+                        }
+                    });
                 }
             });
         });
 
-        observer.observe(document.body, {
-            attributes: true,
-            subtree: true,
-            attributeFilter: ['contenteditable']
-        });
+        observer.observe(document.body, { childList: true, subtree: true });
     }
 
     fetch(baseUrl)
@@ -139,8 +135,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             }
 
-            removeContentEditable();
-            observeContentEditable();
+            setContentEditableToFalse();
         })
         .catch(error => console.error('Error loading news:', error));
 
