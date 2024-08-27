@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Function to format posted metadata, removing category and stripping the link
     function formatPostedMetaData(date, author) {
         return `
-            <div class="col-xs-8 col-sm-8 btn-sm nohpad nobpad">
+            <div class="posted-meta-data">
                 <span class="posted-by-snippet-posted">Posted</span>
                 <span class="posted-by-snippet-date">${date}</span>
                 <span class="posted-by-snippet-author">by ${author}</span>
