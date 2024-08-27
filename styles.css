@@ -162,3 +162,10 @@
 body.modal-open {
     overflow: hidden;
 }
+
+.fr-inner[contenteditable="false"] {
+    pointer-events: none;  /* Disable pointer events */
+    user-select: none;     /* Disable text selection */
+    color: inherit;        /* Keep the text color from parent */
+    background: none;      /* Remove any background */
+}
