@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <div style="text-align: left;">
                     <img src="https://github.com/EmillioHezekiah/news-widget-2/blob/18d2e9e6bacf0775095d6e1f8c5a81d051cb4bac/trade2372.png?raw=true" 
                          alt="PR News Logo" 
-                         style="width: 128px; height: 128px; display: block; margin-bottom: 10px;">
+                         class="news-custom-image">
                     <h2>News from Trade PR</h2>
                 </div>
             `;
@@ -116,7 +116,6 @@ document.addEventListener('DOMContentLoaded', function () {
                             <div class="news-content">
                                 <a href="#" class="news-link" data-url="${encodeURIComponent(correctedLink)}">${title}</a>
                                 <p>${description}</p>
-                                <br>
                                 <div class="posted-meta-data">${formatPostedMetaData(postedDate, postedAuthor)}</div>
                             </div>
                         </div>
