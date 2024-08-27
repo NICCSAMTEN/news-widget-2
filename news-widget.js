@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     const baseUrl = 'https://www.tradepr.work/articles/';
 
-    // Function to correct image URLs
     function correctImageUrl(src) {
         if (src.startsWith('/')) {
             return `https://www.tradepr.work${src}`;
@@ -12,17 +11,14 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Function to check if image URL should be excluded
     function shouldExcludeImage(src) {
         return src.includes('/pictures/profile/');
     }
 
-    // Function to clean up the description by removing "View More"
     function cleanDescription(description) {
         return description.replace(/View More/gi, '').trim();
     }
 
-    // Function to format posted metadata
     function formatPostedMetaData(date, author) {
         return `
             <div class="posted-meta-data">
@@ -33,7 +29,6 @@ document.addEventListener('DOMContentLoaded', function () {
         `;
     }
 
-    // Function to extract metadata
     function extractPostedMetaData(element) {
         const postedMetaData = element ? element.textContent.trim() : '';
         let postedDate = 'No Date';
@@ -52,15 +47,42 @@ document.addEventListener('DOMContentLoaded', function () {
         return { postedDate, postedAuthor };
     }
 
-    // Function to remove contenteditable attribute completely
-    function removeContentEditable() {
-        const editableElements = document.querySelectorAll('.fr-inner[contenteditable]');
+    function disableBackgroundScroll() {
+        document.body.style.overflow = 'hidden';
+        document.body.classList.add('modal-open');
+    }
+
+    function enableBackgroundScroll() {
+        document.body.style.overflow = '';
+        document.body.classList.remove('modal-open');
+    }
+
+    function disableContentEditable() {
+        const editableElements = document.querySelectorAll('.fr-inner[contenteditable="true"]');
         editableElements.forEach(element => {
-            element.removeAttribute('contenteditable');
+            element.setAttribute('contenteditable', 'false');
         });
     }
 
-    // Fetch and display news articles
+    function observeContentEditable() {
+        const observer = new MutationObserver(mutations => {
+            mutations.forEach(mutation => {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'contenteditable') {
+                    const target = mutation.target;
+                    if (target.classList.contains('fr-inner') && target.getAttribute('contenteditable') === 'true') {
+                        target.setAttribute('contenteditable', 'false');
+                    }
+                }
+            });
+        });
+
+        observer.observe(document.body, {
+            attributes: true,
+            subtree: true,
+            attributeFilter: ['contenteditable']
+        });
+    }
+
     fetch(baseUrl)
         .then(response => response.text())
         .then(data => {
@@ -117,8 +139,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             }
 
-            // Remove contenteditable attribute on loaded content
-            removeContentEditable();
+            disableContentEditable();
+            observeContentEditable();
         })
         .catch(error => console.error('Error loading news:', error));
 
@@ -131,7 +153,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     function loadNewsContent(url) {
-        console.log('Fetching news content from URL:', url);
         fetch(url)
             .then(response => response.text())
             .then(data => {
@@ -183,7 +204,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 disableBackgroundScroll();
                 document.getElementById('newsModal').style.display = 'block';
-                console.log('Modal content:', modalBody.innerHTML);
             })
             .catch(error => console.error('Error loading news content:', error));
     }
