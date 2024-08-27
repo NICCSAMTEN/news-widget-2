@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return description.replace(/View More/gi, '').trim();
     }
 
-    // Function to format posted metadata, removing category and stripping the link
+    // Function to format posted metadata
     function formatPostedMetaData(date, author) {
         return `
             <div class="posted-meta-data">
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
         `;
     }
 
-    // Function to extract metadata and remove unnecessary parts
+    // Function to extract metadata
     function extractPostedMetaData(element) {
         const postedMetaData = element ? element.textContent.trim() : '';
         let postedDate = 'No Date';
