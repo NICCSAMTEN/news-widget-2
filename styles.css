@@ -135,6 +135,13 @@
     width: 100%; /* Make the span take the full width of its container */
 }
 
+/* Disable contenteditable via CSS */
+[contenteditable] {
+    pointer-events: none; /* Disable mouse events */
+    user-select: none; /* Prevent text selection */
+    background: #f0f0f0; /* Optional: Change background to indicate it's not editable */
+}
+
 /* Close button styles */
 .close {
     color: #aaa;
