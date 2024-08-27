@@ -61,6 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Set contenteditable to false for existing elements
         document.querySelectorAll('.fr-inner').forEach(element => {
             element.setAttribute('contenteditable', 'false');
+            element.style.pointerEvents = 'none';  // Disable pointer events
         });
 
         // Ensure new elements are also not editable
@@ -70,6 +71,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     mutation.addedNodes.forEach(node => {
                         if (node.nodeType === 1 && node.classList.contains('fr-inner')) {
                             node.setAttribute('contenteditable', 'false');
+                            node.style.pointerEvents = 'none';  // Disable pointer events
                         }
                     });
                 }
