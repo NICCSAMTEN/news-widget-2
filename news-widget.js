@@ -58,13 +58,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function setContentEditableToFalse() {
-        // Set contenteditable to false for all elements with class 'fr-inner'
         const elements = document.querySelectorAll('.fr-inner');
         elements.forEach(element => {
             element.setAttribute('contenteditable', 'false');
         });
 
-        // Monitor and enforce contenteditable attribute
         const observer = new MutationObserver(mutations => {
             mutations.forEach(mutation => {
                 if (mutation.type === 'attributes' && mutation.attributeName === 'contenteditable') {
@@ -114,8 +112,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     let imgSrc = '';
                     if (imgElement) {
-                        imgSrc = imgElement.src;
-                        imgSrc = correctImageUrl(imgSrc);
+                        imgSrc = correctImageUrl(imgElement.src);
                         if (shouldExcludeImage(imgSrc)) {
                             imgSrc = '';
                         }
@@ -132,7 +129,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             <div class="news-content">
                                 <a href="#" class="news-link" data-url="${encodeURIComponent(correctedLink)}">${title}</a>
                                 <p>${description}</p>
-                                <div class="posted-meta-data">${formatPostedMetaData(postedDate, postedAuthor)}</div>
+                                ${formatPostedMetaData(postedDate, postedAuthor)}
                             </div>
                         </div>
                     `;
@@ -162,8 +159,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const imageElement = doc.querySelector('.img_section img');
                 let image = '';
                 if (imageElement) {
-                    image = imageElement.src;
-                    image = correctImageUrl(image);
+                    image = correctImageUrl(imageElement.src);
                     if (shouldExcludeImage(image)) {
                         image = '';
                     }
@@ -181,8 +177,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const additionalImageElement = doc.querySelector('img.center-block');
                 let additionalImage = '';
                 if (additionalImageElement) {
-                    additionalImage = additionalImageElement.src;
-                    additionalImage = correctImageUrl(additionalImage);
+                    additionalImage = correctImageUrl(additionalImageElement.src);
                     if (shouldExcludeImage(additionalImage)) {
                         additionalImage = '';
                     }
@@ -194,6 +189,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     ${additionalImage ? `<img src="${additionalImage}" alt="${title}" class="modal-thumbnail">` : ''}
                     ${image ? `<img src="${image}" alt="${title}" class="modal-image">` : ''}
                     <div>${content}</div>
+                    ${formatPostedMetaData(postedDate, postedAuthor)}
                 `;
 
                 const modalContent = document.querySelector('.modal-content');
