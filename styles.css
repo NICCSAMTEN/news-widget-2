@@ -125,8 +125,10 @@
     display: block;
     width: 100%;
     height: auto;
-    margin-top: 20px; /* Space above the image */
+    margin: 20px auto 0 auto; /* Center the image and add space above it */
+    text-align: center;
 }
+
 
 /* Centering for inline block elements */
 .fr-inner {
