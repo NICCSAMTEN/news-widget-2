@@ -189,7 +189,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     ${additionalImage ? `<img src="${additionalImage}" alt="${title}" class="modal-thumbnail">` : ''}
                     ${image ? `<img src="${image}" alt="${title}" class="modal-image">` : ''}
                     <div>${content}</div>
-                    ${formatPostedMetaData(postedDate, postedAuthor)}
+                    
                 `;
 
                 const modalContent = document.querySelector('.modal-content');
