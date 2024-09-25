@@ -21,12 +21,12 @@
                         const parser = new DOMParser();
                         const doc = parser.parseFromString(data, 'text/html');
 
-                        const title = doc.querySelector('h1.bold.h2.nobmargin') ? doc.querySelector('h1.bold.h2.nobmargin').textContent.trim() : 'No Title';
-                        const contentContainer = doc.querySelector('.the-post-description');
-                        let content = 'No Content Available';
-                        if (contentContainer) {
-                            content = contentContainer.innerHTML.trim();
-                        }
+                        // Update these selectors based on the actual structure of the article page
+                        const titleElement = doc.querySelector('.col-md-12.tmargin h1'); // Adjust based on title class
+                        const contentElement = doc.querySelector('.the-post-description'); // This should match the content area
+
+                        const title = titleElement ? titleElement.textContent.trim() : 'No Title';
+                        const content = contentElement ? contentElement.innerHTML.trim() : 'No Content Available';
 
                         const newsContent = document.getElementById('news-content');
                         newsContent.innerHTML = `
