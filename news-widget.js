@@ -89,11 +89,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     const postedMetaDataElement = article.querySelector('.posted_meta_data');
                     const { postedDate, postedAuthor } = extractPostedMetaData(postedMetaDataElement);
 
+                    // Add a link to the full article page
                     widget.innerHTML += `
                         <div class="news-item">
                             ${imgSrc ? `<img src="${imgSrc}" alt="${title}" class="news-image">` : ''}
                             <div class="news-content">
-                                <a href="${correctedLink}" class="news-link">${title}</a>
+                                <a href="news-details.html?articleUrl=${encodeURIComponent(correctedLink)}" class="news-link">${title}</a>
                                 <p>${description}</p>
                                 ${formatPostedMetaData(postedDate, postedAuthor)}
                             </div>
@@ -103,6 +104,4 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         })
         .catch(error => console.error('Error loading news:', error));
-
-    // No need to handle the modal or prevent background scroll anymore.
 });
