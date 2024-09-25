@@ -47,40 +47,6 @@ document.addEventListener('DOMContentLoaded', function () {
         return { postedDate, postedAuthor };
     }
 
-    function disableBackgroundScroll() {
-        document.body.style.overflow = 'hidden';
-        document.body.classList.add('modal-open');
-    }
-
-    function enableBackgroundScroll() {
-        document.body.style.overflow = '';
-        document.body.classList.remove('modal-open');
-    }
-
-    function setContentEditableToFalse() {
-        const elements = document.querySelectorAll('.fr-inner');
-        elements.forEach(element => {
-            element.setAttribute('contenteditable', 'false');
-        });
-
-        const observer = new MutationObserver(mutations => {
-            mutations.forEach(mutation => {
-                if (mutation.type === 'attributes' && mutation.attributeName === 'contenteditable') {
-                    const target = mutation.target;
-                    if (target.classList.contains('fr-inner') && target.getAttribute('contenteditable') === 'true') {
-                        target.setAttribute('contenteditable', 'false');
-                    }
-                }
-            });
-        });
-
-        observer.observe(document.body, {
-            attributes: true,
-            subtree: true,
-            attributeFilter: ['contenteditable']
-        });
-    }
-
     fetch(baseUrl)
         .then(response => response.text())
         .then(data => {
@@ -127,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <div class="news-item">
                             ${imgSrc ? `<img src="${imgSrc}" alt="${title}" class="news-image">` : ''}
                             <div class="news-content">
-                                <a href="#" class="news-link" data-url="${encodeURIComponent(correctedLink)}">${title}</a>
+                                <a href="${correctedLink}" class="news-link">${title}</a>
                                 <p>${description}</p>
                                 ${formatPostedMetaData(postedDate, postedAuthor)}
                             </div>
@@ -135,80 +101,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     `;
                 });
             }
-
-            setContentEditableToFalse();
         })
         .catch(error => console.error('Error loading news:', error));
 
-    document.addEventListener('click', function(event) {
-        if (event.target.matches('.news-link')) {
-            event.preventDefault();
-            const newsUrl = decodeURIComponent(event.target.getAttribute('data-url'));
-            loadNewsContent(newsUrl);
-        }
-    });
-
-    function loadNewsContent(url) {
-        fetch(url)
-            .then(response => response.text())
-            .then(data => {
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(data, 'text/html');
-
-                const title = doc.querySelector('h1.bold.h2.nobmargin') ? doc.querySelector('h1.bold.h2.nobmargin').textContent.trim() : 'No Title';
-                const imageElement = doc.querySelector('.img_section img');
-                let image = '';
-                if (imageElement) {
-                    image = correctImageUrl(imageElement.src);
-                    if (shouldExcludeImage(image)) {
-                        image = '';
-                    }
-                }
-
-                const contentContainer = doc.querySelector('.the-post-description');
-                let content = 'No Content Available';
-                if (contentContainer) {
-                    content = contentContainer.innerHTML.trim();
-                }
-
-                const postedMetaDataElement = doc.querySelector('.posted_meta_data');
-                const { postedDate, postedAuthor } = extractPostedMetaData(postedMetaDataElement);
-
-                const additionalImageElement = doc.querySelector('img.center-block');
-                let additionalImage = '';
-                if (additionalImageElement) {
-                    additionalImage = correctImageUrl(additionalImageElement.src);
-                    if (shouldExcludeImage(additionalImage)) {
-                        additionalImage = '';
-                    }
-                }
-
-                const modalBody = document.getElementById('modal-body');
-                modalBody.innerHTML = `
-                    <h1>${title}</h1>
-                    ${additionalImage ? `<img src="${additionalImage}" alt="${title}" class="modal-thumbnail">` : ''}
-                    ${image ? `<img src="${image}" alt="${title}" class="modal-image">` : ''}
-                    <div>${content}</div>
-                    
-                `;
-
-                const modalContent = document.querySelector('.modal-content');
-                if (modalContent) {
-                    modalContent.scrollTop = 0;
-                }
-
-                disableBackgroundScroll();
-                document.getElementById('newsModal').style.display = 'block';
-            })
-            .catch(error => console.error('Error loading news content:', error));
-    }
-
-    document.querySelector('.close').addEventListener('click', function() {
-        const modalContent = document.querySelector('.modal-content');
-        if (modalContent) {
-            modalContent.scrollTop = 0;
-        }
-        enableBackgroundScroll();
-        document.getElementById('newsModal').style.display = 'none';
-    });
+    // No need to handle the modal or prevent background scroll anymore.
 });
