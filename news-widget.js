@@ -1,12 +1,16 @@
 document.addEventListener('DOMContentLoaded', function () {
     const baseUrl = 'https://www.tradepr.work/articles/';
 
+    // Ensure image URLs are always prefixed with the correct domain
     function correctImageUrl(src) {
         if (src.startsWith('/')) {
+            // If the src starts with `/`, we assume it's relative to the domain
             return `https://www.tradepr.work${src}`;
         } else if (!src.startsWith('http')) {
+            // If the src doesn't start with http, it's likely a file name
             return `https://www.tradepr.work/uploads/news-pictures-thumbnails/${src}`;
         } else {
+            // If it already has a valid http(s) prefix, return it as is
             return src;
         }
     }
@@ -89,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const imgElement = article.querySelector('.img_section img');
                     let imgSrc = '';
                     if (imgElement) {
-                        imgSrc = correctImageUrl(imgElement.src);
+                        imgSrc = correctImageUrl(imgElement.src); // Ensure the correct URL is set
                         if (shouldExcludeImage(imgSrc)) {
                             imgSrc = '';  // Exclude image if necessary
                         }
