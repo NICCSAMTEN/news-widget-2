@@ -64,9 +64,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 </div>
             `;
 
-            const newsContent = document.createElement('div'); // Create a new div for the news content display
+            const newsContent = document.createElement('div');
             newsContent.id = 'news-content';
-            widget.appendChild(newsContent); // Append it to the widget
+            widget.appendChild(newsContent);
 
             if (articles.length === 0) {
                 newsContent.innerHTML = '<p>No news items found.</p>';
@@ -93,7 +93,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     const postedMetaDataElement = article.querySelector('.posted_meta_data');
                     const { postedDate, postedAuthor } = extractPostedMetaData(postedMetaDataElement);
 
-                    // Create news item element
                     const newsItem = document.createElement('div');
                     newsItem.classList.add('news-item');
                     newsItem.innerHTML = `
@@ -104,7 +103,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             ${formatPostedMetaData(postedDate, postedAuthor)}
                         </div>
                     `;
-                    newsContent.appendChild(newsItem); // Append the news item to the news content div
+                    newsContent.appendChild(newsItem);
                 });
             }
         })
@@ -114,13 +113,11 @@ document.addEventListener('DOMContentLoaded', function () {
         if (event.target.matches('.news-link')) {
             event.preventDefault();
             const newsUrl = decodeURIComponent(event.target.getAttribute('data-url'));
-            console.log('News URL:', newsUrl); // Debugging line
             loadNewsContent(newsUrl);
         }
     });
 
     function loadNewsContent(url) {
-        console.log('Fetching news content from:', url); // Debugging line
         fetch(url)
             .then(response => response.text())
             .then(data => {
@@ -156,7 +153,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
 
                 const newsContent = document.getElementById('news-content');
-                newsContent.innerHTML += `
+                newsContent.innerHTML = `
                     <div class="full-news-content">
                         <h1>${title}</h1>
                         ${additionalImage ? `<img src="${additionalImage}" alt="${title}" class="modal-thumbnail">` : ''}
