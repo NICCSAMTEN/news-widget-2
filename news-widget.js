@@ -48,7 +48,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     fetch(baseUrl)
-        .then(response => response.text())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Network response was not ok: ${response.statusText}`);
+            }
+            return response.text();
+        })
         .then(data => {
             const parser = new DOMParser();
             const doc = parser.parseFromString(data, 'text/html');
@@ -70,12 +75,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 articles.forEach(article => {
                     const titleElement = article.querySelector('.h3.bold.bmargin.center-block');
                     const title = titleElement ? titleElement.textContent.trim() : 'No title available';
-                    const link = titleElement ? titleElement.closest('a').href : '#';
+                    const linkElement = titleElement ? titleElement.closest('a') : null;
+                    let link = linkElement ? linkElement.href : '';
+
+                    if (!link) {
+                        console.warn('Article link is missing or invalid:', title);
+                        return;  // Skip this article if the link is invalid
+                    }
+
                     const descriptionElement = article.querySelector('.xs-nomargin');
                     let description = descriptionElement ? descriptionElement.textContent.trim() : 'No description available';
                     description = cleanDescription(description);
-                    const imgElement = article.querySelector('.img_section img');
 
+                    const imgElement = article.querySelector('.img_section img');
                     let imgSrc = '';
                     if (imgElement) {
                         imgSrc = correctImageUrl(imgElement.src);
