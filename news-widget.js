@@ -48,12 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     fetch(baseUrl)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Network response was not ok: ${response.statusText}`);
-            }
-            return response.text();
-        })
+        .then(response => response.text())
         .then(data => {
             const parser = new DOMParser();
             const doc = parser.parseFromString(data, 'text/html');
@@ -76,18 +71,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     const titleElement = article.querySelector('.h3.bold.bmargin.center-block');
                     const title = titleElement ? titleElement.textContent.trim() : 'No title available';
                     const linkElement = titleElement ? titleElement.closest('a') : null;
-                    let link = linkElement ? linkElement.href : '';
-
-                    if (!link) {
-                        console.warn('Article link is missing or invalid:', title);
-                        return;  // Skip this article if the link is invalid
-                    }
-
                     const descriptionElement = article.querySelector('.xs-nomargin');
                     let description = descriptionElement ? descriptionElement.textContent.trim() : 'No description available';
                     description = cleanDescription(description);
-
                     const imgElement = article.querySelector('.img_section img');
+
                     let imgSrc = '';
                     if (imgElement) {
                         imgSrc = correctImageUrl(imgElement.src);
@@ -96,22 +84,28 @@ document.addEventListener('DOMContentLoaded', function () {
                         }
                     }
 
-                    const correctedLink = link.replace(/https:\/\/emilliohezekiah.github.io/, 'https://www.tradepr.work');
+                    // Ensure the link is valid before using it
+                    const link = linkElement ? linkElement.href : null;
+                    if (link) {
+                        const correctedLink = link.replace(/https:\/\/emilliohezekiah.github.io/, 'https://www.tradepr.work');
 
-                    const postedMetaDataElement = article.querySelector('.posted_meta_data');
-                    const { postedDate, postedAuthor } = extractPostedMetaData(postedMetaDataElement);
+                        const postedMetaDataElement = article.querySelector('.posted_meta_data');
+                        const { postedDate, postedAuthor } = extractPostedMetaData(postedMetaDataElement);
 
-                    // Add a link to the full article page
-                    widget.innerHTML += `
-                        <div class="news-item">
-                            ${imgSrc ? `<img src="${imgSrc}" alt="${title}" class="news-image">` : ''}
-                            <div class="news-content">
-                                <a href="news-details.html?articleUrl=${encodeURIComponent(correctedLink)}" class="news-link">${title}</a>
-                                <p>${description}</p>
-                                ${formatPostedMetaData(postedDate, postedAuthor)}
+                        // Add a link to the full article page only if the link is valid
+                        widget.innerHTML += `
+                            <div class="news-item">
+                                ${imgSrc ? `<img src="${imgSrc}" alt="${title}" class="news-image">` : ''}
+                                <div class="news-content">
+                                    <a href="news-details.html?articleUrl=${encodeURIComponent(correctedLink)}" class="news-link">${title}</a>
+                                    <p>${description}</p>
+                                    ${formatPostedMetaData(postedDate, postedAuthor)}
+                                </div>
                             </div>
-                        </div>
-                    `;
+                        `;
+                    } else {
+                        console.warn(`Invalid link for article: ${title}`);
+                    }
                 });
             }
         })
