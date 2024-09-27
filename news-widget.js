@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
         } else if (!src.startsWith('http')) {
             return `https://www.tradepr.work/uploads/news-pictures-thumbnails/${src}`;
         } else {
-            return src.replace(/https:\/\/emilliohezekiah.github.io/, 'https://www.tradepr.work');
+            return src;
         }
     }
 
@@ -47,40 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return { postedDate, postedAuthor };
     }
 
-    function disableBackgroundScroll() {
-        document.body.style.overflow = 'hidden';
-        document.body.classList.add('modal-open');
-    }
-
-    function enableBackgroundScroll() {
-        document.body.style.overflow = '';
-        document.body.classList.remove('modal-open');
-    }
-
-    function setContentEditableToFalse() {
-        const elements = document.querySelectorAll('.fr-inner');
-        elements.forEach(element => {
-            element.setAttribute('contenteditable', 'false');
-        });
-
-        const observer = new MutationObserver(mutations => {
-            mutations.forEach(mutation => {
-                if (mutation.type === 'attributes' && mutation.attributeName === 'contenteditable') {
-                    const target = mutation.target;
-                    if (target.classList.contains('fr-inner') && target.getAttribute('contenteditable') === 'true') {
-                        target.setAttribute('contenteditable', 'false');
-                    }
-                }
-            });
-        });
-
-        observer.observe(document.body, {
-            attributes: true,
-            subtree: true,
-            attributeFilter: ['contenteditable']
-        });
-    }
-
+    // Fetch data from TradePR articles page
     fetch(baseUrl)
         .then(response => response.text())
         .then(data => {
@@ -103,31 +70,40 @@ document.addEventListener('DOMContentLoaded', function () {
             } else {
                 articles.forEach(article => {
                     const titleElement = article.querySelector('.h3.bold.bmargin.center-block');
+                    const linkElement = article.querySelector('a');
+
+                    // Ensure both title and link are present
                     const title = titleElement ? titleElement.textContent.trim() : 'No title available';
-                    const link = titleElement ? titleElement.closest('a').href : '#';
+                    let link = linkElement ? linkElement.href : null;
+
+                    // If the link is null or invalid, ensure a fallback URL
+                    if (!link || link === '#') {
+                        console.warn(`Invalid link for article titled: ${title}. Using base URL.`);
+                        link = baseUrl;  // Default to base URL if the link is invalid
+                    }
+
                     const descriptionElement = article.querySelector('.xs-nomargin');
                     let description = descriptionElement ? descriptionElement.textContent.trim() : 'No description available';
                     description = cleanDescription(description);
-                    const imgElement = article.querySelector('.img_section img');
 
+                    const imgElement = article.querySelector('.img_section img');
                     let imgSrc = '';
                     if (imgElement) {
                         imgSrc = correctImageUrl(imgElement.src);
                         if (shouldExcludeImage(imgSrc)) {
-                            imgSrc = '';
+                            imgSrc = '';  // Exclude image if necessary
                         }
                     }
-
-                    const correctedLink = link.replace(/https:\/\/emilliohezekiah.github.io/, 'https://www.tradepr.work');
 
                     const postedMetaDataElement = article.querySelector('.posted_meta_data');
                     const { postedDate, postedAuthor } = extractPostedMetaData(postedMetaDataElement);
 
+                    // Add a link to the full article page
                     widget.innerHTML += `
                         <div class="news-item">
                             ${imgSrc ? `<img src="${imgSrc}" alt="${title}" class="news-image">` : ''}
                             <div class="news-content">
-                                <a href="#" class="news-link" data-url="${encodeURIComponent(correctedLink)}">${title}</a>
+                                <a href="news-details.html?articleUrl=${encodeURIComponent(link)}" class="news-link">${title}</a>
                                 <p>${description}</p>
                                 ${formatPostedMetaData(postedDate, postedAuthor)}
                             </div>
@@ -135,80 +111,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     `;
                 });
             }
-
-            setContentEditableToFalse();
         })
         .catch(error => console.error('Error loading news:', error));
-
-    document.addEventListener('click', function(event) {
-        if (event.target.matches('.news-link')) {
-            event.preventDefault();
-            const newsUrl = decodeURIComponent(event.target.getAttribute('data-url'));
-            loadNewsContent(newsUrl);
-        }
-    });
-
-    function loadNewsContent(url) {
-        fetch(url)
-            .then(response => response.text())
-            .then(data => {
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(data, 'text/html');
-
-                const title = doc.querySelector('h1.bold.h2.nobmargin') ? doc.querySelector('h1.bold.h2.nobmargin').textContent.trim() : 'No Title';
-                const imageElement = doc.querySelector('.img_section img');
-                let image = '';
-                if (imageElement) {
-                    image = correctImageUrl(imageElement.src);
-                    if (shouldExcludeImage(image)) {
-                        image = '';
-                    }
-                }
-
-                const contentContainer = doc.querySelector('.the-post-description');
-                let content = 'No Content Available';
-                if (contentContainer) {
-                    content = contentContainer.innerHTML.trim();
-                }
-
-                const postedMetaDataElement = doc.querySelector('.posted_meta_data');
-                const { postedDate, postedAuthor } = extractPostedMetaData(postedMetaDataElement);
-
-                const additionalImageElement = doc.querySelector('img.center-block');
-                let additionalImage = '';
-                if (additionalImageElement) {
-                    additionalImage = correctImageUrl(additionalImageElement.src);
-                    if (shouldExcludeImage(additionalImage)) {
-                        additionalImage = '';
-                    }
-                }
-
-                const modalBody = document.getElementById('modal-body');
-                modalBody.innerHTML = `
-                    <h1>${title}</h1>
-                    ${additionalImage ? `<img src="${additionalImage}" alt="${title}" class="modal-thumbnail">` : ''}
-                    ${image ? `<img src="${image}" alt="${title}" class="modal-image">` : ''}
-                    <div>${content}</div>
-                    
-                `;
-
-                const modalContent = document.querySelector('.modal-content');
-                if (modalContent) {
-                    modalContent.scrollTop = 0;
-                }
-
-                disableBackgroundScroll();
-                document.getElementById('newsModal').style.display = 'block';
-            })
-            .catch(error => console.error('Error loading news content:', error));
-    }
-
-    document.querySelector('.close').addEventListener('click', function() {
-        const modalContent = document.querySelector('.modal-content');
-        if (modalContent) {
-            modalContent.scrollTop = 0;
-        }
-        enableBackgroundScroll();
-        document.getElementById('newsModal').style.display = 'none';
-    });
 });
