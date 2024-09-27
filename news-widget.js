@@ -69,13 +69,23 @@ document.addEventListener('DOMContentLoaded', function () {
             } else {
                 articles.forEach(article => {
                     const titleElement = article.querySelector('.h3.bold.bmargin.center-block');
+                    const linkElement = article.querySelector('a');
+
                     const title = titleElement ? titleElement.textContent.trim() : 'No title available';
-                    const linkElement = titleElement ? titleElement.closest('a') : null;
+                    let link = linkElement ? linkElement.href : null;
+
+                    if (link) {
+                        link = link.replace(/https:\/\/emilliohezekiah.github.io/, 'https://www.tradepr.work');
+                    } else {
+                        console.warn(`Invalid link for article: ${title}`);
+                        return;  // Skip this article if the link is invalid
+                    }
+
                     const descriptionElement = article.querySelector('.xs-nomargin');
                     let description = descriptionElement ? descriptionElement.textContent.trim() : 'No description available';
                     description = cleanDescription(description);
-                    const imgElement = article.querySelector('.img_section img');
 
+                    const imgElement = article.querySelector('.img_section img');
                     let imgSrc = '';
                     if (imgElement) {
                         imgSrc = correctImageUrl(imgElement.src);
@@ -84,28 +94,20 @@ document.addEventListener('DOMContentLoaded', function () {
                         }
                     }
 
-                    // Ensure the link is valid before using it
-                    const link = linkElement ? linkElement.href : null;
-                    if (link) {
-                        const correctedLink = link.replace(/https:\/\/emilliohezekiah.github.io/, 'https://www.tradepr.work');
+                    const postedMetaDataElement = article.querySelector('.posted_meta_data');
+                    const { postedDate, postedAuthor } = extractPostedMetaData(postedMetaDataElement);
 
-                        const postedMetaDataElement = article.querySelector('.posted_meta_data');
-                        const { postedDate, postedAuthor } = extractPostedMetaData(postedMetaDataElement);
-
-                        // Add a link to the full article page only if the link is valid
-                        widget.innerHTML += `
-                            <div class="news-item">
-                                ${imgSrc ? `<img src="${imgSrc}" alt="${title}" class="news-image">` : ''}
-                                <div class="news-content">
-                                    <a href="news-details.html?articleUrl=${encodeURIComponent(correctedLink)}" class="news-link">${title}</a>
-                                    <p>${description}</p>
-                                    ${formatPostedMetaData(postedDate, postedAuthor)}
-                                </div>
+                    // Add a link to the full article page
+                    widget.innerHTML += `
+                        <div class="news-item">
+                            ${imgSrc ? `<img src="${imgSrc}" alt="${title}" class="news-image">` : ''}
+                            <div class="news-content">
+                                <a href="news-details.html?articleUrl=${encodeURIComponent(link)}" class="news-link">${title}</a>
+                                <p>${description}</p>
+                                ${formatPostedMetaData(postedDate, postedAuthor)}
                             </div>
-                        `;
-                    } else {
-                        console.warn(`Invalid link for article: ${title}`);
-                    }
+                        </div>
+                    `;
                 });
             }
         })
