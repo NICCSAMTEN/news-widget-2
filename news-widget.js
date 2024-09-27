@@ -114,11 +114,13 @@ document.addEventListener('DOMContentLoaded', function () {
         if (event.target.matches('.news-link')) {
             event.preventDefault();
             const newsUrl = decodeURIComponent(event.target.getAttribute('data-url'));
+            console.log('News URL:', newsUrl); // Debugging line
             loadNewsContent(newsUrl);
         }
     });
 
     function loadNewsContent(url) {
+        console.log('Fetching news content from:', url); // Debugging line
         fetch(url)
             .then(response => response.text())
             .then(data => {
