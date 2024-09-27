@@ -3,15 +3,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Ensure image URLs are always prefixed with the correct domain
     function correctImageUrl(src) {
-        if (src.startsWith('/')) {
-            // If the src starts with `/`, we assume it's relative to the domain
+        if (src.startsWith('/uploads')) {
+            // If the image path starts with '/uploads', prepend the correct domain
             return `https://www.tradepr.work${src}`;
         } else if (!src.startsWith('http')) {
-            // If the src doesn't start with http, it's likely a file name
+            // If it's a relative file name, use the full thumbnail path
             return `https://www.tradepr.work/uploads/news-pictures-thumbnails/${src}`;
         } else {
-            // If it already has a valid http(s) prefix, return it as is
-            return src;
+            // If it's already a valid http(s) URL, ensure it's from tradepr.work
+            return src.replace(/https:\/\/emilliohezekiah.github.io/, 'https://www.tradepr.work');
         }
     }
 
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return { postedDate, postedAuthor };
     }
 
-    // Fetch data from TradePR articles page
+    // Fetch data from the TradePR articles page
     fetch(baseUrl)
         .then(response => response.text())
         .then(data => {
@@ -76,14 +76,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     const titleElement = article.querySelector('.h3.bold.bmargin.center-block');
                     const linkElement = article.querySelector('a');
 
-                    // Ensure both title and link are present
                     const title = titleElement ? titleElement.textContent.trim() : 'No title available';
                     let link = linkElement ? linkElement.href : null;
 
-                    // If the link is null or invalid, ensure a fallback URL
                     if (!link || link === '#') {
                         console.warn(`Invalid link for article titled: ${title}. Using base URL.`);
-                        link = baseUrl;  // Default to base URL if the link is invalid
+                        link = baseUrl;
                     }
 
                     const descriptionElement = article.querySelector('.xs-nomargin');
@@ -93,9 +91,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     const imgElement = article.querySelector('.img_section img');
                     let imgSrc = '';
                     if (imgElement) {
-                        imgSrc = correctImageUrl(imgElement.src); // Ensure the correct URL is set
+                        imgSrc = correctImageUrl(imgElement.src);  // Ensure the correct URL is set
                         if (shouldExcludeImage(imgSrc)) {
-                            imgSrc = '';  // Exclude image if necessary
+                            imgSrc = '';
                         }
                     }
 
