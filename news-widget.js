@@ -47,40 +47,6 @@ document.addEventListener('DOMContentLoaded', function () {
         return { postedDate, postedAuthor };
     }
 
-    function disableBackgroundScroll() {
-        document.body.style.overflow = 'hidden';
-        document.body.classList.add('modal-open');
-    }
-
-    function enableBackgroundScroll() {
-        document.body.style.overflow = '';
-        document.body.classList.remove('modal-open');
-    }
-
-    function setContentEditableToFalse() {
-        const elements = document.querySelectorAll('.fr-inner');
-        elements.forEach(element => {
-            element.setAttribute('contenteditable', 'false');
-        });
-
-        const observer = new MutationObserver(mutations => {
-            mutations.forEach(mutation => {
-                if (mutation.type === 'attributes' && mutation.attributeName === 'contenteditable') {
-                    const target = mutation.target;
-                    if (target.classList.contains('fr-inner') && target.getAttribute('contenteditable') === 'true') {
-                        target.setAttribute('contenteditable', 'false');
-                    }
-                }
-            });
-        });
-
-        observer.observe(document.body, {
-            attributes: true,
-            subtree: true,
-            attributeFilter: ['contenteditable']
-        });
-    }
-
     fetch(baseUrl)
         .then(response => response.text())
         .then(data => {
@@ -98,8 +64,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 </div>
             `;
 
+            const newsContent = document.createElement('div'); // Create a new div for the news content display
+            newsContent.id = 'news-content';
+            widget.appendChild(newsContent); // Append it to the widget
+
             if (articles.length === 0) {
-                widget.innerHTML += '<p>No news items found.</p>';
+                newsContent.innerHTML = '<p>No news items found.</p>';
             } else {
                 articles.forEach(article => {
                     const titleElement = article.querySelector('.h3.bold.bmargin.center-block');
@@ -123,20 +93,20 @@ document.addEventListener('DOMContentLoaded', function () {
                     const postedMetaDataElement = article.querySelector('.posted_meta_data');
                     const { postedDate, postedAuthor } = extractPostedMetaData(postedMetaDataElement);
 
-                    widget.innerHTML += `
-                        <div class="news-item">
-                            ${imgSrc ? `<img src="${imgSrc}" alt="${title}" class="news-image">` : ''}
-                            <div class="news-content">
-                                <a href="#" class="news-link" data-url="${encodeURIComponent(correctedLink)}">${title}</a>
-                                <p>${description}</p>
-                                ${formatPostedMetaData(postedDate, postedAuthor)}
-                            </div>
+                    // Create news item element
+                    const newsItem = document.createElement('div');
+                    newsItem.classList.add('news-item');
+                    newsItem.innerHTML = `
+                        ${imgSrc ? `<img src="${imgSrc}" alt="${title}" class="news-image">` : ''}
+                        <div class="news-content">
+                            <a href="#" class="news-link" data-url="${encodeURIComponent(correctedLink)}">${title}</a>
+                            <p>${description}</p>
+                            ${formatPostedMetaData(postedDate, postedAuthor)}
                         </div>
                     `;
+                    newsContent.appendChild(newsItem); // Append the news item to the news content div
                 });
             }
-
-            setContentEditableToFalse();
         })
         .catch(error => console.error('Error loading news:', error));
 
@@ -183,31 +153,17 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 }
 
-                const modalBody = document.getElementById('modal-body');
-                modalBody.innerHTML = `
-                    <h1>${title}</h1>
-                    ${additionalImage ? `<img src="${additionalImage}" alt="${title}" class="modal-thumbnail">` : ''}
-                    ${image ? `<img src="${image}" alt="${title}" class="modal-image">` : ''}
-                    <div>${content}</div>
+                const newsContent = document.getElementById('news-content');
+                newsContent.innerHTML += `
+                    <div class="full-news-content">
+                        <h1>${title}</h1>
+                        ${additionalImage ? `<img src="${additionalImage}" alt="${title}" class="modal-thumbnail">` : ''}
+                        ${image ? `<img src="${image}" alt="${title}" class="modal-image">` : ''}
+                        <div>${content}</div>
+                        ${formatPostedMetaData(postedDate, postedAuthor)}
+                    </div>
                 `;
-
-                const modalContent = document.querySelector('.modal-content');
-                if (modalContent) {
-                    modalContent.scrollTop = 0;
-                }
-
-                disableBackgroundScroll();
-                document.getElementById('newsModal').style.display = 'block';
             })
             .catch(error => console.error('Error loading news content:', error));
     }
-
-    document.querySelector('.close').addEventListener('click', function() {
-        const modalContent = document.querySelector('.modal-content');
-        if (modalContent) {
-            modalContent.scrollTop = 0;
-        }
-        enableBackgroundScroll();
-        document.getElementById('newsModal').style.display = 'none';
-    });
 });
