@@ -75,10 +75,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     const linkElement = article.querySelector('a');
 
                     const title = titleElement ? titleElement.textContent.trim() : 'No title available';
-                    let link = linkElement ? linkElement.href : null;
-
-                    // Correctly use the `href` from the article without encoding it
-                    const correctedLink = `${baseUrl}${link}`;
+                    const relativeLink = linkElement ? linkElement.getAttribute('href') : '';
+                    
+                    // Create the full URL to the article using the correct path
+                    const correctedLink = `${baseUrl}${relativeLink}`;
 
                     const descriptionElement = article.querySelector('.xs-nomargin');
                     let description = descriptionElement ? descriptionElement.textContent.trim() : 'No description available';
