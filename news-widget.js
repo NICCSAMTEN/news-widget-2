@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
         } else if (!src.startsWith('http')) {
             return `https://www.tradepr.work/uploads/news-pictures-thumbnails/${src}`;
         } else {
-            return src.replace(/https:\/\/emilliohezekiah.github.io/, 'https://www.tradepr.work');
+            return src;  // No need to replace as we no longer use GitHub URLs.
         }
     }
 
@@ -47,6 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return { postedDate, postedAuthor };
     }
 
+    // Fetch data from TradePR articles page
     fetch(baseUrl)
         .then(response => response.text())
         .then(data => {
@@ -74,11 +75,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     const title = titleElement ? titleElement.textContent.trim() : 'No title available';
                     let link = linkElement ? linkElement.href : null;
 
-                    if (link) {
-                        link = link.replace(/https:\/\/emilliohezekiah.github.io/, 'https://www.tradepr.work');
-                    } else {
-                        console.warn(`Invalid link for article: ${title}`);
-                        return;  // Skip this article if the link is invalid
+                    // Ensure that the link is valid, otherwise use the base URL
+                    if (!link || link === '#') {
+                        link = baseUrl;  // Default to base URL if link is invalid
                     }
 
                     const descriptionElement = article.querySelector('.xs-nomargin');
