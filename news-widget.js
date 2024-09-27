@@ -4,15 +4,18 @@ document.addEventListener('DOMContentLoaded', function () {
     // Ensure image URLs are always prefixed with the correct domain
     function correctImageUrl(src) {
         if (src.startsWith('/uploads')) {
-            // If the image path starts with '/uploads', prepend the correct domain
             return `https://www.tradepr.work${src}`;
         } else if (!src.startsWith('http')) {
-            // If it's a relative file name, use the full thumbnail path
             return `https://www.tradepr.work/uploads/news-pictures-thumbnails/${src}`;
         } else {
-            // If it's already a valid http(s) URL, ensure it's from tradepr.work
+            // Ensure it's from tradepr.work
             return src.replace(/https:\/\/emilliohezekiah.github.io/, 'https://www.tradepr.work');
         }
+    }
+
+    // Ensure the article URL links to tradepr.work
+    function correctArticleUrl(link) {
+        return link.replace(/https:\/\/emilliohezekiah.github.io/, 'https://www.tradepr.work');
     }
 
     function shouldExcludeImage(src) {
@@ -51,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return { postedDate, postedAuthor };
     }
 
-    // Fetch data from the TradePR articles page
+    // Fetch and display the articles
     fetch(baseUrl)
         .then(response => response.text())
         .then(data => {
@@ -84,6 +87,9 @@ document.addEventListener('DOMContentLoaded', function () {
                         link = baseUrl;
                     }
 
+                    // Ensure the link points to tradepr.work
+                    const correctedLink = correctArticleUrl(link);
+
                     const descriptionElement = article.querySelector('.xs-nomargin');
                     let description = descriptionElement ? descriptionElement.textContent.trim() : 'No description available';
                     description = cleanDescription(description);
@@ -100,12 +106,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     const postedMetaDataElement = article.querySelector('.posted_meta_data');
                     const { postedDate, postedAuthor } = extractPostedMetaData(postedMetaDataElement);
 
-                    // Add a link to the full article page
+                    // Add a link to the full article page on tradepr.work
                     widget.innerHTML += `
                         <div class="news-item">
                             ${imgSrc ? `<img src="${imgSrc}" alt="${title}" class="news-image">` : ''}
                             <div class="news-content">
-                                <a href="news-details.html?articleUrl=${encodeURIComponent(link)}" class="news-link">${title}</a>
+                                <a href="news-details.html?articleUrl=${encodeURIComponent(correctedLink)}" class="news-link">${title}</a>
                                 <p>${description}</p>
                                 ${formatPostedMetaData(postedDate, postedAuthor)}
                             </div>
