@@ -47,75 +47,58 @@ document.addEventListener('DOMContentLoaded', function () {
         return { postedDate, postedAuthor };
     }
 
-    fetch(baseUrl)
-        .then(response => response.text())
-        .then(data => {
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(data, 'text/html');
-            const articles = doc.querySelectorAll('.row-fluid.search_result');
-            const widget = document.getElementById('news-widget');
+    function loadNewsList() {
+        fetch(baseUrl)
+            .then(response => response.text())
+            .then(data => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(data, 'text/html');
+                const articles = doc.querySelectorAll('.row-fluid.search_result');
+                const newsContent = document.getElementById('news-content');
 
-            widget.innerHTML = `
-                <div style="text-align: left;">
-                    <img src="https://github.com/EmillioHezekiah/news-widget-2/blob/18d2e9e6bacf0775095d6e1f8c5a81d051cb4bac/trade2372.png?raw=true" 
-                         alt="PR News Logo" 
-                         class="news-custom-image">
-                    <h2>News from Trade PR</h2>
-                </div>
-            `;
+                newsContent.innerHTML = ''; // Clear the current content
 
-            const newsContent = document.createElement('div');
-            newsContent.id = 'news-content';
-            widget.appendChild(newsContent);
+                if (articles.length === 0) {
+                    newsContent.innerHTML = '<p>No news items found.</p>';
+                } else {
+                    articles.forEach(article => {
+                        const titleElement = article.querySelector('.h3.bold.bmargin.center-block');
+                        const title = titleElement ? titleElement.textContent.trim() : 'No title available';
+                        const link = titleElement ? titleElement.closest('a').href : '#';
+                        const descriptionElement = article.querySelector('.xs-nomargin');
+                        let description = descriptionElement ? descriptionElement.textContent.trim() : 'No description available';
+                        description = cleanDescription(description);
+                        const imgElement = article.querySelector('.img_section img');
 
-            if (articles.length === 0) {
-                newsContent.innerHTML = '<p>No news items found.</p>';
-            } else {
-                articles.forEach(article => {
-                    const titleElement = article.querySelector('.h3.bold.bmargin.center-block');
-                    const title = titleElement ? titleElement.textContent.trim() : 'No title available';
-                    const link = titleElement ? titleElement.closest('a').href : '#';
-                    const descriptionElement = article.querySelector('.xs-nomargin');
-                    let description = descriptionElement ? descriptionElement.textContent.trim() : 'No description available';
-                    description = cleanDescription(description);
-                    const imgElement = article.querySelector('.img_section img');
-
-                    let imgSrc = '';
-                    if (imgElement) {
-                        imgSrc = correctImageUrl(imgElement.src);
-                        if (shouldExcludeImage(imgSrc)) {
-                            imgSrc = '';
+                        let imgSrc = '';
+                        if (imgElement) {
+                            imgSrc = correctImageUrl(imgElement.src);
+                            if (shouldExcludeImage(imgSrc)) {
+                                imgSrc = '';
+                            }
                         }
-                    }
 
-                    const correctedLink = link.replace(/https:\/\/emilliohezekiah.github.io/, 'https://www.tradepr.work');
+                        const correctedLink = link.replace(/https:\/\/emilliohezekiah.github.io/, 'https://www.tradepr.work');
 
-                    const postedMetaDataElement = article.querySelector('.posted_meta_data');
-                    const { postedDate, postedAuthor } = extractPostedMetaData(postedMetaDataElement);
+                        const postedMetaDataElement = article.querySelector('.posted_meta_data');
+                        const { postedDate, postedAuthor } = extractPostedMetaData(postedMetaDataElement);
 
-                    const newsItem = document.createElement('div');
-                    newsItem.classList.add('news-item');
-                    newsItem.innerHTML = `
-                        ${imgSrc ? `<img src="${imgSrc}" alt="${title}" class="news-image">` : ''}
-                        <div class="news-content">
-                            <a href="#" class="news-link" data-url="${encodeURIComponent(correctedLink)}">${title}</a>
-                            <p>${description}</p>
-                            ${formatPostedMetaData(postedDate, postedAuthor)}
-                        </div>
-                    `;
-                    newsContent.appendChild(newsItem);
-                });
-            }
-        })
-        .catch(error => console.error('Error loading news:', error));
-
-    document.addEventListener('click', function(event) {
-        if (event.target.matches('.news-link')) {
-            event.preventDefault();
-            const newsUrl = decodeURIComponent(event.target.getAttribute('data-url'));
-            loadNewsContent(newsUrl);
-        }
-    });
+                        const newsItem = document.createElement('div');
+                        newsItem.classList.add('news-item');
+                        newsItem.innerHTML = `
+                            ${imgSrc ? `<img src="${imgSrc}" alt="${title}" class="news-image">` : ''}
+                            <div class="news-content">
+                                <a href="#" class="news-link" data-url="${encodeURIComponent(correctedLink)}">${title}</a>
+                                <p>${description}</p>
+                                ${formatPostedMetaData(postedDate, postedAuthor)}
+                            </div>
+                        `;
+                        newsContent.appendChild(newsItem);
+                    });
+                }
+            })
+            .catch(error => console.error('Error loading news:', error));
+    }
 
     function loadNewsContent(url) {
         fetch(url)
@@ -160,9 +143,26 @@ document.addEventListener('DOMContentLoaded', function () {
                         ${image ? `<img src="${image}" alt="${title}" class="modal-image">` : ''}
                         <div>${content}</div>
                         ${formatPostedMetaData(postedDate, postedAuthor)}
+                        <button id="back-to-news-list" class="back-button">Back to News List</button>
                     </div>
                 `;
+
+                // Add event listener to the back button
+                document.getElementById('back-to-news-list').addEventListener('click', function() {
+                    loadNewsList(); // Reload the news list when the back button is clicked
+                });
             })
             .catch(error => console.error('Error loading news content:', error));
     }
+
+    // Initial load of news list
+    loadNewsList();
+
+    document.addEventListener('click', function(event) {
+        if (event.target.matches('.news-link')) {
+            event.preventDefault();
+            const newsUrl = decodeURIComponent(event.target.getAttribute('data-url'));
+            loadNewsContent(newsUrl); // Load full news content when a link is clicked
+        }
+    });
 });
