@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     const baseUrl = 'https://www.tradepr.work/articles/';
+    let currentPage = 1; // Keep track of the current page
 
     function correctImageUrl(src) {
         if (src.startsWith('/')) {
@@ -47,8 +48,8 @@ document.addEventListener('DOMContentLoaded', function () {
         return { postedDate, postedAuthor };
     }
 
-    function loadNewsList() {
-        fetch(baseUrl)
+    function loadNewsList(page) {
+        fetch(`${baseUrl}?page=${page}`)
             .then(response => response.text())
             .then(data => {
                 const parser = new DOMParser();
@@ -106,12 +107,42 @@ document.addEventListener('DOMContentLoaded', function () {
                         `;
                         newsContent.appendChild(newsItem);
                     });
+
+                    // Add pagination buttons
+                    addPagination(doc, page);
                 }
             })
             .catch(error => console.error('Error loading news:', error));
     }
 
-    document.addEventListener('click', function(event) {
+    function addPagination(doc, currentPage) {
+        const paginationContainer = document.createElement('div');
+        paginationContainer.id = 'pagination';
+        const totalPages = parseInt(doc.querySelector('.pagination .last a').textContent.trim()) || 1;
+
+        if (currentPage > 1) {
+            const prevButton = document.createElement('button');
+            prevButton.innerText = 'Previous';
+            prevButton.addEventListener('click', function () {
+                loadNewsList(currentPage - 1);
+            });
+            paginationContainer.appendChild(prevButton);
+        }
+
+        if (currentPage < totalPages) {
+            const nextButton = document.createElement('button');
+            nextButton.innerText = 'Next';
+            nextButton.addEventListener('click', function () {
+                loadNewsList(currentPage + 1);
+            });
+            paginationContainer.appendChild(nextButton);
+        }
+
+        const widget = document.getElementById('news-widget');
+        widget.appendChild(paginationContainer);
+    }
+
+    document.addEventListener('click', function (event) {
         if (event.target.matches('.news-link')) {
             event.preventDefault();
             const newsUrl = decodeURIComponent(event.target.getAttribute('data-url'));
@@ -171,10 +202,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 `;
 
                 const backButton = document.getElementById('back-to-list');
-                backButton.addEventListener('click', loadNewsList);
+                backButton.addEventListener('click', function () {
+                    loadNewsList(currentPage);
+                });
             })
             .catch(error => console.error('Error loading news content:', error));
     }
 
-    loadNewsList(); // Initially load the news list
+    loadNewsList(currentPage); // Initially load the news list for the first page
 });
