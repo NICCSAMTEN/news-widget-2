@@ -3,42 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>News Details</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>News Widget</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Ensure this path is correct -->
 </head>
 <body>
-    <div id="news-content"></div>
+    <div id="news-widget-container">
+        <div id="news-widget" class="news-widget"></div>
+    </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const articleUrl = decodeURIComponent(urlParams.get('articleUrl'));
+    <!-- Modal -->
+    <div id="newsModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modal-body"></div>
+        </div>
+    </div>
 
-            if (articleUrl) {
-                fetch(articleUrl)
-                    .then(response => response.text())
-                    .then(data => {
-                        const parser = new DOMParser();
-                        const doc = parser.parseFromString(data, 'text/html');
-
-                        // Update these selectors based on the actual structure of the article page
-                        const titleElement = doc.querySelector('.col-md-12.tmargin h1'); // Adjust based on title class
-                        const contentElement = doc.querySelector('.the-post-description'); // This should match the content area
-
-                        const title = titleElement ? titleElement.textContent.trim() : 'No Title';
-                        const content = contentElement ? contentElement.innerHTML.trim() : 'No Content Available';
-
-                        const newsContent = document.getElementById('news-content');
-                        newsContent.innerHTML = `
-                            <h1>${title}</h1>
-                            <div>${content}</div>
-                        `;
-                    })
-                    .catch(error => console.error('Error loading news content:', error));
-            } else {
-                document.getElementById('news-content').innerHTML = '<p>Error: Article not found.</p>';
-            }
-        });
-    </script>
+    <script src="news-widget.js"></script> <!-- Ensure this path is correct -->
 </body>
 </html>
