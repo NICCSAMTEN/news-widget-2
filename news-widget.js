@@ -54,9 +54,20 @@ document.addEventListener('DOMContentLoaded', function () {
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(data, 'text/html');
                 const articles = doc.querySelectorAll('.row-fluid.search_result');
-                const newsContent = document.getElementById('news-content');
+                const widget = document.getElementById('news-widget');
 
-                newsContent.innerHTML = ''; // Clear the current content
+                widget.innerHTML = `
+                    <div style="text-align: left;">
+                        <img src="https://github.com/EmillioHezekiah/news-widget-2/blob/18d2e9e6bacf0775095d6e1f8c5a81d051cb4bac/trade2372.png?raw=true" 
+                             alt="PR News Logo" 
+                             class="news-custom-image">
+                        <h2>News from Trade PR</h2>
+                    </div>
+                `;
+
+                const newsContent = document.createElement('div');
+                newsContent.id = 'news-content';
+                widget.appendChild(newsContent);
 
                 if (articles.length === 0) {
                     newsContent.innerHTML = '<p>No news items found.</p>';
@@ -100,6 +111,14 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => console.error('Error loading news:', error));
     }
 
+    document.addEventListener('click', function(event) {
+        if (event.target.matches('.news-link')) {
+            event.preventDefault();
+            const newsUrl = decodeURIComponent(event.target.getAttribute('data-url'));
+            loadNewsContent(newsUrl);
+        }
+    });
+
     function loadNewsContent(url) {
         fetch(url)
             .then(response => response.text())
@@ -136,6 +155,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
 
                 const newsContent = document.getElementById('news-content');
+                if (!newsContent) {
+                    console.error('News content container not found.');
+                    return;
+                }
                 newsContent.innerHTML = `
                     <div class="full-news-content">
                         <h1>${title}</h1>
@@ -143,26 +166,15 @@ document.addEventListener('DOMContentLoaded', function () {
                         ${image ? `<img src="${image}" alt="${title}" class="modal-image">` : ''}
                         <div>${content}</div>
                         ${formatPostedMetaData(postedDate, postedAuthor)}
-                        <button id="back-to-news-list" class="back-button">Back to News List</button>
                     </div>
+                    <button id="back-to-list">Back to News List</button>
                 `;
 
-                // Add event listener to the back button
-                document.getElementById('back-to-news-list').addEventListener('click', function() {
-                    loadNewsList(); // Reload the news list when the back button is clicked
-                });
+                const backButton = document.getElementById('back-to-list');
+                backButton.addEventListener('click', loadNewsList);
             })
             .catch(error => console.error('Error loading news content:', error));
     }
 
-    // Initial load of news list
-    loadNewsList();
-
-    document.addEventListener('click', function(event) {
-        if (event.target.matches('.news-link')) {
-            event.preventDefault();
-            const newsUrl = decodeURIComponent(event.target.getAttribute('data-url'));
-            loadNewsContent(newsUrl); // Load full news content when a link is clicked
-        }
-    });
+    loadNewsList(); // Initially load the news list
 });
