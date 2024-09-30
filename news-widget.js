@@ -119,11 +119,14 @@ document.addEventListener('DOMContentLoaded', function () {
                         newsContent.appendChild(newsItem);
                     });
 
-                    // Remove pagination buttons
+                    // Remove pagination buttons on news content page
                     const paginationContainer = document.getElementById('pagination');
                     if (paginationContainer) {
                         paginationContainer.remove();
                     }
+
+                    // Call function to add pagination buttons
+                    addPagination(doc);
                 }
 
                 window.scrollTo(0, scrollPosition); // Restore scroll position after loading the list
@@ -132,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Handle pagination dynamically
-    function addOriginalPagination(doc) {
+    function addPagination(doc) {
         const paginationLinks = doc.querySelectorAll('.pagination a');
         if (paginationLinks.length > 0) {
             const paginationContainer = document.createElement('div');
@@ -163,7 +166,6 @@ document.addEventListener('DOMContentLoaded', function () {
         if (event.target.matches('.news-link')) {
             event.preventDefault();
             const newsUrl = decodeURIComponent(event.target.getAttribute('data-url'));
-            scrollPosition = window.scrollY; // Store current scroll position before going to the news content
             loadNewsContent(newsUrl);
         }
     });
@@ -217,12 +219,11 @@ document.addEventListener('DOMContentLoaded', function () {
                         ${image ? `<img src="${image}" alt="${title}" class="modal-image">` : ''}
                         <div>${content}</div>
                         ${postedDate !== 'No Date' && postedAuthor !== 'No Author' ? formatPostedMetaData(postedDate, postedAuthor) : ''}
-                        <button id="back-button">Back</button>
+                        <button id="back-button" class="back-button">Back to News List</button>
                     </div>
                 `;
-                
-                // Always scroll to the top of the news content
-                window.scrollTo(0, 0);
+
+                window.scrollTo(0, 0); // Scroll to top when loading full content
 
                 // Add back button functionality
                 document.getElementById('back-button').addEventListener('click', function () {
