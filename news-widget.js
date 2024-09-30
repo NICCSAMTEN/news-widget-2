@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const baseUrl = 'https://www.tradepr.work/articles/';
     let currentPage = 1; // Track the current page
     let scrollPosition = 0; // Store scroll position
+    let isViewingContent = false; // Track whether the user is viewing a full article
 
     // Helper function to correct image URLs
     function correctImageUrl(src) {
@@ -56,6 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Load the news list with pagination
     function loadNewsList(page) {
+        isViewingContent = false; // User is back to viewing the list
         scrollPosition = window.scrollY; // Store the current scroll position before loading the new list
         fetch(`${baseUrl}?page=${page}`)
             .then(response => response.text())
@@ -120,8 +122,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     // Add pagination buttons from the original website
                     addOriginalPagination(doc);
                 }
-                
-                window.scrollTo(0, 0); // Scroll to the top after loading the list
+
+                window.scrollTo(0, scrollPosition); // Restore scroll position after loading the list
             })
             .catch(error => console.error('Error loading news:', error));
     }
@@ -165,6 +167,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Load the full article content in a modal-like view
     function loadNewsContent(url) {
+        isViewingContent = true; // User is viewing content
         fetch(url)
             .then(response => response.text())
             .then(data => {
@@ -211,14 +214,23 @@ document.addEventListener('DOMContentLoaded', function () {
                         ${image ? `<img src="${image}" alt="${title}" class="modal-image">` : ''}
                         <div>${content}</div>
                         ${formatPostedMetaData(postedDate, postedAuthor)}
+                        <button id="back-button">Back</button>
                     </div>
                 `;
 
-                window.scrollTo(0, 0); // Ensure the modal scrolls to the top after loading content
+                window.scrollTo(0, 0); // Scroll to the top of the full news content page
             })
-            .catch(error => console.error('Error loading full news content:', error));
+            .catch(error => console.error('Error loading full article:', error));
     }
 
-    // Load the initial news list
-    loadNewsList(currentPage);
+    // Handle back button click
+    document.addEventListener('click', function (event) {
+        if (event.target.matches('#back-button')) {
+            event.preventDefault();
+            loadNewsList(currentPage); // Go back to the current page in the news list
+        }
+    });
+
+    // Load the initial news list when the page is loaded
+    loadNewsList(1);
 });
