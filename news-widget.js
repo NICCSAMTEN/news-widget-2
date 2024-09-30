@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentPage = 1; // Track the current page
     let scrollPosition = 0; // Store scroll position
 
+    // Helper function to correct image URLs
     function correctImageUrl(src) {
         if (src.startsWith('/')) {
             return `https://www.tradepr.work${src}`;
@@ -13,14 +14,17 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    // Helper function to exclude certain images (e.g., profile pictures)
     function shouldExcludeImage(src) {
         return src.includes('/pictures/profile/');
     }
 
+    // Clean up article descriptions
     function cleanDescription(description) {
         return description.replace(/View More/gi, '').trim();
     }
 
+    // Format the posted metadata for each article
     function formatPostedMetaData(date, author) {
         return `
             <div class="posted-meta-data">
@@ -31,6 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
         `;
     }
 
+    // Extract posted metadata from the document
     function extractPostedMetaData(element) {
         const postedMetaData = element ? element.textContent.trim() : '';
         let postedDate = 'No Date';
@@ -49,6 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return { postedDate, postedAuthor };
     }
 
+    // Load the news list with pagination
     function loadNewsList(page) {
         scrollPosition = window.scrollY; // Store the current scroll position before loading the new list
         fetch(`${baseUrl}?page=${page}`)
@@ -120,6 +126,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => console.error('Error loading news:', error));
     }
 
+    // Handle pagination dynamically
     function addOriginalPagination(doc) {
         const paginationLinks = doc.querySelectorAll('.pagination a');
         if (paginationLinks.length > 0) {
@@ -146,6 +153,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    // Handle clicking on a news link to load the full article
     document.addEventListener('click', function (event) {
         if (event.target.matches('.news-link')) {
             event.preventDefault();
@@ -155,6 +163,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    // Load the full article content in a modal-like view
     function loadNewsContent(url) {
         fetch(url)
             .then(response => response.text())
@@ -203,25 +212,13 @@ document.addEventListener('DOMContentLoaded', function () {
                         <div>${content}</div>
                         ${formatPostedMetaData(postedDate, postedAuthor)}
                     </div>
-                    <button id="back-to-list">Back to News List</button>
                 `;
 
-                // Remove pagination when displaying news content
-                const pagination = document.getElementById('pagination');
-                if (pagination) {
-                    pagination.remove();
-                }
-
-                const backButton = document.getElementById('back-to-list');
-                backButton.addEventListener('click', function () {
-                    loadNewsList(currentPage); // Return to the current page
-                    window.scrollTo(0, scrollPosition); // Restore scroll position on the list page
-                });
-                
-                window.scrollTo(0, 0); // Scroll to the top when opening a news article
+                window.scrollTo(0, 0); // Ensure the modal scrolls to the top after loading content
             })
-            .catch(error => console.error('Error loading news content:', error));
+            .catch(error => console.error('Error loading full news content:', error));
     }
 
-    loadNewsList(currentPage); // Initial load of the news list
+    // Load the initial news list
+    loadNewsList(currentPage);
 });
