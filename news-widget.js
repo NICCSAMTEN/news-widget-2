@@ -226,7 +226,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Handle back button click
     document.addEventListener('click', function (event) {
         if (event.target.matches('#back-button')) {
-            loadNewsList(currentPage); // Load the news list again
+            loadNewsList(currentPage); // Reload the news list again
         }
     });
 
