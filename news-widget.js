@@ -125,11 +125,13 @@ document.addEventListener('DOMContentLoaded', function () {
                         paginationContainer.remove();
                     }
 
-                    // Call function to add pagination buttons
-                    addPagination(doc);
+                    // Call function to add pagination buttons if not viewing content
+                    if (!isViewingContent) {
+                        addPagination(doc);
+                    }
                 }
 
-                window.scrollTo(0, scrollPosition); // Restore scroll position after loading the list
+                window.scrollTo(0, 0); // Scroll to top when loading the list
             })
             .catch(error => console.error('Error loading news:', error));
     }
@@ -223,16 +225,17 @@ document.addEventListener('DOMContentLoaded', function () {
                     </div>
                 `;
 
-                window.scrollTo(0, 0); // Scroll to top when loading full content
+                // Scroll to top when viewing content
+                window.scrollTo(0, 0);
 
-                // Add back button functionality
+                // Handle back button to return to the news list
                 document.getElementById('back-button').addEventListener('click', function () {
-                    loadNewsList(currentPage); // Load the current news list page
+                    loadNewsList(currentPage); // Load the previous news list
                 });
             })
-            .catch(error => console.error('Error loading news content:', error));
+            .catch(error => console.error('Error loading content:', error));
     }
 
-    // Initialize the news list
+    // Initial load of the first page
     loadNewsList(currentPage);
 });
