@@ -117,26 +117,28 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function addOriginalPagination(doc) {
-        const paginationContainer = document.createElement('div');
-        paginationContainer.id = 'pagination';
-        paginationContainer.innerHTML = '';
-
         const paginationLinks = doc.querySelectorAll('.pagination a');
-        paginationLinks.forEach(link => {
-            const pageNumber = link.textContent.trim();
-            const pageUrl = link.href;
+        if (paginationLinks.length > 0) {
+            const paginationContainer = document.createElement('div');
+            paginationContainer.id = 'pagination';
+            paginationContainer.innerHTML = '';
 
-            const pageButton = document.createElement('button');
-            pageButton.innerText = pageNumber;
-            pageButton.addEventListener('click', function () {
-                const newPage = new URL(pageUrl).searchParams.get('page');
-                loadNewsList(newPage); // Load the corresponding page from the original website
+            paginationLinks.forEach(link => {
+                const pageNumber = link.textContent.trim();
+                const pageUrl = link.href;
+
+                const pageButton = document.createElement('button');
+                pageButton.innerText = pageNumber;
+                pageButton.addEventListener('click', function () {
+                    const newPage = new URL(pageUrl).searchParams.get('page');
+                    loadNewsList(newPage); // Load the corresponding page from the original website
+                });
+                paginationContainer.appendChild(pageButton);
             });
-            paginationContainer.appendChild(pageButton);
-        });
 
-        const widget = document.getElementById('news-widget');
-        widget.appendChild(paginationContainer);
+            const widget = document.getElementById('news-widget');
+            widget.appendChild(paginationContainer);
+        }
     }
 
     document.addEventListener('click', function (event) {
@@ -197,6 +199,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     </div>
                     <button id="back-to-list">Back to News List</button>
                 `;
+
+                // Remove pagination when displaying news content
+                const pagination = document.getElementById('pagination');
+                if (pagination) {
+                    pagination.remove();
+                }
 
                 const backButton = document.getElementById('back-to-list');
                 backButton.addEventListener('click', function () {
