@@ -226,11 +226,10 @@ document.addEventListener('DOMContentLoaded', function () {
     // Handle back button click
     document.addEventListener('click', function (event) {
         if (event.target.matches('#back-button')) {
-            event.preventDefault();
-            loadNewsList(currentPage); // Go back to the current page in the news list
+            loadNewsList(currentPage); // Load the news list again
         }
     });
 
-    // Load the initial news list when the page is loaded
-    loadNewsList(1);
+    // Initialize the news list on page load
+    loadNewsList(currentPage);
 });
