@@ -62,7 +62,76 @@
 }
 
 /* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Darken modal background for focus */
+}
 
+.modal-content {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 30px; /* Increase padding for a more spacious look */
+    border: 1px solid #ccc;
+    width: 80%;
+    max-width: 900px;
+    max-height: 80%;
+    overflow-y: auto;
+    position: relative;
+    border-radius: 10px; /* Increase rounding of the corners */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Deeper shadow for a lifted effect */
+}
+
+/* Modal thumbnail - Centered and properly sized */
+.modal-thumbnail {
+    display: block;
+    max-width: 100%;
+    width: 500px; /* Adjust the width to fit container */
+    height: auto;
+    margin: 20px auto; /* Center the image horizontally */
+    border-radius: 6px; /* Slight rounding on thumbnail image */
+}
+
+/* Ensure modal content paragraphs are readable */
+.modal-content p {
+    line-height: 1.8; /* Increase line spacing for better readability */
+    font-size: 14pt;
+    color: #333;
+    text-align: justify;
+}
+
+/* Image inside the news content page */
+.news-content-page img {
+    max-width: 100%; /* Ensure image scales down */
+    width: auto;
+    height: auto;
+    margin: 0 auto; /* Center image */
+    display: block;
+    max-height: 400px; /* Limit height to avoid large images */
+}
+
+/* Font styles for H1 and paragraphs in the news content page */
+.news-content-page h1 {
+    font-family: Arial, sans-serif;
+    font-size: 14pt;
+    font-weight: bold;
+    text-align: center;
+    margin: 20px 0; /* Add spacing above and below the header */
+}
+
+.news-content-page p {
+    font-family: Arial, sans-serif;
+    font-size: 12pt;
+    color: #333;
+    text-align: justify;
+    line-height: 1.6; /* Improve readability */
+    margin-bottom: 15px; /* Add spacing between paragraphs */
+}
 
 /* Centering for inline block elements */
 .fr-inner {
