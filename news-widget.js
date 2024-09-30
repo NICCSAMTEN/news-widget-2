@@ -213,23 +213,18 @@ document.addEventListener('DOMContentLoaded', function () {
                         ${additionalImage ? `<img src="${additionalImage}" alt="${title}" class="modal-thumbnail">` : ''}
                         ${image ? `<img src="${image}" alt="${title}" class="modal-image">` : ''}
                         <div>${content}</div>
-                        ${formatPostedMetaData(postedDate, postedAuthor)}
+                        ${postedDate !== 'No Date' && postedAuthor !== 'No Author' ? formatPostedMetaData(postedDate, postedAuthor) : ''}
                         <button id="back-button">Back</button>
                     </div>
                 `;
-
-                window.scrollTo(0, 0); // Scroll to the top of the full news content page
+                document.getElementById('back-button').addEventListener('click', function () {
+                    window.scrollTo(0, 0); // Scroll back to top when going back to the news list
+                    loadNewsList(currentPage); // Reload the current news list
+                });
             })
-            .catch(error => console.error('Error loading full article:', error));
+            .catch(error => console.error('Error loading news content:', error));
     }
 
-    // Handle back button click
-    document.addEventListener('click', function (event) {
-        if (event.target.matches('#back-button')) {
-            loadNewsList(currentPage); // Reload the news list again
-        }
-    });
-
-    // Initialize the news list on page load
+    // Load the first page of news on initial load
     loadNewsList(currentPage);
 });
