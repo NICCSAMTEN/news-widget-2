@@ -119,8 +119,11 @@ document.addEventListener('DOMContentLoaded', function () {
                         newsContent.appendChild(newsItem);
                     });
 
-                    // Add pagination buttons from the original website
-                    addOriginalPagination(doc);
+                    // Remove pagination buttons
+                    const paginationContainer = document.getElementById('pagination');
+                    if (paginationContainer) {
+                        paginationContainer.remove();
+                    }
                 }
 
                 window.scrollTo(0, scrollPosition); // Restore scroll position after loading the list
@@ -217,14 +220,18 @@ document.addEventListener('DOMContentLoaded', function () {
                         <button id="back-button">Back</button>
                     </div>
                 `;
+                
+                // Always scroll to the top of the news content
+                window.scrollTo(0, 0);
+
+                // Add back button functionality
                 document.getElementById('back-button').addEventListener('click', function () {
-                    window.scrollTo(0, 0); // Scroll back to top when going back to the news list
-                    loadNewsList(currentPage); // Reload the current news list
+                    loadNewsList(currentPage); // Load the current news list page
                 });
             })
             .catch(error => console.error('Error loading news content:', error));
     }
 
-    // Load the first page of news on initial load
+    // Initialize the news list
     loadNewsList(currentPage);
 });
