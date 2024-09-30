@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     const baseUrl = 'https://www.tradepr.work/articles/';
     let currentPage = 1; // Track the current page
+    let scrollPosition = 0; // Store scroll position
 
     function correctImageUrl(src) {
         if (src.startsWith('/')) {
@@ -49,6 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function loadNewsList(page) {
+        scrollPosition = window.scrollY; // Store the current scroll position before loading the new list
         fetch(`${baseUrl}?page=${page}`)
             .then(response => response.text())
             .then(data => {
@@ -112,6 +114,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     // Add pagination buttons from the original website
                     addOriginalPagination(doc);
                 }
+                
+                window.scrollTo(0, 0); // Scroll to the top after loading the list
             })
             .catch(error => console.error('Error loading news:', error));
     }
@@ -131,6 +135,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 pageButton.innerText = pageNumber;
                 pageButton.addEventListener('click', function () {
                     const newPage = new URL(pageUrl).searchParams.get('page');
+                    currentPage = newPage; // Update current page
                     loadNewsList(newPage); // Load the corresponding page from the original website
                 });
                 paginationContainer.appendChild(pageButton);
@@ -145,6 +150,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (event.target.matches('.news-link')) {
             event.preventDefault();
             const newsUrl = decodeURIComponent(event.target.getAttribute('data-url'));
+            scrollPosition = window.scrollY; // Store current scroll position before going to the news content
             loadNewsContent(newsUrl);
         }
     });
@@ -208,11 +214,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 const backButton = document.getElementById('back-to-list');
                 backButton.addEventListener('click', function () {
-                    loadNewsList(currentPage);
+                    loadNewsList(currentPage); // Return to the current page
+                    window.scrollTo(0, scrollPosition); // Restore scroll position on the list page
                 });
+                
+                window.scrollTo(0, 0); // Scroll to the top when opening a news article
             })
             .catch(error => console.error('Error loading news content:', error));
     }
 
-    loadNewsList(currentPage); // Initially load the news list for the first page
+    loadNewsList(currentPage); // Initial load of the news list
 });
