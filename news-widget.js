@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     const baseUrl = 'https://www.tradepr.work/articles/';
-    let currentPage = 1; // Keep track of the current page
+    let currentPage = 1; // Track the current page
 
     function correctImageUrl(src) {
         if (src.startsWith('/')) {
@@ -109,35 +109,31 @@ document.addEventListener('DOMContentLoaded', function () {
                         newsContent.appendChild(newsItem);
                     });
 
-                    // Add pagination buttons
-                    addPagination(doc, page);
+                    // Add pagination buttons from the original website
+                    addOriginalPagination(doc);
                 }
             })
             .catch(error => console.error('Error loading news:', error));
     }
 
-    function addPagination(doc, currentPage) {
+    function addOriginalPagination(doc) {
         const paginationContainer = document.createElement('div');
         paginationContainer.id = 'pagination';
-        const totalPages = parseInt(doc.querySelector('.pagination .last a').textContent.trim()) || 1;
+        paginationContainer.innerHTML = '';
 
-        if (currentPage > 1) {
-            const prevButton = document.createElement('button');
-            prevButton.innerText = 'Previous';
-            prevButton.addEventListener('click', function () {
-                loadNewsList(currentPage - 1);
-            });
-            paginationContainer.appendChild(prevButton);
-        }
+        const paginationLinks = doc.querySelectorAll('.pagination a');
+        paginationLinks.forEach(link => {
+            const pageNumber = link.textContent.trim();
+            const pageUrl = link.href;
 
-        if (currentPage < totalPages) {
-            const nextButton = document.createElement('button');
-            nextButton.innerText = 'Next';
-            nextButton.addEventListener('click', function () {
-                loadNewsList(currentPage + 1);
+            const pageButton = document.createElement('button');
+            pageButton.innerText = pageNumber;
+            pageButton.addEventListener('click', function () {
+                const newPage = new URL(pageUrl).searchParams.get('page');
+                loadNewsList(newPage); // Load the corresponding page from the original website
             });
-            paginationContainer.appendChild(nextButton);
-        }
+            paginationContainer.appendChild(pageButton);
+        });
 
         const widget = document.getElementById('news-widget');
         widget.appendChild(paginationContainer);
