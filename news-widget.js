@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     const baseUrl = 'https://www.tradepr.work/articles/';
     let currentPage = 1; // Track the current page
-    let scrollPosition = 0; // Store scroll position
     let isViewingContent = false; // Track whether the user is viewing a full article
 
     // Helper function to correct image URLs
@@ -58,7 +57,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // Load the news list with pagination
     function loadNewsList(page) {
         isViewingContent = false; // User is back to viewing the list
-        scrollPosition = window.scrollY; // Store the current scroll position before loading the new list
         fetch(`${baseUrl}?page=${page}`)
             .then(response => response.text())
             .then(data => {
@@ -119,13 +117,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         newsContent.appendChild(newsItem);
                     });
 
-                    // Remove pagination buttons on news content page
-                    const paginationContainer = document.getElementById('pagination');
-                    if (paginationContainer) {
-                        paginationContainer.remove();
-                    }
-
-                    // Call function to add pagination buttons if not viewing content
+                    // Add pagination buttons for news list page only
                     if (!isViewingContent) {
                         addPagination(doc);
                     }
@@ -232,6 +224,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 document.getElementById('back-button').addEventListener('click', function () {
                     loadNewsList(currentPage); // Load the previous news list
                 });
+
+                // Hide pagination buttons while viewing the news content
+                const paginationContainer = document.getElementById('pagination');
+                if (paginationContainer) {
+                    paginationContainer.style.display = 'none';
+                }
             })
             .catch(error => console.error('Error loading content:', error));
     }
