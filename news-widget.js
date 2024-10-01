@@ -65,16 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const articles = doc.querySelectorAll('.row-fluid.search_result');
                 const widget = document.getElementById('news-widget');
 
-                widget.innerHTML = `
-                    <div style="text-align: left;">
-                        <img src="https://github.com/EmillioHezekiah/news-widget-2/blob/18d2e9e6bacf0775095d6e1f8c5a81d051cb4bac/trade2372.png?raw=true" 
-                             alt="PR News Logo" 
-                             class="news-custom-image"
-                             href="https://www.tradepr.work/">
-                        <h2>News from Trade PR</h2>
-                    </div>
-                `;
-
+               
                 const newsContent = document.createElement('div');
                 newsContent.id = 'news-content';
                 widget.appendChild(newsContent);
